@@ -2,7 +2,12 @@
 <html lang="uk">
 {% include '../includes/head.html' %}
 <body>
-    {% block content %}{% endblock %}
+    <nav class="navbar navbar-fixed-top navbar-inverse" data-ng-include="'/public/system/views/header.html'" data-role="navigation"></nav>
+    <section class="content">
+        <section class="container">
+            {% block content %}{% endblock %}
+        </section>
+    </section>
     {% include '../includes/foot.html' %}
 </body>
 </html>
