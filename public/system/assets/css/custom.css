@@ -1,0 +1,24 @@
+.col_top_row {
+    height: 250px;
+    box-shadow: 1px 1px 1px;
+}
+
+.col_bottom_row {
+    box-shadow: 1px 0 1px;
+}
+
+.col_bottom_row > .row {
+    height: 120px;
+}
+
+.col_bottom_row > .row.row-header,
+.col_bottom_row > .row.row-footer
+{
+    height: auto;
+}
+
+.col_bottom_row > .row.row-header > div,
+.col_bottom_row > .row.row-footer > div
+{
+    margin-bottom: 15px;
+}
