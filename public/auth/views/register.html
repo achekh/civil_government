@@ -1,45 +1,45 @@
 <div data-ng-controller="RegisterCtrl">
-    <div ng-repeat="error in registerError">
+    <div data-ng-repeat="error in registerError">
         <div class="alert alert-danger animated fadeIn">{{error.msg}}</div>
     </div>
-    <div class="alert alert-danger animated fadeIn" ng-show="usernameError">{{usernameError}}</div>
+    <div class="alert alert-danger animated fadeIn" data-ng-show="usernameError">{{usernameError}}</div>
 
-    <h1>Register</h1>
-    <form ng-submit="register()" class="signup form-horizontal">
+    <h1>Реєстрація</h1>
+    <form data-ng-submit="register()" class="signup form-horizontal">
         <div class="form-group">
-            <label for="name" class="col-md-4 control-label">Full Name</label>
+            <label for="name" class="col-md-4 control-label">Повне ім’я</label>
             <div class="col-md-8">
-                <input id="name" type="text" name="name" placeholder="Full name" class="form-control" ng-model="user.name"/>
+                <input id="name" type="text" name="name" placeholder="повне ім’я" class="form-control" data-ng-model="user.name"/>
             </div>
         </div>
         <div class="form-group">
             <label for="email" class="col-md-4 control-label">Email</label>
             <div class="col-md-8">
-                <input id="email" type="email" name="email" placeholder="Email" class="form-control" ng-model="user.email"/>
+                <input id="email" type="email" name="email" placeholder="email" class="form-control" data-ng-model="user.email"/>
             </div>
         </div>
         <div class="form-group">
-            <label for="username" class="col-md-4 control-label">Username</label>
+            <label for="username" class="col-md-4 control-label">Ім’я</label>
             <div class="col-md-8">
-                <input id="username" type="text" name="username" placeholder="Username" class="form-control" ng-model="user.username"/>
+                <input id="username" type="text" name="username" placeholder="ім’я" class="form-control" data-ng-model="user.username"/>
             </div>
         </div>
         <div class="form-group">
-            <label for="password" class="col-md-4 control-label">Password</label>
+            <label for="password" class="col-md-4 control-label">Пароль</label>
             <div class="col-md-8">
-                <input id="password" type="password" name="password" placeholder="Password" class="form-control" ng-model="user.password"/>
+                <input id="password" type="password" name="password" placeholder="пароль" class="form-control" data-ng-model="user.password"/>
             </div>
         </div>
         <div class="form-group">
-            <label for="confirmPassword" class="col-md-4 control-label">Repeat Password</label>
+            <label for="confirmPassword" class="col-md-4 control-label">Підтвердження паролю</label>
             <div class="col-md-8">
-                <input id="confirmPassword" type="password" name="confirmPassword" placeholder="Password" class="form-control" ng-model="user.confirmPassword"/>
+                <input id="confirmPassword" type="password" name="confirmPassword" placeholder="підтвердження паролю" class="form-control" data-ng-model="user.confirmPassword"/>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-4 col-md-8">
-                <button type="submit" class="btn btn-primary">Sign up</button>&nbsp;
-                or&nbsp;<a ui-sref='auth.login' class="show-login">login</a>
+                <button type="submit" class="btn btn-primary">Зареєструватися</button>&nbsp;
+                або&nbsp;<a data-ui-sref='auth.login' class="show-login">Увійти</a>
             </div>
         </div>
     </form>
