@@ -1,19 +1,34 @@
 'use strict';
 
 //Global service for global variables
-angular.module('mean.system').factory('Global', [
+angular.module('mean.system').service('Global', ['$rootScope', function ($rootScope) {
 
-    function() {
-        var _this = this;
-        _this._data = {
-            user: window.user,
+    function getUserGlobals (scope) {
+
+        var globals = {
+            user: scope.user,
             authenticated: false,
             isAdmin: false
         };
-        if (window.user && window.user.roles) {
-            _this._data.authenticated = window.user.roles.length;
-            _this._data.isAdmin = ~window.user.roles.indexOf('admin');
+
+        if (scope.user && scope.user.roles) {
+            globals.authenticated = scope.user.roles.length;
+            globals.isAdmin = ~scope.user.roles.indexOf('admin');
         }
-        return _this._data;
+
+        return globals;
+
     }
-]);
+
+    this.getWindowGlobals = function () {
+        var globals = getUserGlobals(window);
+        return globals;
+    };
+
+    this.getScopeGlobals = function (scope) {
+        scope = scope || $rootScope;
+        var globals = getUserGlobals(scope);
+        return globals;
+    };
+
+}]);
