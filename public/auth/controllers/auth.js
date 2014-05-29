@@ -49,14 +49,16 @@ angular.module('mean.controllers.login', [])
                     name: $scope.user.name
                 })
                     .success(function() {
-                        // authentication OK
+                        // registration OK
                         $scope.registerError = 0;
-                        $rootScope.user = $scope.user;
-                        $rootScope.$emit('loggedin');
-                        $location.url('/');
+                        $http.get('/loggedin').success(function(user) {
+                            $rootScope.user = user;
+                            $rootScope.$emit('loggedin');
+                            $location.url('/');
+                        });
                     })
                     .error(function(error) {
-                        // Error: authentication failed
+                        // Error: registration failed
                         if (error === 'Username already taken') {
                             $scope.usernameError = error;
                         } else {

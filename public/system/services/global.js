@@ -12,8 +12,8 @@ angular.module('mean.system').service('Global', ['$rootScope', function ($rootSc
         };
 
         if (scope.user && scope.user.roles) {
-            globals.authenticated = scope.user.roles.length;
-            globals.isAdmin = ~scope.user.roles.indexOf('admin');
+            globals.authenticated = scope.user.roles.length > 0;
+            globals.isAdmin = scope.user.roles.indexOf('admin') > -1;
         }
 
         return globals;
