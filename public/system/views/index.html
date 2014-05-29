@@ -2,16 +2,19 @@
 
     <div class="row">
 
-        <div class="col-md-3 col_top_row">
-            <form action="/login" method="post">
+        <div class="col-md-3 col_top_row" data-ng-controller="LoginCtrl" data-ng-if="!global.authenticated">
+            <form data-ng-submit="login()">
                 <p align="center"><br/><br/>
-                    <input class="form-inline" type="text" name="email" placeholder="e-mail"><br/><br/>
-                    <input class="form-inline" type="password" name="password" placeholder="пароль"><br/><br/>
+                    <input class="form-inline" type="text" name="email" placeholder="e-mail" data-ng-model="user.email"><br/><br/>
+                    <input class="form-inline" type="password" name="password" placeholder="пароль" data-ng-model="user.password"><br/><br/>
                     <button type="submit" class="btn btn-primary">Увійти</button>
                     <button type="button" class="btn btn-default">Реєстрація</button><br/>
                 </p>
             </form>
             <p align="center"><a href="#">Забули пароль?</a></p>
+        </div>
+
+        <div class="col-md-3 col_top_row" data-ng-if="global.authenticated">
         </div>
 
         <div class="col-md-6 col_top_row">
