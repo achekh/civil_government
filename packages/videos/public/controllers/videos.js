@@ -1,12 +1,11 @@
 'use strict';
 
-angular.module('mean').controller('VideosController', ['$scope', '$stateParams', '$location', 'Global', 'Videos',
-    function($scope, $stateParams, $location, Global, Videos) {
-        $scope.global = Global;
+angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '$stateParams', '$location', 'Videos',
+    function($scope, $rootScope, $stateParams, $location, Videos) {
 
         $scope.hasAuthorization = function(video) {
             if (!video || !video.user) return false;
-            return $scope.global.isAdmin || video.user._id === $scope.global.user._id;
+            return $rootScope.global.isAdmin || video.user._id === $rootScope.global.user._id;
         };
 
         $scope.add = function() {
