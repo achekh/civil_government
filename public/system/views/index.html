@@ -1,3 +1,318 @@
-<section data-ng-controller="IndexController">
-    <h1 mean-token="'home-default'">This is the home view</h1>
-</section>
+<div class="container-fluid" data-ng-controller="IndexController">
+
+    <div class="row">
+
+        <div class="col-md-3 col_top_row" data-ng-controller="LoginCtrl" data-ng-if="!global.authenticated">
+            <form data-ng-submit="login()">
+                <p align="center"><br/><br/>
+                    <input class="form-inline" type="text" name="email" placeholder="e-mail" data-ng-model="user.email"><br/><br/>
+                    <input class="form-inline" type="password" name="password" placeholder="пароль" data-ng-model="user.password"><br/><br/>
+                    <button type="submit" class="btn btn-primary">Увійти</button>
+                    <button type="button" class="btn btn-default" data-ui-sref="auth.register">Реєстрація</button><br/>
+                </p>
+            </form>
+            <p align="center"><a href="#!">Забули пароль?</a></p>
+        </div>
+
+        <div class="col-md-3 col_top_row" data-ng-if="global.authenticated">
+        </div>
+
+        <div class="col-md-6 col_top_row">
+            {{global}}
+        </div>
+
+        <div class="col-md-3 col_top_row">
+
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>Рекорди</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <td align="right"><b>42342</b></td>
+                        <td>активістів</td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>324</b></td>
+                        <td>організацій</td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>59</b></td>
+                        <td>населених пунктів</td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>12333</b></td>
+                        <td>подій відбулося</td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>876</b></td>
+                        <td>перемог здобуто</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3 col_bottom_row">
+
+            <div class="row row-header">
+                <div class="col-md-6">
+                    <h2>Перемоги</h2>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
+
+                    <p><b>28.04.2014 - Київ</b></p>
+
+                    <p>Верховная Рада прийняла закон про амнистію</p><br/>
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>28.04.2014 - Київ</b></p>
+
+                    <p>Верховная Рада прийняла закон про амнистію</p><br/>
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>28.04.2014 - Київ</b></p>
+
+                    <p>Верховная Рада прийняла закон про амнистію</p><br/>
+
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <p align="center">
+                        <button type="button" class="btn btn-default">Ще перемоги</button>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row">
+
+            <div class="row row-header">
+                <div class="col-md-6">
+                    <h2>Події</h2>
+                </div>
+                <br/>
+                <div class="col-md-6">
+                    <div class="btn-group">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                            Вся Україна <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>м.Київ</li>
+                            <li>Волинська обл.</li>
+                            <li>Вінницька обл.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>28.04.2014 - Київ<br/>Пікет посольства Росії</b></p>
+
+                    <p><span class="glyphicon glyphicon-user"></span> 128</p>
+
+                    <p><span class="glyphicon glyphicon-check"></span> на затвердженні</p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>28.04.2014 - Київ<br/>Пікет посольства Росії</b></p>
+
+                    <p><span class="glyphicon glyphicon-user"></span> 128</p>
+
+                    <p><span class="glyphicon glyphicon-check"></span> на затвердженні</p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>28.04.2014 - Київ<br/>Пікет посольства Росії</b></p>
+
+                    <p><span class="glyphicon glyphicon-user"></span> 128</p>
+
+                    <p><span class="glyphicon glyphicon-check"></span> на затвердженні</p>
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <p align="center">
+                        <button type="button" class="btn btn-default">Календар</button>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row">
+
+            <div class="row row-header">
+                <div class="col-md-6">
+                    <h2>Відео</h2>
+                </div>
+                <br/>
+                <div class="col-md-6">
+                    <div class="btn-group">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                            Всі відео <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>наживо</li>
+                            <li>архів</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/140x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>28.04.2014 - Київ</b></p>
+
+                    <p>Пікет посольства Росії</p>
+
+                    <p><span class="glyphicon glyphicon-play-circle"></span> наживо</p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/140x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>28.04.2014 - Київ</b></p>
+
+                    <p>Пікет посольства Росії</p>
+
+                    <p><span class="glyphicon glyphicon-play-circle"></span> наживо</p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/140x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>28.04.2014 - Київ</b></p>
+
+                    <p>Пікет посольства Росії</p>
+
+                    <p><span class="glyphicon glyphicon-play-circle"></span> наживо</p>
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <p align="center">
+                        <button type="button" class="btn btn-default">Інші відео</button>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row">
+
+            <div class="row row-header">
+                <div class="col-md-6">
+                    <h2>Лідери</h2>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>
+                        Перемоги: 89%</p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>
+                        Перемоги: 89%</p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                         hspace="10px">
+
+                    <p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>
+                        Перемоги: 89%</p>
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <p align="center">
+                        <button type="button" class="btn btn-default">Всі лідери</button>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
