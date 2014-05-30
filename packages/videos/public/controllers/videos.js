@@ -3,8 +3,12 @@
 angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '$stateParams', '$location', 'Videos',
     function($scope, $rootScope, $stateParams, $location, Videos) {
 
-        $scope.getPreview = function (video) {
-            return video.url;
+        $scope.getPreviewUrl = function (video) {
+            return (video) ? video.url : '';
+        };
+
+        $scope.getVideoUrl = function (video) {
+            return (video) ? video.url : '';
         };
 
         $scope.hasAuthorization = function(video) {
