@@ -3,6 +3,10 @@
 angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '$stateParams', '$location', 'Videos',
     function($scope, $rootScope, $stateParams, $location, Videos) {
 
+        $scope.getPreview = function (video) {
+            return video.url;
+        };
+
         $scope.hasAuthorization = function(video) {
             if (!video || !video.user) return false;
             return $rootScope.global.isAdmin || video.user._id === $rootScope.global.user._id;

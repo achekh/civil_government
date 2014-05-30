@@ -18,7 +18,6 @@
         </div>
 
         <div class="col-md-6 col_top_row">
-            {{global}}
         </div>
 
         <div class="col-md-3 col_top_row">
@@ -198,13 +197,14 @@
                 </div>
                 <br/>
                 <div class="col-md-6">
-                    <div class="btn-group">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                            Всі відео <span class="caret"></span>
+                    <div class="btn-group" data-dropdown="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button">
+                            Все відео <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu">
-                            <li>наживо</li>
-                            <li>архів</li>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Все відео</a></li>
+                            <li><a href="#">Наживо</a></li>
+                            <li><a href="#">Архів</a></li>
                         </ul>
                     </div>
                 </div>
@@ -255,7 +255,7 @@
             <div class="row row-footer">
                 <div class="col-md-12">
                     <p align="center">
-                        <button type="button" class="btn btn-default" data-ui-sref="all videos">Інші відео</button>
+                        <button type="button" class="btn btn-default" data-ui-sref="videos">Інші відео</button>
                     </p>
                 </div>
             </div>

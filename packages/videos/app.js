@@ -46,6 +46,8 @@ Videos.register(function(app, auth, database) {
     });
     */
 
+    Videos.aggregateAsset('css', 'videos.css');
+
     return Videos;
 
 });

@@ -26,22 +26,22 @@ angular.module('mean').config(['$stateProvider',
         };
 
         $stateProvider
-            .state('all videos', {
+            .state('videos', {
                 url: '/videos',
                 templateUrl: 'videos/views/list.html'
             })
-            .state('add video', {
+            .state('videos.add', {
                 url: '/videos/add',
                 templateUrl: 'videos/views/add.html',
                 resolve: {
                     loggedin: checkLoggedin
                 }
             })
-            .state('view video', {
+            .state('videos.view', {
                 url: '/videos/:videoId',
                 templateUrl: 'videos/views/view.html'
             })
-            .state('edit video', {
+            .state('videos.edit', {
                 url: '/videos/:videoId/edit',
                 templateUrl: 'videos/views/edit.html',
                 resolve: {

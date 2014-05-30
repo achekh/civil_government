@@ -1,3 +1,9 @@
-.videos-example h1: {
-	background-color: purple
+.videos-list > .row {
+    margin-bottom: 2em;
+}
+
+.videos-preview {
+    width: 320px;
+    height: 180px;
+    margin-bottom: 1em;
 }
