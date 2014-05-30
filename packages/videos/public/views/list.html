@@ -16,6 +16,7 @@
                     <li><a href="#">Архів</a></li>
                 </ul>
             </div>
+            <button type="button" class="btn btn-default" data-ui-sref="videos-add">Додати ще <i class="glyphicon glyphicon-plus"></i></button>
         </div>
     </div>
 
@@ -30,14 +31,11 @@
             <!--<p>video.event.date - video.event.place</p>-->
             <p><a data-ui-sref="videos-view({videoId: video._id})">{{video.title}}</a></p>
             <p>{{video.created | date:'medium'}} - {{video.user.name}}</p>
-            <p><span class="glyphicon glyphicon-play-circle"></span> <a data-ng-href="video.url" target="_blank">{{video.url}}</a></p>
+            <p><span class="glyphicon glyphicon-play-circle"></span> <a data-ng-href="{{video.url}}" target="_blank">{{video.url}}</a></p>
         </div>
     </div>
 
     <div class="row row-footer" data-ng-if="global.authenticated">
-        <div class="col-md-offset-4 col-md-8">
-            <button type="button" class="btn btn-default" data-ui-sref="videos-add">Додати ще <i class="glyphicon glyphicon-plus"></i></button>
-        </div>
     </div>
 
 </section>
