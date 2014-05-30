@@ -30,18 +30,18 @@ angular.module('mean').config(['$stateProvider',
                 url: '/videos',
                 templateUrl: 'videos/views/list.html'
             })
-            .state('videos.add', {
+            .state('videos-add', {
                 url: '/videos/add',
                 templateUrl: 'videos/views/add.html',
                 resolve: {
                     loggedin: checkLoggedin
                 }
             })
-            .state('videos.view', {
+            .state('videos-view', {
                 url: '/videos/:videoId',
                 templateUrl: 'videos/views/view.html'
             })
-            .state('videos.edit', {
+            .state('videos-edit', {
                 url: '/videos/:videoId/edit',
                 templateUrl: 'videos/views/edit.html',
                 resolve: {

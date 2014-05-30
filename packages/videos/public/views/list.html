@@ -26,7 +26,7 @@
         <div class="col-md-8">
             <p>video.event.title</p>
             <p>video.event.date - video.event.place</p>
-            <p><a data-ui-sref="videos.view({videoId: video._id})">{{video.title}}</a></p>
+            <p><a data-ui-sref="videos-view({videoId: video._id})">{{video.title}}</a></p>
             <p>{{video.created | date:'medium'}} - {{video.user.name}}</p>
             <p><span class="glyphicon glyphicon-play-circle"></span> <a href="{{video.url}}">{{video.url}}</a></p>
         </div>
@@ -35,7 +35,7 @@
     <div class="row row-footer" data-ng-if="global.authenticated">
         <div class="col-md-12">
             <p align="center">
-                <button type="button" class="btn btn-default" data-ui-sref="add video">Додати ще</button>
+                <button type="button" class="btn btn-default" data-ui-sref="videos-add">Додати ще</button>
             </p>
         </div>
     </div>
