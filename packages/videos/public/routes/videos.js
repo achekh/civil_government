@@ -28,10 +28,7 @@ angular.module('mean').config(['$stateProvider',
         $stateProvider
             .state('all videos', {
                 url: '/videos',
-                templateUrl: 'videos/views/list.html',
-                resolve: {
-                    loggedin: checkLoggedin
-                }
+                templateUrl: 'videos/views/list.html'
             })
             .state('add video', {
                 url: '/videos/add',
@@ -42,10 +39,7 @@ angular.module('mean').config(['$stateProvider',
             })
             .state('view video', {
                 url: '/videos/:videoId',
-                templateUrl: 'videos/views/view.html',
-                resolve: {
-                    loggedin: checkLoggedin
-                }
+                templateUrl: 'videos/views/view.html'
             })
             .state('edit video', {
                 url: '/videos/:videoId/edit',
