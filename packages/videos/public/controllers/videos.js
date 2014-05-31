@@ -3,17 +3,22 @@
 angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '$stateParams', '$location', 'Videos',
     function($scope, $rootScope, $stateParams, $location, Videos) {
 
+        $scope.videoFilters = [
+            {'type': 'ALL', 'label': 'Все відео'},
+            {'type': 'LIVE', 'label': 'Наживо'},
+            {'type': 'RECORD', 'label': 'Архів'}
+        ];
+
+        $scope.activeFilter = $scope.videoFilters.filter(function (videoFilter) {
+            return videoFilter.type === $stateParams.filter;
+        })[0] || $scope.videoFilters[0];
+
         $scope.getPreviewUrl = function (video) {
             return (video) ? video.url : '';
         };
 
         $scope.getVideoUrl = function (video) {
             return (video) ? video.url : '';
-        };
-
-        $scope.hasAuthorization = function(video) {
-            if (!video || !video.user) return false;
-            return $rootScope.global.isAdmin || video.user._id === $rootScope.global.user._id;
         };
 
         $scope.add = function() {

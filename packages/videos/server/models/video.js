@@ -25,6 +25,10 @@ var VideoSchema = new Schema({
         default: '',
         trim: true
     },
+    live: {
+        type: Boolean,
+        default: false
+    },
     user: {
         type: Schema.ObjectId,
         ref: 'User'
