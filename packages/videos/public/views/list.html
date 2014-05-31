@@ -6,16 +6,13 @@
         </div>
         <br/>
         <div class="col-md-8">
-
             <div class="btn-group dropdown">
                 <button type="button" class="btn btn-default dropdown-toggle">{{videoLiveStatus.label}} <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a data-ui-sref="videos({live: status.value})" data-ng-repeat="status in videoLiveStatuses">{{status.label}}</a>
                 </ul>
             </div>
-
             <button type="button" class="btn btn-default" data-ui-sref="videos-add" data-ng-if="isAuthenticated()">Додати ще <i class="glyphicon glyphicon-plus"></i></button>
-
         </div>
     </div>
 

@@ -2,14 +2,13 @@
 
     <div class="row row-header">
         <div class="col-md-4">
-            <h2>Перегляд відео</h2>
+            <h2><a data-ui-sref="videos">Відео</a> &gt; Перегляд</h2>
         </div>
         <br/>
         <div class="col-md-8" data-ng-if="hasAuthorization(video)">
             <button type="button" class="btn btn-default" data-ui-sref="videos-edit({videoId: video._id})">Редагувати <i class="glyphicon glyphicon-edit"></i></button>
             <button type="button" class="btn btn-default" data-ng-click="remove(video);">Видалити <i class="glyphicon glyphicon-trash"></i></button>
         </div>
-
     </div>
 
     <div class="row">
