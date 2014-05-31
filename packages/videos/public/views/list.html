@@ -1,0 +1,57 @@
+<section class="videos videos-list" data-ng-controller="VideosController" data-ng-init="find()">
+
+    <div class="row row-header">
+        <div class="col-md-4">
+            <h2>Відео</h2>
+        </div>
+        <br/>
+        <div class="col-md-8">
+
+            <div class="btn-group dropdown">
+                <button
+                    type="button"
+                    class="btn btn-default dropdown-toggle"
+                >{{activeFilter.label}} <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a
+                            data-ui-sref="videos({filter: filter.type})"
+                            data-ng-repeat="filter in videoFilters"
+                        >{{filter.label}}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-default"
+                data-ui-sref="videos-add"
+                data-ng-if="isAuthenticated()"
+            >Додати ще <i class="glyphicon glyphicon-plus"></i></button>
+
+        </div>
+    </div>
+
+    <div class="row" data-ng-repeat="video in videos">
+        <div class="col-md-4">
+            <a data-ui-sref="videos-view({videoId: video._id})">
+                <img class="videos-preview" data-ng-src="{{getPreviewUrl(video)}}" src="" />
+            </a>
+        </div>
+        <div class="col-md-8">
+            <!--<p>video.event.title</p>-->
+            <!--<p>video.event.date - video.event.place</p>-->
+            <p><a data-ui-sref="videos-view({videoId: video._id})">{{video.title}}</a></p>
+            <p>{{video.created | date:'medium'}} - {{video.user.name}}</p>
+            <p>
+                <span class="glyphicon glyphicon-fire" data-ng-if="video.live"></span>
+                <span class="glyphicon glyphicon-film" data-ng-if="!video.live"></span>
+                <a data-ng-href="{{video.url}}" target="_blank">{{video.url}}</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="row row-footer">
+    </div>
+
+</section>
