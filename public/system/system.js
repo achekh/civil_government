@@ -34,4 +34,16 @@ angular.module('mean.system', ['mean.controllers.login', 'mean-factory-intercept
         };
 
     }])
+    .directive('cgDropdownAutoclose', function () {
+        return {
+            restrict: 'A',
+            link: function ($scope, element, atttributes) {
+                element.on('click', function (event) {
+                    if (event.srcElement && event.srcElement.nodeName === 'A') {
+                        element.find('button').eq(0).triggerHandler('click');
+                    }
+                });
+            }
+        };
+    })
 ;

@@ -3,18 +3,23 @@
 angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '$stateParams', '$location', 'Videos',
     function($scope, $rootScope, $stateParams, $location, Videos) {
 
-        $scope.videoFilters = [
-            {'type': 'ALL', 'label': 'Все відео'},
-            {'type': 'LIVE', 'label': 'Наживо'},
-            {'type': 'RECORD', 'label': 'Архів'}
+        $scope.videoLiveStatuses = [
+            {'value': null, 'label': 'Все відео'},
+            {'value': true, 'label': 'Наживо'},
+            {'value': false, 'label': 'Архів'}
         ];
 
-        $scope.activeFilter = $scope.videoFilters.filter(function (videoFilter) {
-            return videoFilter.type === $stateParams.filter;
-        })[0] || $scope.videoFilters[0];
+        $scope.videoLiveStatus = $scope.videoLiveStatuses.filter(function (status) {
+            return '' + status.value === '' + $stateParams.live;
+        })[0] || $scope.videoLiveStatuses[0];
 
-        $scope.getPreviewUrl = function (video) {
-            return (video) ? video.url : '';
+        $scope.setVideoLiveStatus = function (status) {
+            $scope.videoLiveStatus = status;
+            $scope.find();
+        };
+
+        $scope.getPreviewUrl = function (video, options) {
+            return 'http://dummyimage.com/' + options.w + 'x' + options.h + '/858585/fff.png';
         };
 
         $scope.getVideoUrl = function (video) {
@@ -24,7 +29,8 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
         $scope.add = function() {
             var video = new Videos({
                 title: this.title,
-                url: this.url
+                url: this.url,
+                live: this.live
             });
             video.$save(function(response) {
                 $location.path('videos/' + response._id);
@@ -32,6 +38,7 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
 
             this.title = '';
             this.url = '';
+            this.live = false;
         };
 
         $scope.remove = function(video) {
@@ -63,7 +70,7 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
         };
 
         $scope.find = function() {
-            Videos.query(function(videos) {
+            Videos.query({live: $scope.videoLiveStatus.value}, function(videos) {
                 $scope.videos = videos;
             });
         };

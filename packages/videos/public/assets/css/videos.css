@@ -1,11 +1,3 @@
 .videos > .row {
     margin-bottom: 2em;
 }
-
-.videos-preview,
-.videos-preview
-{
-    width: 320px;
-    height: 180px;
-    margin-bottom: 1em;
-}
