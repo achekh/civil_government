@@ -13,8 +13,13 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
             return '' + status.value === '' + $stateParams.live;
         })[0] || $scope.videoLiveStatuses[0];
 
-        $scope.getPreviewUrl = function (video) {
-            return (video) ? video.url : '';
+        $scope.setVideoLiveStatus = function (status) {
+            $scope.videoLiveStatus = status;
+            $scope.find();
+        };
+
+        $scope.getPreviewUrl = function (video, options) {
+            return 'http://dummyimage.com/' + options.w + 'x' + options.h + '/858585/fff.png';
         };
 
         $scope.getVideoUrl = function (video) {
@@ -65,7 +70,7 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
         };
 
         $scope.find = function() {
-            Videos.query({live: $stateParams.live}, function(videos) {
+            Videos.query({live: $scope.videoLiveStatus.value}, function(videos) {
                 $scope.videos = videos;
             });
         };

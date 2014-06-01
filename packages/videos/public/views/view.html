@@ -16,15 +16,24 @@
             <video class="videos-view" data-ng-src="{{getVideoUrl(video)}}"></video>
         </div>
         <div class="col-md-8">
-            <!--<p>video.event.title</p>-->
-            <!--<p>video.event.date - video.event.place</p>-->
-            <p><a data-ui-sref="videos-view({videoId: video._id})">{{video.title}}</a></p>
-            <p>{{video.created | date:'medium'}} - {{video.user.name}}</p>
+            <p data-ng-if="video.live"><span class="glyphicon glyphicon-fire"></span> Наживо</p>
+            <p data-ng-if="!video.live"><span class="glyphicon glyphicon-film"></span> Архів</p>
             <p>
-                <span class="glyphicon glyphicon-fire" data-ng-if="video.live"></span>
-                <span class="glyphicon glyphicon-film" data-ng-if="!video.live"></span>
-                <a data-ng-href="{{video.url}}" target="_blank">{{video.url}}</a>
+                <!--{{video.event.date | date:'dd.MM.yyyy'}}<br/>-->
+                28.04.2014<br/>
+                <!--{{video.event.place}}-->
+                Київ
             </p>
+            <p>
+                <!--{{video.event.title}}-->
+                Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії
+            </p>
+            <p>{{video.title}}</p>
+            <p>
+                {{video.created | date:'dd.MM.yyyy hh:mm'}}<br/>
+                {{video.user.name}}
+            </p>
+            <p>{{video.url}} <a data-ng-href="{{video.url}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a></p>
         </div>
     </div>
 

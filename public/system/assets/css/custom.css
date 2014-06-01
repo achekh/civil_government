@@ -26,3 +26,7 @@ body {
 {
     margin-bottom: 2em;
 }
+
+.videos.videos-list-small > .row {
+    margin-bottom: 0;
+}
