@@ -6,7 +6,6 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-
 /**
  * Video Schema
  */
@@ -31,7 +30,7 @@ var VideoSchema = new Schema({
     },
     user: {
         type: Schema.ObjectId,
-        ref: 'user'
+        ref: 'User'
 //    },
 //    event: {
 //        type: Schema.ObjectId,
