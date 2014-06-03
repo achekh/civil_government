@@ -31,7 +31,7 @@ var VideoSchema = new Schema({
     },
     user: {
         type: Schema.ObjectId,
-        ref: 'User'
+        ref: 'user'
 //    },
 //    event: {
 //        type: Schema.ObjectId,
