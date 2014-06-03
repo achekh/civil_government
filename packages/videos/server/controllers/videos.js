@@ -88,7 +88,11 @@ exports.show = function(req, res) {
  * List of Videos
  */
 exports.all = function(req, res) {
-    Video.find(req.query).sort('-created').populate('user', 'name username').exec(function(err, videos) {
+    var query = {};
+    if (req.query.live && (req.query.live === 'true' || req.query.live === 'false')) {
+        query.live = req.query.live;
+    }
+    Video.find(query).sort('-created').populate('user', 'name username').exec(function(err, videos) {
         if (err) {
             res.render('error', {
                 status: 500
