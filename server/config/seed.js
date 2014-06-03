@@ -6,7 +6,10 @@ var mongoose = require('mongoose'),
 
 module.exports = function(db) {
 	var mdb = db.connection.db;
+
+    console.log('[seed.js] dropping database');
 	mdb.dropDatabase();
+
 	var users = [
 	{
 		name: 'Майдан Моніторинг',
@@ -47,5 +50,20 @@ module.exports = function(db) {
 		// var video = new Video(vid);
 		// video.save();
 	// });
+
+    console.log('[seed.js] inserting leaders into database');
+    var leaders = [{
+        img: 'fff.png',
+        firstName: 'Андрій',
+        lastName: 'Дмитров',
+        cityFrom: 'Харків',
+        created: new Date(),
+        eventsTotal: 128,
+        eventsOwn: 35,
+        winPercentage: 89
+    }];
+    mdb.collection('mean-dev.leaders', function(err, collection) {
+        collection.insert(leaders, {safe:true}, function(err, result) {});
+    });
 };
 
