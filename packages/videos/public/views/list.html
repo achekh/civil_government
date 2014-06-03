@@ -1,0 +1,45 @@
+<section class="videos videos-list" data-ng-controller="VideosController" data-ng-init="find()">
+
+    <div class="row row-header">
+        <div class="col-md-4">
+            <h2><a data-ui-sref="videos">Відео</a></h2>
+        </div>
+        <br/>
+        <div class="col-md-8">
+            <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                <button type="button" class="btn btn-default dropdown-toggle">{{videoLiveStatus.label}} <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="" data-ng-click="setVideoLiveStatus(status)" data-ng-repeat="status in videoLiveStatuses">{{status.label}}</a>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-default" data-ui-sref="videos-add" data-ng-if="isAuthenticated()">Додати ще <i class="glyphicon glyphicon-plus"></i></button>
+        </div>
+    </div>
+
+    <div class="row" data-ng-repeat="video in videos">
+        <div class="col-md-4">
+            <a data-ui-sref="videos-view({videoId: video._id})">
+                <img class="videos-preview" data-ng-src="{{getPreviewUrl(video, {w:320,h:180})}}" src="" />
+            </a>
+        </div>
+        <div class="col-md-8">
+            <p data-ng-if="video.live"><span class="glyphicon glyphicon-fire"></span> Наживо</p>
+            <p data-ng-if="!video.live"><span class="glyphicon glyphicon-film"></span> Архів</p>
+            <p>
+                <!--{{video.event.date | date:'dd.MM.yyyy'}}<br/>-->
+                28.04.2014<br/>
+                <!--{{video.event.place}}-->
+                Київ
+            </p>
+            <p>
+                <!--{{video.event.title}}-->
+                Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії Пікет посольства Росії
+            </p>
+            <p>{{video.title}}</p>
+        </div>
+    </div>
+
+    <div class="row row-footer">
+    </div>
+
+</section>

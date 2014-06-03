@@ -1,0 +1,43 @@
+<section class="videos videos-edit" data-ng-controller="VideosController" data-ng-init="findOne()">
+
+    <div class="row row-header">
+        <div class="col-md-12">
+            <h2><a data-ui-sref="videos">Відео</a> &gt; Редагування</h2>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <form class="form-horizontal col-md-12" role="form" data-ng-submit="update()">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Назва</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" data-ng-model="video.title" id="title" placeholder="назва" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="url" class="col-md-3 control-label">Адреса</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" data-ng-model="video.url" id="url" placeholder="адреса" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="url" class="col-md-3 control-label">Статус</label>
+                <div class="col-md-9">
+                    <div class="btn-group">
+                        <label class="btn btn-default" data-ng-model="video.live" data-btn-radio="true">Наживо</label>
+                        <label class="btn btn-default" data-ng-model="video.live" data-btn-radio="false">Запис</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-primary" type="submit">Зберегти <i class="glyphicon glyphicon-save"></i></button>
+                    <button class="btn btn-default" data-ui-sref="videos-view({videoId: video._id})">Скасувати <i class="glyphicon glyphicon-backward"></i></button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</section>
