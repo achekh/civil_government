@@ -22,8 +22,31 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
             return 'http://dummyimage.com/' + options.w + 'x' + options.h + '/858585/fff.png';
         };
 
+        // YouTube urls:
+        // 1) http://youtu.be/xxx
+        // 2) http://youtube.com/watch?v=xxx
+        // 3) http://youtube.com/embed/xxx
+        // Normalize to third
+        var youtubeRegExp = /http:\/\/(www.)?(youtube\.com\/|youtu\.be\/)(watch\?v=|embed\/)?([A-Za-z0-9._%-]*)(\&\S+)?/i;
+
+        $scope.isValidVideoUrl = function (video) {
+            return video && video.url && youtubeRegExp.test(video.url);
+        };
+
         $scope.getVideoUrl = function (video) {
-            return (video) ? video.url : '';
+
+            var url = '';
+
+            if (video && video.url) {
+
+                if (youtubeRegExp.test(video.url)) {
+                    url = 'http://youtube.com/embed/' + youtubeRegExp.exec(video.url)[4];
+                }
+
+            }
+
+            return url;
+
         };
 
         $scope.add = function() {
@@ -83,4 +106,9 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
             });
         };
     }
-]);
+]).config(function($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+        'self',
+        'http*://youtube.com**'
+    ]);
+});

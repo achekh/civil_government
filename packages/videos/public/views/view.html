@@ -13,7 +13,7 @@
 
     <div class="row">
         <div class="col-md-4">
-            <video class="videos-view" data-ng-src="{{getVideoUrl(video)}}"></video>
+            <iframe type="text/html" width="640" height="360" frameborder="0" data-ng-if="isValidVideoUrl(video)" data-ng-src="{{getVideoUrl(video)}}"></iframe>
         </div>
         <div class="col-md-8">
             <p data-ng-if="video.live"><span class="glyphicon glyphicon-fire"></span> Наживо</p>

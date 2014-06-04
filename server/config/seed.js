@@ -59,7 +59,7 @@ module.exports = function (done) {
                     },
                     {
                         title: 'Admin: Финальная песня - Набери "Украина" в Гугле',
-                        url: 'http://youtu.be/-OWTWVwvtNw',
+                        url: 'http://youtube.com/embed/-OWTWVwvtNw',
                         user: user
                     }
 
