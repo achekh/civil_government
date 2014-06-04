@@ -237,7 +237,7 @@
 
         </div>
 
-        <div class="col-md-3 col_bottom_row">
+        <div class="col-md-3 col_bottom_row" data-ng-controller="LeadersController" data-ng-init="find()">
 
             <div class="row row-header">
                 <div class="col-md-6">
@@ -246,37 +246,27 @@
             </div>
 
 
-            <div class="row">
+            <div class="row" data-ng-repeat="leader in leaders | limitTo: 3">
                 <div class="col-md-12">
-                    <img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                    <img data-ng-src="{{getLeaderImageUrl(leader)}}" alt="картинка" class="img-rounded" align="left"
                          hspace="10px">
 
-                    <p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>
-                        Перемоги: 89%</p>
+                    <p><b>{{leader.firstName}} {{getLeaderLastNameInitial(leader)}}. - {{leader.cityFrom}}</b><br/>В системі: {{getLeaderInSystemDuration(leader)}}<br/>Всього подій: {{leader.eventsTotal}}<br/>Своїх подій: {{leader.eventsOwn}}<br/>
+                        Перемоги: {{leader.winPercentage}}%</p>
                 </div>
             </div>
 
 
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px">
+            <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                    <!--<img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"-->
+                         <!--hspace="10px">-->
 
-                    <p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>
-                        Перемоги: 89%</p>
-                </div>
-            </div>
+                    <!--<p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>-->
+                        <!--Перемоги: 89%</p>-->
+                <!--</div>-->
+            <!--</div>-->
 
-
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px">
-
-                    <p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>
-                        Перемоги: 89%</p>
-                </div>
-            </div>
 
             <div class="row row-footer">
                 <div class="col-md-12">
