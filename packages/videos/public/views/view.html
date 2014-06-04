@@ -12,10 +12,10 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="video-view">
             <iframe type="text/html" width="640" height="360" frameborder="0" data-ng-if="isValidVideoUrl(video)" data-ng-src="{{getVideoUrl(video)}}"></iframe>
         </div>
-        <div class="col-md-8">
+        <div class="video-info">
             <p data-ng-if="video.live"><span class="glyphicon glyphicon-fire"></span> Наживо</p>
             <p data-ng-if="!video.live"><span class="glyphicon glyphicon-film"></span> Архів</p>
             <p>
