@@ -1,0 +1,82 @@
+<style>
+    #events form > .row{
+        margin-bottom: 2em;
+    }
+    #events form > .row select{
+        height: 25px;
+    }
+    #errors
+    {
+        display: none;
+    }
+</style>
+<div id="events" style="margin-top: 2em;" class="container-fluid" data-ng-controller="EventsController">
+    <form class="box well col-md-6" role="form" data-ng-submit="create()">
+        <div class="alert alert-danger alert-dismissable" id="errors">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <ul></ul>
+        </div>
+        <div class="row row-header">
+            <div class="col-md-6"><h2>Создать событие</h2></div>
+        </div>
+        <div class="row">
+            <input type="text" class="col-md-12" data-ng-model="title" placeholder="Наименование">
+        </div>
+        <div class="row">
+            <select class="col-md-5" data-ng-model="organization">
+                <option value="Организация 1">Организация 1</option>
+                <option value="Организация 2">Организация 2</option>
+                <option value="Организация 3">Организация 3</option>
+                <option value="Организация 4">Организация 4</option>
+            </select>
+                <input type="text" class="col-md-2 col-md-offset-1" id="date" ng-model="date" placeholder="Дата">
+
+            <input type="text" class="col-md-2 col-md-offset-1" data-ng-model="time" placeholder="Время">
+        </div>
+        <div class="row">
+            <select class="col-md-3" data-ng-model="status">
+                <!--
+                Статусы:
+                   На утверждении
+                   Утверженноо
+                   Согласовано
+                   В процессе
+                   Завершено
+                   Отмена
+                   Победа
+                -->
+                <option value="Не утверждено">Не утверждено</option>
+                <option value="Активное">Активное</option>
+                <option value="Завершено">Завершено</option>
+                <option value="Победа">Победа</option>
+            </select>
+            <span class="col-md-7 col-md-offset-0">Загрузить официальные документы</span>
+        </div>
+        <div class="row">
+            <input type="text" class="col-md-12" data-ng-model="sites" placeholder="Сайты">
+        </div>
+        <div class="row">
+            <textarea class="col-md-12" data-ng-model="description" placeholder="Информация"></textarea>
+        </div>
+        <div class="row">
+            <input type="number" data-ng-model="min_part" min="1" class="col-md-6" placeholder="Мин.учасников">
+            <input type="number" data-ng-model="max_part" min="{{min_part+1}}" class="col-md-5 col-md-offset-1" placeholder="Макс.учасников">
+        </div>
+        <div class="row">
+            <input type="text" data-ng-model="gps"  class="col-md-8" placeholder="GPS-координаты">
+            <span class="col-md-4 col-md-offset-0">Указать на карте</span>
+        </div>
+        <div class="row" style="height: 10em; background: #ffffff">
+            <div class="col-md-12">MAP</div>
+        </div>
+        <div class="row">
+            <input type="submit" class="btn btn-primary" value="Отправить">
+        </div>
+    </form>
+</div>
+<script>
+    $('#date').datepicker({
+        format: 'dd/MM/yyyy hh:mm:ss',
+        language: 'pt-BR'
+    });
+</script>
