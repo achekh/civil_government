@@ -47,9 +47,7 @@ module.exports = function(passport, db) {
     // Express settings
     var app = express();
     require(appPath + '/server/config/express')(app, passport, db);
-	
-	// Reset database 
-	require(appPath + '/server/config/seed')(db);
-	
+
     return app;
+
 };
