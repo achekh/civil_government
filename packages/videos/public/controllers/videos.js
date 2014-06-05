@@ -22,12 +22,14 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
             return 'http://dummyimage.com/' + options.w + 'x' + options.h + '/858585/fff.png';
         };
 
+        var anchor = document.createElement('a');
+
         // YouTube urls:
         // 1) http://youtu.be/xxx
-        // 2) http://youtube.com/watch?v=xxx
-        // 3) http://youtube.com/embed/xxx
-        // Normalize to third
-        var youtubeRegExp = /http:\/\/(www.)?(youtube\.com\/|youtu\.be\/)(watch\?v=|embed\/)?([A-Za-z0-9._%-]*)(\&\S+)?/i;
+        // 2) http://youtube.com/embed/xxx
+        // 3) http://youtube.com/watch?v=xxx
+        // Normalize to second
+        var youtubeRegExp = /(http|https):\/\/(www\.)?(youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/watch\?).*/i;
 
         $scope.isValidVideoUrl = function (video) {
             return video && video.url && youtubeRegExp.test(video.url);
@@ -40,7 +42,18 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
             if (video && video.url) {
 
                 if (youtubeRegExp.test(video.url)) {
-                    url = 'http://youtube.com/embed/' + youtubeRegExp.exec(video.url)[4];
+                    var videoId;
+                    anchor.href = video.url;
+                    if (anchor.pathname === '/watch') {
+                        var parameters = anchor.search.substr(1).split('&');
+                        videoId = parameters.filter(function (parameter) {
+                            return parameter.search('v=') === 0;
+                        })[0].split('v=')[1];
+                    } else {
+                        var path = anchor.pathname.split('/');
+                        videoId = path[path.length - 1];
+                    }
+                    url = $location.protocol() + '://www.youtube.com/embed/' + videoId;
                 }
 
             }
@@ -109,6 +122,7 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
 ]).config(function($sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist([
         'self',
-        'http*://youtube.com**'
+        'http*://youtube.com**',
+        'http*://www.youtube.com**'
     ]);
 });
