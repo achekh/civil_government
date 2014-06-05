@@ -30,11 +30,13 @@ var VideoSchema = new Schema({
     },
     user: {
         type: Schema.ObjectId,
+        required: true,
         ref: 'User'
-//    },
-//    event: {
-//        type: Schema.ObjectId,
-//        ref: 'Event'
+    },
+    event: {
+        type: Schema.ObjectId,
+        required: true,
+        ref: 'Events'
     }
 });
 
@@ -53,9 +55,7 @@ VideoSchema.path('url').validate(function (url) {
  * Statics
  */
 VideoSchema.statics.load = function (id, cb) {
-    this.findOne({
-        _id: id
-    }).populate('user', 'name username').exec(cb);
+    this.findOne({_id: id}).populate('user', 'username').populate('event', 'title').exec(cb);
 };
 
 mongoose.model('Video', VideoSchema);

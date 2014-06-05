@@ -54,22 +54,41 @@ module.exports = function (done) {
             })
             .then(function(user) {
 
-                var videos = [
+                var events = [
                     {
-                        title: 'Admin: Путін Хуйло, Донбас не віддамо! #Харків',
-                        url: 'http://youtu.be/3CcKS0z7Bwo',
-                        user: user
-                    },
-                    {
-                        title: 'Admin: Финальная песня - Набери "Украина" в Гугле',
-                        url: 'http://youtube.com/embed/-OWTWVwvtNw',
-                        user: user
+                        title: 'Admin: Путін Хуйло',
+                        description: 'Всеукраїнська акція',
+                        user: user,
+                        organization: 'Об’єднання Майдан Моніторинг',
+                        status: 'Initial',
+                        datetime: new Date(),
+                        sites: 'Україна'
                     }
-
                 ];
 
-                console.log('Seed videos');
-                return seed(Video, videos);
+                console.log('Seed events');
+                return seed(Events, events)
+                    .then(function() {
+                        console.log('Find event "Admin: Путін Хуйло"');
+                        return Events.findOne({title: 'Admin: Путін Хуйло'}).exec();
+                    })
+                    .then(function(event) {
+
+                        var videos = [
+                            {
+                                title: 'Admin: Путін Хуйло, Донбас не віддамо! #Харків',
+                                url: 'http://youtu.be/3CcKS0z7Bwo',
+                                user: user,
+                                event: event
+                            }
+
+                        ];
+
+                        console.log('Seed videos');
+                        return seed(Video, videos);
+
+                    })
+                ;
 
             })
             .then(function () {
@@ -85,50 +104,69 @@ module.exports = function (done) {
                         user: user,
                         organization: 'Об’єднання Майдан Моніторинг',
                         status: 'Initial',
-                        datetime: new Date()
+                        datetime: new Date(),
+                        sites: 'Україна'
                     },
                     {
-                        title: 'Пісні про UA',
+                        title: 'Пісні UA',
                         description: 'Всеукраїнська акція',
                         user: user,
                         organization: 'Об’єднання Майдан Моніторинг',
                         status: 'Initial',
-                        datetime: new Date()
+                        datetime: new Date(),
+                        sites: 'Україна'
                     }
                 ];
 
                 console.log('Seed events');
-                return seed(Events, events).then(function() {
+                return seed(Events, events)
+                    .then(function() {
+                        console.log('Find event "Путін Хуйло"');
+                        return Events.findOne({title: 'Путін Хуйло'}).exec();
+                    })
+                    .then(function(event) {
 
-                    var videos = [
-                        {
-                            created: new Date(),
-                            title: 'Путін Хуйло, Донбас не віддамо! #Харків',
-                            url: 'http://youtu.be/3CcKS0z7Bwo',
-                            live: false,
-                            user: user
-                        },
-                        {
-                            created: new Date(),
-                            title: 'Путін Хуйло, Донбас не віддамо! #WC2014',
-                            url: 'http://www.youtube.com/watch?feature=player_embedded&v=SRHkwaVf1Ok',
-                            live: false,
-                            user: user
-                        },
-                        {
-                            created: new Date(),
-                            title: 'Финальная песня - Набери "Украина" в Гугле',
-                            url: 'http://youtu.be/-OWTWVwvtNw',
-                            live: false,
-                            user: user
-                        }
+                        var videos = [
+                            {
+                                title: 'Путін Хуйло, Донбас не віддамо! #Харків',
+                                url: 'http://youtu.be/3CcKS0z7Bwo',
+                                user: user,
+                                event: event
+                            },
+                            {
+                                title: 'Путін Хуйло, Донбас не віддамо! #WC2014',
+                                url: 'http://www.youtube.com/watch?feature=player_embedded&v=SRHkwaVf1Ok',
+                                user: user,
+                                event: event
+                            }
 
-                    ];
+                        ];
 
-                    console.log('Seed videos');
-                    seed(Video, videos);
+                        console.log('Seed videos');
+                        return seed(Video, videos);
 
-                });
+                    })
+                    .then(function() {
+                        console.log('Find event "Пісні UA"');
+                        return Events.findOne({title: 'Пісні UA'}).exec();
+                    })
+                    .then(function(event) {
+
+                        var videos = [
+                            {
+                                title: 'Финальная песня - Набери "Украина" в Гугле',
+                                url: 'http://youtu.be/-OWTWVwvtNw',
+                                user: user,
+                                event: event
+                            }
+
+                        ];
+
+                        console.log('Seed videos');
+                        return seed(Video, videos);
+
+                    })
+                ;
 
             })
             .then(function() {

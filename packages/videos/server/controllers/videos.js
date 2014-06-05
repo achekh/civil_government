@@ -92,13 +92,19 @@ exports.all = function(req, res) {
     if (req.query.live && (req.query.live === 'true' || req.query.live === 'false')) {
         query.live = req.query.live;
     }
-    Video.find(query).sort('-created').populate('user', 'name username').exec(function(err, videos) {
-        if (err) {
-            res.render('error', {
-                status: 500
-            });
-        } else {
-            res.jsonp(videos);
-        }
-    });
+    Video
+        .find(query)
+        .sort('-created')
+        .populate('user', 'username')
+        .populate('event', 'title')
+        .exec(function(err, videos) {
+            if (err) {
+                res.render('error', {
+                    status: 500
+                });
+            } else {
+                res.jsonp(videos);
+            }
+        })
+    ;
 };
