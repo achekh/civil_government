@@ -41,18 +41,18 @@ var VideoSchema = new Schema({
 /**
  * Validations
  */
-VideoSchema.path('title').validate(function(title) {
+VideoSchema.path('title').validate(function (title) {
     return title.length;
 }, 'Title cannot be blank');
 
-VideoSchema.path('url').validate(function(url) {
+VideoSchema.path('url').validate(function (url) {
     return url.length;
 }, 'Url cannot be blank');
 
 /**
  * Statics
  */
-VideoSchema.statics.load = function(id, cb) {
+VideoSchema.statics.load = function (id, cb) {
     this.findOne({
         _id: id
     }).populate('user', 'name username').exec(cb);

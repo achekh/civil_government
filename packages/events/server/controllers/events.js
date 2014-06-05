@@ -4,14 +4,13 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Events = mongoose.model('Events'),
-    _ = require('lodash');
+    Events = mongoose.model('Events');
 
-exports.create = function(req, res) {
+exports.create = function (req, res) {
     var events = new Events(req.body);
     events.user = req.user;
 
-    events.save(function(err) {
+    events.save(function (err) {
         if (err) {
             return res.send('users/signup', {
                 errors: err.errors,
@@ -22,8 +21,8 @@ exports.create = function(req, res) {
         }
     });
 };
-exports.all = function(req, res) {
-    Events.find().sort('-created').limit(3).populate('user', 'name username').exec(function(err, events) {
+exports.all = function (req, res) {
+    Events.find().sort('-created').limit(3).populate('user', 'name username').exec(function (err, events) {
         if (err) {
             res.render('error', {
                 status: 500
@@ -33,11 +32,11 @@ exports.all = function(req, res) {
         }
     });
 };
-exports.destroy = function(req,res){
+exports.destroy = function (req, res) {
     var event = req.event;
-    res.jsonp(req.event);
-   /* event.remove(function(err){
+    res.jsonp(event);
+    /* event.remove(function(err){
 
-    });*/
+     });*/
 
 };

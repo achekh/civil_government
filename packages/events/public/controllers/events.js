@@ -1,41 +1,39 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope','$stateParams', '$location', 'Global', 'Events',
-    function($scope,$stateParams, $location, Global, Events) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Global', 'Events',
+    function ($scope, $stateParams, $location, Global, Events) {
 
         $scope.global = Global;
-        $scope.find = function() {
-            Events.query(function(events) {
+        $scope.find = function () {
+            Events.query(function (events) {
                 $scope.events = events;
             });
-        }
-        $scope.create = function() {
-            var events = new Events({
-                description:    this.description,
-                title:          this.title,
-                organization:   this.organization,
-                datetime:       this.date+' '+this.time,
-                status:         this.status,
-                sites:          this.sites,
-                min_part:       this.min_part,
-                max_part:       this.max_part,
-                gps:            this.gps
-            });
-           events.$save(function(resp){
-               if (resp.errors)
-               {
-                    $('#errors').show();
-                   $('#errors ul').empty();
-                    $.each(resp.errors,function(key,val){
-                        $('#errors ul').append('<li>'+val.message+'</val>');
-                    });
-               }else
-               {
-                   $location.path('events');
-               }
-           });
         };
-        $scope.remove = function(event) {
+        $scope.create = function () {
+            var events = new Events({
+                description: this.description,
+                title: this.title,
+                organization: this.organization,
+                datetime: this.date + ' ' + this.time,
+                status: this.status,
+                sites: this.sites,
+                min_part: this.min_part,
+                max_part: this.max_part,
+                gps: this.gps
+            });
+            events.$save(function (resp) {
+                if (resp.errors) {
+                    $('#errors').show();
+                    $('#errors ul').empty();
+                    $.each(resp.errors, function (key, val) {
+                        $('#errors ul').append('<li>' + val.message + '</val>');
+                    });
+                } else {
+                    $location.path('events');
+                }
+            });
+        };
+        $scope.remove = function (event) {
             if (event) {
                 event.$remove();
 
@@ -45,14 +43,13 @@ angular.module('mean.events').controller('EventsController', ['$scope','$statePa
                     }
                 }
             } else {
-                $scope.event.$remove(function(response) {
+                $scope.event.$remove(function (response) {
                     $location.path('events');
                 });
             }
         };
-        $scope.show = function()
-        {
+        $scope.show = function () {
             console.log('we here;');
-        }
+        };
     }
 ]);

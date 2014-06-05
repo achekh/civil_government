@@ -3,11 +3,13 @@
  */
 'use strict';
 
-var mongoose = require('mongoose'), Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
-var validatePresenceOf = function(value) {
-    return this.provider;
-};
+//var validatePresenceOf = function (value) {
+//    return this.provider;
+//};
+
 var EventsSchema = new Schema({
     created: {
         type: Date,
@@ -15,12 +17,12 @@ var EventsSchema = new Schema({
     },
     title: {
         type: String,
-        required:true
-       // message: 'Необходимо заполнить поле "Информация"'
-       // validate: [validatePresenceOf, 'Необходимо заполнить поле "Наименование"']
+        required: true
+        // message: 'Необходимо заполнить поле "Информация"'
+        // validate: [validatePresenceOf, 'Необходимо заполнить поле "Наименование"']
     },
     description: {
-        type: String,required:true,
+        type: String, required: true,
         ErrMsg: 'Необходимо заполнить поле "Информация"'
     },
     user: {
@@ -29,41 +31,39 @@ var EventsSchema = new Schema({
     },
     organization: {
         type: String,
-        required:true
+        required: true
 
     },
     status: {
         type: String,
-        required:true
+        required: true
     },
     datetime: {
         type: Date,
-        required:true
-      //  validate: [notEmpty, 'Необходимо выбрать "Дату"']
+        required: true
+        //  validate: [notEmpty, 'Необходимо выбрать "Дату"']
     },
-    sites:{
+    sites: {
         type: String,
-        default:'',
-        trim:true
+        default: '',
+        trim: true
     },
-    min_part:
-    {
+    min_part: {
         type: Number,
-        default:0
+        default: 0
     },
-    max_part:
-    {
+    max_part: {
         type: Number,
-        default:0
+        default: 0
     },
-    gps:{
+    gps: {
         type: String,
-        default:'',
-        trim:true
+        default: '',
+        trim: true
     }
 });
 
-EventsSchema.statics.load = function(id, cb) {
+EventsSchema.statics.load = function (id, cb) {
     this.findOne({
         _id: id
     }).populate('user', 'name username').exec(cb);
