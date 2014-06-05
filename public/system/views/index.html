@@ -116,78 +116,52 @@
 
         </div>
 
-        <div class="col-md-3 col_bottom_row">
+        <section class="" data-ng-controller="EventsController" data-ng-init="find()">
 
-            <div class="row row-header">
-                <div class="col-md-6">
-                    <h2>Події</h2>
-                </div>
-                <br/>
-                <div class="col-md-6">
-                    <div class="btn-group">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                            Вся Україна <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>м.Київ</li>
-                            <li>Волинська обл.</li>
-                            <li>Вінницька обл.</li>
-                        </ul>
+            <div class="col-md-3 col_bottom_row">
+
+                <div class="row row-header">
+                    <div class="col-md-6">
+                        <h2>Події</h2>
+                    </div>
+                    <br>
+                    <div class="col-md-6">
+                        <div class="btn-group">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                Вся Україна <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>м.Київ</li>
+                                <li>Волинська обл.</li>
+                                <li>Вінницька обл.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px">
+                <div class="row" data-ng-repeat="event in events">
+                    <div class="col-md-12">
+                        <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
 
-                    <p><b>28.04.2014 - Київ<br/>Пікет посольства Росії</b></p>
+                        <p><b>{{event.dates | date:'dd-MM-yyyy HH:mm:ss'}} - Київ<br>{{event.title}}</b></p>
 
-                    <p><span class="glyphicon glyphicon-user"></span> 128</p>
+                        <p><span class="glyphicon glyphicon-user"></span> 0</p>
 
-                    <p><span class="glyphicon glyphicon-check"></span> на затвердженні</p>
+                        <p><span class="glyphicon glyphicon-check"></span> {{event.status}}</p>
+                    </div>
                 </div>
-            </div>
 
-
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px">
-
-                    <p><b>28.04.2014 - Київ<br/>Пікет посольства Росії</b></p>
-
-                    <p><span class="glyphicon glyphicon-user"></span> 128</p>
-
-                    <p><span class="glyphicon glyphicon-check"></span> на затвердженні</p>
+                <div class="row row-footer">
+                    <div class="col-md-12">
+                        <p align="center">
+                            <button type="button" class="btn btn-default">Календар</button>
+                        </p>
+                    </div>
                 </div>
+
             </div>
-
-
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px">
-
-                    <p><b>28.04.2014 - Київ<br/>Пікет посольства Росії</b></p>
-
-                    <p><span class="glyphicon glyphicon-user"></span> 128</p>
-
-                    <p><span class="glyphicon glyphicon-check"></span> на затвердженні</p>
-                </div>
-            </div>
-
-            <div class="row row-footer">
-                <div class="col-md-12">
-                    <p align="center">
-                        <button type="button" class="btn btn-default">Календар</button>
-                    </p>
-                </div>
-            </div>
-
-        </div>
+        </section>
 
         <div class="col-md-3 col_bottom_row videos videos-list-small" data-ng-controller="VideosController" data-ng-init="find()">
 
@@ -237,7 +211,7 @@
 
         </div>
 
-        <div class="col-md-3 col_bottom_row">
+        <div class="col-md-3 col_bottom_row" data-ng-controller="LeadersController" data-ng-init="find()">
 
             <div class="row row-header">
                 <div class="col-md-6">
@@ -246,37 +220,27 @@
             </div>
 
 
-            <div class="row">
+            <div class="row" data-ng-repeat="leader in leaders | limitTo: 3">
                 <div class="col-md-12">
-                    <img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
+                    <img data-ng-src="{{getLeaderImageUrl(leader)}}" alt="картинка" class="img-rounded" align="left"
                          hspace="10px">
 
-                    <p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>
-                        Перемоги: 89%</p>
+                    <p><b>{{leader.firstName}} {{getLeaderLastNameInitial(leader)}}. - {{leader.cityFrom}}</b><br/>В системі: {{getLeaderInSystemDuration(leader)}}<br/>Всього подій: {{leader.eventsTotal}}<br/>Своїх подій: {{leader.eventsOwn}}<br/>
+                        Перемоги: {{leader.winPercentage}}%</p>
                 </div>
             </div>
 
 
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px">
+            <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                    <!--<img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"-->
+                         <!--hspace="10px">-->
 
-                    <p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>
-                        Перемоги: 89%</p>
-                </div>
-            </div>
+                    <!--<p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>-->
+                        <!--Перемоги: 89%</p>-->
+                <!--</div>-->
+            <!--</div>-->
 
-
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="http://dummyimage.com/90x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px">
-
-                    <p><b>Андрій Ч. - Харків</b><br/>В системі: 1г 3м 12д<br/>Всього подій: 128<br/>Своїх подій: 35<br/>
-                        Перемоги: 89%</p>
-                </div>
-            </div>
 
             <div class="row row-footer">
                 <div class="col-md-12">
