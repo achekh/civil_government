@@ -18,18 +18,74 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
             $scope.find();
         };
 
-        $scope.getPreviewUrl = function (video, options) {
-            return 'http://dummyimage.com/' + options.w + 'x' + options.h + '/858585/fff.png';
-        };
-
-        var anchor = document.createElement('a');
-
         // YouTube urls:
         // 1) http://youtu.be/xxx
         // 2) http://youtube.com/embed/xxx
         // 3) http://youtube.com/watch?v=xxx
         // Normalize to second
         var youtubeRegExp = /(http|https):\/\/(www\.)?(youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/watch\?).*/i;
+
+        function getYoutubeVideoId(url) {
+            var videoId;
+            var anchor = document.createElement('a');
+            anchor.href = url;
+            if (anchor.pathname === '/watch') {
+                var parameters = anchor.search.substr(1).split('&');
+                videoId = parameters.filter(function (parameter) {
+                    return parameter.search('v=') === 0;
+                })[0].split('v=')[1];
+            } else {
+                var path = anchor.pathname.split('/');
+                videoId = path[path.length - 1];
+            }
+            return videoId;
+        }
+
+        $scope.getPreviewUrl = function (video, size) {
+
+            var url = '';
+
+            if (video && video.url) {
+
+                if (youtubeRegExp.test(video.url)) {
+
+                    var imagename = '';
+
+                    if (size === 'hq') {
+                        imagename = 'hqdefault.jpg';
+                    } else if (size === 'mq') {
+                        imagename = 'mqdefault.jpg';
+                    } else if (size === 'sd') {
+                        imagename = 'sddefault.jpg';
+                    } else {
+                        imagename = 'default.jpg';
+                    }
+
+                    url = $location.protocol() + '://img.youtube.com/vi/' + getYoutubeVideoId(video.url) + '/' + imagename;
+
+                } else {
+
+                    var options = {};
+
+                    if (size === 'hq') {
+                        options = {w:480,h:360};
+                    } else if (size === 'mq') {
+                        options = {w:320,h:180};
+                    } else if (size === 'sd') {
+                        options = {w:640,h:480};
+                    } else {
+                        options = {w:120,h:90};
+                    }
+
+                    url = 'http://dummyimage.com/' + options.w + 'x' + options.h + '/858585/fff.png';
+
+                }
+
+            }
+
+                return url;
+
+        };
 
         $scope.isValidVideoUrl = function (video) {
             return video && video.url && youtubeRegExp.test(video.url);
@@ -42,18 +98,7 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
             if (video && video.url) {
 
                 if (youtubeRegExp.test(video.url)) {
-                    var videoId;
-                    anchor.href = video.url;
-                    if (anchor.pathname === '/watch') {
-                        var parameters = anchor.search.substr(1).split('&');
-                        videoId = parameters.filter(function (parameter) {
-                            return parameter.search('v=') === 0;
-                        })[0].split('v=')[1];
-                    } else {
-                        var path = anchor.pathname.split('/');
-                        videoId = path[path.length - 1];
-                    }
-                    url = $location.protocol() + '://www.youtube.com/embed/' + videoId;
+                    url = $location.protocol() + '://www.youtube.com/embed/' + getYoutubeVideoId(video.url);
                 }
 
             }

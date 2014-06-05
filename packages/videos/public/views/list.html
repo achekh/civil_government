@@ -17,12 +17,12 @@
     </div>
 
     <div class="row" data-ng-repeat="video in videos">
-        <div class="col-md-4">
+        <div class="video-preview">
             <a data-ui-sref="videos-view({videoId: video._id})">
-                <img class="videos-preview" data-ng-src="{{getPreviewUrl(video, {w:320,h:180})}}" src="" />
+                <img class="videos-preview" data-ng-src="{{getPreviewUrl(video, 'hq')}}" src="" />
             </a>
         </div>
-        <div class="col-md-8">
+        <div class="video-info">
             <p data-ng-if="video.live"><span class="glyphicon glyphicon-fire"></span> Наживо</p>
             <p data-ng-if="!video.live"><span class="glyphicon glyphicon-film"></span> Архів</p>
             <p>

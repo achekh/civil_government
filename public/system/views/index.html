@@ -183,7 +183,7 @@
             <div class="row" data-ng-repeat="video in videos | limitTo: 3">
                 <div class="col-md-12">
                     <a data-ui-sref="videos-view({videoId: video._id})">
-                        <img class="videos-preview-small" align="left" hspace="10px" alt="{{video.title}}" data-ng-src="{{getPreviewUrl(video, {w:140, h:100})}}" src="" />
+                        <img class="videos-preview-small" align="left" hspace="10px" alt="{{video.title}}" data-ng-src="{{getPreviewUrl(video)}}" src="" />
                     </a>
                     <p data-ng-if="video.live"><span class="glyphicon glyphicon-fire"></span> Наживо</p>
                     <p data-ng-if="!video.live"><span class="glyphicon glyphicon-film"></span> Архів</p>
