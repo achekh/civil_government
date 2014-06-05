@@ -74,9 +74,12 @@ exports.create = function(req, res, next) {
         }
         req.logIn(user, function(err) {
             if (err) return next(err);
-            return res.redirect('#!/activist');
+//            return res.redirect('#!/activist');
+            res.send({
+                redirect: '#!/activist'
+            });
         });
-        res.status(200);
+//        res.status(200);
     });
 };
 /**

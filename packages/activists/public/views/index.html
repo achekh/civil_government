@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-Регистрация активиста
-</body>
-</html>
+<section data-ng-controller="ActivistsController" data-ng-init="init()">
+
+    <div class="row row-header">
+        <div class="col-md-8">
+            <h2>{{getTitle()}}</h2>
+        </div>
+    </div>
+
+    <form class="form-horizontal col-md-6" role="form" data-ng-submit="update()">
+        <div class="form-group">
+            <label for="fullName" class="col-md-3 control-label">Имя, Фамилия</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" data-ng-model="activist.fullName" id="fullName" placeholder="Имя, Фамилия" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="country" class="col-md-3 control-label">Страна</label>
+            <div class="col-md-9">
+                <input data-ng-model="activist.country" id="country" placeholder="Страна" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="city" class="col-md-3 control-label">Город</label>
+            <div class="col-md-9">
+                <input data-ng-model="activist.city" id="city" placeholder="Город" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email" class="col-md-3 control-label">E-Mail</label>
+            <div class="col-md-9">
+                <input data-ng-model="activist.emails[0]" id="email" placeholder="E-Mail" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phone" class="col-md-3 control-label">Телефон</label>
+            <div class="col-md-9">
+                <input data-ng-model="activist.phones[0]" id="phone" placeholder="Телефон" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="aboutMe" class="col-md-3 control-label">О себе</label>
+            <div class="col-md-9">
+                <textarea data-ng-model="activist.aboutMe" id="aboutMe" cols="30" rows="10" placeholder="О себе" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <button type="submit" class="btn btn-primary btn-info">Отправить</button>
+                <button class="btn btn-default" data-ng-click="cancel()">Отменить</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row row-footer">
+    </div>
+
+</section>

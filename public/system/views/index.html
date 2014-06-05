@@ -14,7 +14,13 @@
             <p align="center"><a href="#!">Забули пароль?</a></p>
         </div>
 
-        <div class="col-md-3 col_top_row" data-ng-if="isAuthenticated()">
+        <div class="col-md-3 col_top_row" data-ng-if="isAuthenticated()" data-ng-controller="ActivistsController" data-ng-init="init()">
+            <p><span class="h3">{{activist.fullName}}</span><br><a class="small" href="#!/activist?update">Изменить</a></p>
+            <p>
+                {{activist.country}}, {{activist.city}}
+                <br>{{activist.emails[0]}}
+                <br>{{activist.phones[0]}}
+            </p>
         </div>
 
         <div class="col-md-6 col_top_row">
