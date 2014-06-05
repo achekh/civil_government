@@ -2,12 +2,13 @@
 
 //require(process.cwd() + '/server');
 require(process.cwd() + '/server/models/user');
+require(process.cwd() + '/packages/events/server/models/events');
 require(process.cwd() + '/packages/videos/server/models/video');
 require(process.cwd() + '/packages/leaders/server/models/leader');
 
 var mongoose = require('mongoose'),
-//    logger = require('mean-logger'),
     User = mongoose.model('User'),
+    Events = mongoose.model('Events'),
     Video = mongoose.model('Video'),
     Leader = mongoose.model('Leader');
 
@@ -77,26 +78,57 @@ module.exports = function (done) {
             })
             .then(function(user) {
 
-                var videos = [
+                var events = [
                     {
-                        created: new Date(2014, 5, 1, 11, 40),
-                        title: 'Путін Хуйло, Донбас не віддамо! #Харків',
-                        url: 'http://youtu.be/3CcKS0z7Bwo',
-                        live: false,
-                        user: user
+                        title: 'Путін Хуйло',
+                        description: 'Всеукраїнська акція',
+                        user: user,
+                        organization: 'Об’єднання Майдан Моніторинг',
+                        status: 'Initial',
+                        datetime: new Date()
                     },
                     {
-                        created: new Date(2014, 5, 1, 11, 45),
-                        title: 'Финальная песня - Набери "Украина" в Гугле',
-                        url: 'http://youtu.be/-OWTWVwvtNw',
-                        live: false,
-                        user: user
+                        title: 'Пісні про UA',
+                        description: 'Всеукраїнська акція',
+                        user: user,
+                        organization: 'Об’єднання Майдан Моніторинг',
+                        status: 'Initial',
+                        datetime: new Date()
                     }
-
                 ];
 
-                console.log('Seed videos');
-                return seed(Video, videos);
+                console.log('Seed events');
+                return seed(Events, events).then(function() {
+
+                    var videos = [
+                        {
+                            created: new Date(),
+                            title: 'Путін Хуйло, Донбас не віддамо! #Харків',
+                            url: 'http://youtu.be/3CcKS0z7Bwo',
+                            live: false,
+                            user: user
+                        },
+                        {
+                            created: new Date(),
+                            title: 'Путін Хуйло, Донбас не віддамо! #WC2014',
+                            url: 'http://www.youtube.com/watch?feature=player_embedded&v=SRHkwaVf1Ok',
+                            live: false,
+                            user: user
+                        },
+                        {
+                            created: new Date(),
+                            title: 'Финальная песня - Набери "Украина" в Гугле',
+                            url: 'http://youtu.be/-OWTWVwvtNw',
+                            live: false,
+                            user: user
+                        }
+
+                    ];
+
+                    console.log('Seed videos');
+                    seed(Video, videos);
+
+                });
 
             })
             .then(function() {
@@ -115,8 +147,10 @@ module.exports = function (done) {
             })
             .then(function () {
                 console.log('Done seeding');
+                return true;
             }, function (err) {
                 console.log(err);
+                return false;
             })
         ;
 
@@ -141,4 +175,3 @@ module.exports = function (done) {
     db.connection.on('connected', dropDb);
 
 };
-
