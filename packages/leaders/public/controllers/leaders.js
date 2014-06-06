@@ -15,7 +15,7 @@ angular.module('mean.leaders').controller('LeadersController', ['$scope', 'Globa
         };
 
         $scope.getLeaderImageUrl = function(leader) {
-            return 'http://dummyimage.com/90x100/858585/' + leader.img;
+            return String(leader.img).indexOf('http://') === 0 ? leader.img : 'http://dummyimage.com/90x100/858585/' + leader.img;
         };
 
         $scope.getLeaderInSystemDurationSeconds = function(leader) {
