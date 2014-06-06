@@ -4,13 +4,11 @@
 require(process.cwd() + '/server/models/user');
 require(process.cwd() + '/packages/events/server/models/events');
 require(process.cwd() + '/packages/videos/server/models/video');
-require(process.cwd() + '/packages/leaders/server/models/leader');
 
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Events = mongoose.model('Events'),
-    Video = mongoose.model('Video'),
-    Leader = mongoose.model('Leader');
+    Video = mongoose.model('Video');
 
 module.exports = function (done) {
 
@@ -168,20 +166,6 @@ module.exports = function (done) {
                     })
                 ;
 
-            })
-            .then(function() {
-                console.log('Seed leaders');
-                var leaders = [{
-                    img: 'fff.png',
-                    firstName: 'Андрій',
-                    lastName: 'Дмитров',
-                    cityFrom: 'Харків',
-                    created: new Date(),
-                    eventsTotal: 128,
-                    eventsOwn: 35,
-                    winPercentage: 89
-                }];
-                return seed(Leader, leaders);
             })
             .then(function () {
                 console.log('Done seeding');

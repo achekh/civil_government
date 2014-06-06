@@ -2,15 +2,12 @@
 
 angular.module('mean.leaders').factory('Leaders', ['$resource',
     function($resource) {
-        return $resource('leaders/:leaderId', {
+        return $resource('activists/:activistsId', {
             leaderId: '@_id'
         }, {
             update: {
                 method: 'PUT'
             }
         });
-//        return {
-//            name: 'leaders'
-//        };
     }
 ]);
