@@ -32,7 +32,23 @@ exports.get = function(req, res) {
         if (query.user !== undefined) {
             query.user = new ObjectId(query.user);
         }
-        Activist.find(query).sort('-created').populate('user', 'name username').exec(function(err, activists) {
+        var sortBy, limitTo;
+        if (query.sortBy) {
+            sortBy = query.sortBy;
+            delete query.sortBy;
+        }
+        if (query.limitTo) {
+            limitTo = query.limitTo;
+            delete query.limitTo;
+        }
+        var find = Activist.find(query);
+        if (sortBy) {
+            find = find.sort(sortBy);
+        }
+        if (limitTo) {
+            find = find.limit(limitTo);
+        }
+        find.populate('user', 'name username').exec(function(err, activists) {
             if (err) {
                 res.render('error', {status: 500});
             } else {

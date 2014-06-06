@@ -26,12 +26,12 @@ var ActivistSchema = new Schema({
     },
     country: {
         type: String,
-        default: '',
+        default: 'Невядомая краiна',
         trim: true
     },
     city: {
         type: String,
-        default: '',
+        default: 'Невядомае мicто',
         trim: true
     },
     emails: {
@@ -40,12 +40,29 @@ var ActivistSchema = new Schema({
     },
     phones: {
         type: [String],
-        default: []
+        default: ['Невядомы телефон']
     },
     aboutMe: {
         type: String,
         default: '',
         trim: true
+    },
+    img: {
+        type: String,
+        default: 'image_default_activist.png',
+        trim: true
+    },
+    eventsTotal: {
+        type: Number,
+        default: 0
+    },
+    eventsOwn: {
+        type: Number,
+        default: 0
+    },
+    winPercentage: {
+        type: Number,
+        default: 0
     },
     user: {
         type: Schema.ObjectId,
