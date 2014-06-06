@@ -18,7 +18,7 @@ exports.authCallback = function(req, res) {
  */
 exports.signin = function(req, res) {
     if(req.isAuthenticated()) {
-        return res.redirect('#!/activist');
+        return res.redirect('/');
     }
     res.redirect('#!/login');
 };
@@ -47,10 +47,11 @@ exports.create = function(req, res, next) {
     user.provider = 'local';
 
     // because we set our user.provider to local our models/user.js validation will always be true
-    req.assert('email', 'You must enter a valid email address').isEmail();
-    req.assert('password', 'Password must be between 8-20 characters long').len(8, 20);
-    req.assert('username', 'Username cannot be more than 20 characters').len(1,20);
-    req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+    req.assert('name', 'Представтесь, пожалуйста').len(1,200);
+    req.assert('email', 'Как с вами связаться по Е-Mail').isEmail();
+    req.assert('username', 'Придумайте логин').len(1,20);
+    req.assert('password', 'Пароль должен быть').len(1, 200);
+    req.assert('confirmPassword', 'Пiдтверження паролю не прайшло').equals(req.body.password);
 
     var errors = req.validationErrors();
     if (errors) {
@@ -64,22 +65,16 @@ exports.create = function(req, res, next) {
             switch (err.code) {
                 case 11000:
                 case 11001:
-                    res.status(400).send('Username already taken');
-                    break;
+                    return res.status(400).send('Такой логiн уже занят');
                 default:
-                    res.status(400).send('Please fill all the required fields');
+                    return res.status(400).send([{msg:'Ошибки при сохранении в базу'}]);
             }
-
-            return res.status(400);
         }
         req.logIn(user, function(err) {
             if (err) return next(err);
-//            return res.redirect('#!/activist');
-            res.send({
-                redirect: '#!/activist'
-            });
+            return res.redirect('/');
         });
-//        res.status(200);
+        res.status(200);
     });
 };
 /**

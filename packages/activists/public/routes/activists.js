@@ -2,7 +2,7 @@
 
 angular.module('mean.activists').config(['$stateProvider',
     function($stateProvider) {
-        $stateProvider.state('activists example page', {
+        $stateProvider.state('activist', {
             url: '/activist',
             templateUrl: 'activists/views/index.html'
         });
