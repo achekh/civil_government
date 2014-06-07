@@ -20,9 +20,9 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
 
         // YouTube urls:
         // 1) http://youtu.be/xxx
-        // 2) http://youtube.com/embed/xxx
-        // 3) http://youtube.com/watch?v=xxx
-        // Normalize to second
+        // 2) http://youtube.com/watch?v=xxx
+        // 3) http://youtube.com/embed/xxx
+        // Normalize to third
         var youtubeRegExp = /(http|https):\/\/(www\.)?(youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/watch\?).*/i;
 
         function getYoutubeVideoId(url) {
@@ -41,9 +41,32 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
             return videoId;
         }
 
+        // ustream urls:
+        // 1) http://ustream.tv/channel/xxx
+        // 1) http://ustream.tv/embed/xxx
+        var ustreamRegExp = /(http|https):\/\/(www\.)?(ustream\.tv\/channel\/|ustream\.tv\/embed\/).*/i;
+        function getUstreamVideoId(url) {
+            var videoId;
+            var anchor = document.createElement('a');
+            anchor.href = url;
+            var path = anchor.pathname.split('/');
+            videoId = path[path.length - 1];
+            return videoId;
+        }
+
         $scope.getPreviewUrl = function (video, size) {
 
             var url = '';
+            var options;
+            if (size === 'hq') {
+                options = {w:480,h:360};
+            } else if (size === 'mq') {
+                options = {w:320,h:180};
+            } else if (size === 'sd') {
+                options = {w:640,h:480};
+            } else {
+                options = {w:120,h:90};
+            }
 
             if (video && video.url) {
 
@@ -63,32 +86,20 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
 
                     url = $location.protocol() + '://img.youtube.com/vi/' + getYoutubeVideoId(video.url) + '/' + imagename;
 
+                } else if (ustreamRegExp.test(video.url)) {
+                    url = $location.protocol() + '://dummyimage.com/' + options.w + 'x' + options.h + '/858585/fff.png&text=ustream.tv';
                 } else {
-
-                    var options = {};
-
-                    if (size === 'hq') {
-                        options = {w:480,h:360};
-                    } else if (size === 'mq') {
-                        options = {w:320,h:180};
-                    } else if (size === 'sd') {
-                        options = {w:640,h:480};
-                    } else {
-                        options = {w:120,h:90};
-                    }
-
-                    url = 'http://dummyimage.com/' + options.w + 'x' + options.h + '/858585/fff.png';
-
+                    url = $location.protocol() + '://dummyimage.com/' + options.w + 'x' + options.h + '/858585/fff.png';
                 }
 
             }
 
-                return url;
+            return url;
 
         };
 
         $scope.isValidVideoUrl = function (video) {
-            return video && video.url && youtubeRegExp.test(video.url);
+            return video && video.url && (youtubeRegExp.test(video.url) || ustreamRegExp.test(video.url));
         };
 
         $scope.getVideoUrl = function (video) {
@@ -99,6 +110,8 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
 
                 if (youtubeRegExp.test(video.url)) {
                     url = $location.protocol() + '://www.youtube.com/embed/' + getYoutubeVideoId(video.url);
+                } else if (ustreamRegExp.test(video.url)) {
+                    url = $location.protocol() + '://www.ustream.tv/embed/' + getUstreamVideoId(video.url);
                 }
 
             }
@@ -168,6 +181,8 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
     $sceDelegateProvider.resourceUrlWhitelist([
         'self',
         'http*://youtube.com**',
-        'http*://www.youtube.com**'
+        'http*://www.youtube.com**',
+        'http*://ustream.tv**',
+        'http*://www.ustream.tv**'
     ]);
 });

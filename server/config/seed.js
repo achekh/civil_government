@@ -63,7 +63,17 @@ module.exports = function (done) {
                         status: 'Initial',
                         datetime: new Date(),
                         sites: 'Україна'
+                    },
+                    {
+                        title: 'ВатаВарта',
+                        description: 'А де вата?',
+                        user: user,
+                        organization: 'На Варті',
+                        status: 'Initial',
+                        datetime: new Date(),
+                        sites: 'Харків'
                     }
+
                 ];
 
                 console.log('Seed events');
@@ -80,6 +90,27 @@ module.exports = function (done) {
                                 url: 'http://youtu.be/3CcKS0z7Bwo',
                                 user: user,
                                 event: event
+                            }
+
+                        ];
+
+                        console.log('Seed videos');
+                        return seed(Video, videos);
+
+                    })
+                    .then(function() {
+                        console.log('Find event "ВатаВарта"');
+                        return Events.findOne({title: 'ВатаВарта'}).exec();
+                    })
+                    .then(function(event) {
+
+                        var videos = [
+                            {
+                                title: 'Майдан Свободи На Варті',
+                                url: 'http://www.ustream.tv/channel/17823917',
+                                user: user,
+                                event: event,
+                                live: true
                             }
 
                         ];
