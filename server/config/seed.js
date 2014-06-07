@@ -4,13 +4,13 @@
 require(process.cwd() + '/server/models/user');
 require(process.cwd() + '/packages/events/server/models/events');
 require(process.cwd() + '/packages/videos/server/models/video');
-require(process.cwd() + '/packages/leaders/server/models/leader');
+require(process.cwd() + '/packages/activists/server/models/activist');
 
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Events = mongoose.model('Events'),
     Video = mongoose.model('Video'),
-    Leader = mongoose.model('Leader');
+    Activist = mongoose.model('Activist');
 
 module.exports = function (done) {
 
@@ -197,22 +197,21 @@ module.exports = function (done) {
                         return seed(Video, videos);
 
                     })
+                    .then(function() {
+                        var activists = [{
+                           user: user,
+                           fullName: user.name,
+                           emails:[user.email],
+                           country:'Украiна',
+                           city:'Кieв',
+                           phones:['+380'],
+                           img:'http://ts4.mm.bing.net/th?id=HN.608052457444082755&pid=15.1'
+                        }];
+                        console.log('Seed activist');
+                        return seed(Activist, activists);
+                    })
                 ;
 
-            })
-            .then(function() {
-                console.log('Seed leaders');
-                var leaders = [{
-                    img: 'fff.png',
-                    firstName: 'Андрій',
-                    lastName: 'Дмитров',
-                    cityFrom: 'Харків',
-                    created: new Date(),
-                    eventsTotal: 128,
-                    eventsOwn: 35,
-                    winPercentage: 89
-                }];
-                return seed(Leader, leaders);
             })
             .then(function () {
                 console.log('Done seeding');

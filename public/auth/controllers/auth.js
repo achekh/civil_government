@@ -54,7 +54,7 @@ angular.module('mean.controllers.login', [])
                         $http.get('/loggedin').success(function(user) {
                             $rootScope.user = user;
                             $rootScope.$emit('loggedin');
-                            $location.url('/');
+                            $location.url('/activist');
                         });
                     })
                     .error(function(error) {
