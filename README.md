@@ -1,5 +1,9 @@
 # Система гражданского самоуправления
 
+github user for CI
+civilgovbuild
+civilgovbuild@guerrillamail.com / c@v2j,jhjy@
+
 # [![MEAN Logo](http://www.mean.io/img/logos/meanlogo.png)](http://mean.io/) MEAN Stack
 
 [![Build Status](https://travis-ci.org/linnovate/mean.png?branch=master)](https://travis-ci.org/linnovate/mean)
