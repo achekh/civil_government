@@ -1,5 +1,7 @@
 # Система гражданского самоуправления
 
+[![Build Status](http://77.91.132.7:8080/buildStatus/icon?job=Civil_government)](http://77.91.132.7:8080/job/Civil_government/)
+
 github user for CI
 civilgovbuild
 civilgovbuild@guerrillamail.com / c@v2j,jhjy@
