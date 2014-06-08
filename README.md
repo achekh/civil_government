@@ -146,24 +146,6 @@ We pre-included an article example. Check out:
   * [The AngularJs Controller](packages/articles/public/controllers/articles.js) - Where we take care of  our frontend logic.
   * [The AngularJs Views Folder](packages/articles/public/views) - Where we keep our CRUD views.
 
-## Heroku Quick Deployment
-Before you start make sure you have the [Heroku toolbelt](<https://toolbelt.heroku.com/")
-installed and an accessible MongoDB instance - you can try [MongoHQ](http://www.mongohq.com/)
-which has an easy setup).
-
-Add the db string to the production env in server/config/env/production.js.
-
-```
-git init
-git add .
-git commit -m "initial version"
-heroku apps:create
-heroku config:add NODE_ENV=production
-heroku config:add BUILDPACK_URL=https://github.com/mbuchetics/heroku-buildpack-nodejs-grunt.git
-git push heroku master
-heroku config:set NODE_ENV=production
-```
-
 ## More Information
   * Visit us at [Linnovate.net](http://www.linnovate.net/).
   * Visit our [Ninja's Zone](http://www.meanleanstartupmachine.com/) for extended support.
