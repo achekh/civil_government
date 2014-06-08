@@ -92,6 +92,9 @@ exports.all = function(req, res) {
     if (req.query.live && (req.query.live === 'true' || req.query.live === 'false')) {
         query.live = req.query.live;
     }
+    if (req.query.userId) {
+        query.user = req.query.userId;
+    }
     Video
         .find(query)
         .sort('-created')

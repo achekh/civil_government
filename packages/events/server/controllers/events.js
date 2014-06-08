@@ -22,7 +22,11 @@ exports.create = function (req, res) {
     });
 };
 exports.all = function (req, res) {
-    Events.find().sort('-created').limit(3).populate('user', 'name username').exec(function (err, events) {
+    var query = {};
+    if (req.query.userId) {
+        query.user = req.query.userId;
+    }
+    Events.find(query).sort('-created').limit(3).populate('user', 'name username').exec(function (err, events) {
         if (err) {
             res.render('error', {
                 status: 500

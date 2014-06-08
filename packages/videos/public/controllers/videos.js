@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '$stateParams', '$location', 'Videos',
-    function($scope, $rootScope, $stateParams, $location, Videos) {
+angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '$stateParams', '$location', 'Videos', 'Events',
+    function($scope, $rootScope, $stateParams, $location, Videos, Events) {
 
         $scope.videoLiveStatuses = [
             {'value': null, 'label': 'Все відео'},
@@ -120,12 +120,28 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
 
         };
 
+        $scope.eventToAddVideo = null;
+        $scope.userEvents = null;
+        $scope.initAdd = function() {
+            Events.query({user: $scope.global.user._id}, function (response) {
+                $scope.userEvents = response;
+                $scope.eventToAddVideo = $scope.userEvents[0];
+            });
+        };
+
+        $scope.setEventToAddVideo = function (event) {
+            $scope.eventToAddVideo = event;
+        };
+
         $scope.add = function() {
+
             var video = new Videos({
                 title: this.title,
                 url: this.url,
-                live: this.live
+                live: this.live,
+                event: $scope.eventToAddVideo._id
             });
+
             video.$save(function(response) {
                 $location.path('videos/' + response._id);
             });
@@ -133,6 +149,7 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
             this.title = '';
             this.url = '';
             this.live = false;
+
         };
 
         $scope.remove = function(video) {
@@ -176,6 +193,7 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
                 $scope.video = video;
             });
         };
+
     }
 ]).config(function($sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist([
