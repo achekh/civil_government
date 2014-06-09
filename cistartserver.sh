@@ -1,3 +1,3 @@
 forever stopall
-forever start server.js
+forever start -f server.js
 exit 0
