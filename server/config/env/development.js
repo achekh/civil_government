@@ -29,5 +29,10 @@ module.exports = {
         clientID: 'API_KEY',
         clientSecret: 'SECRET_KEY',
         callbackURL: 'http://localhost:3000/auth/linkedin/callback'
+    },
+    vkontakte: {
+        clientID: 'APP_ID',
+        clientSecret: 'SECRET_KEY',
+        callbackURL: 'http://localhost:3000/auth/vkontakte/callback'
     }
 };

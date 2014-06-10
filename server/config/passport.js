@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
     GitHubStrategy = require('passport-github').Strategy,
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     LinkedinStrategy = require('passport-linkedin').Strategy,
+    VKontakteStrategy = require('passport-vkontakte').Strategy,
     User = mongoose.model('User'),
     config = require('./config');
 
@@ -202,5 +203,38 @@ module.exports = function(passport) {
                 }
             });
         }
+    ));
+
+    //use vk strategy
+    passport.use(new VKontakteStrategy({
+            clientID: config.vkontakte.clientID,
+            clientSecret: config.vkontakte.clientSecret,
+            callbackURL: config.vkontakte.callbackURL
+        },
+        function(accessToken, refreshToken, profile, done) {
+            User.findOne({
+                'vkontakte.id': profile.id
+            }, function(err, user) {
+                if (!user) {
+                    user = new User({
+                        name: profile.displayName,
+                        email: profile.emails[0].value,
+                        username: profile.emails[0].value,
+                        provider: 'vkontakte'
+                    });
+                    user.save(function(err) {
+                        if (err) console.log(err);
+                        return done(err, user);
+                    });
+                } else {
+                    return done(err, user);
+                }
+            });
+        }
+//        function(accessToken, refreshToken, profile, done) {
+//            User.findOrCreate({ vkontakteId: profile.id }, function (err, user) {
+//                return done(err, user);
+//            });
+//        }
     ));
 };

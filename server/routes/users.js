@@ -95,4 +95,15 @@ module.exports = function(app, passport) {
             failureRedirect: '#!/login'
         }), users.authCallback);
 
+    // Setting the vkontakte oauth routes
+    app.get('/auth/vkontakte',
+        passport.authenticate('vkontakte'),
+        function(req, res){
+            // The request will be redirected to vk.com for authentication, so
+            // this function will not be called.
+        });
+
+    app.get('/auth/vkontakte/callback',
+        passport.authenticate('vkontakte', { failureRedirect: '#!/login' }),
+        users.authCallback);
 };
