@@ -115,7 +115,7 @@ module.exports = function(grunt) {
         grunt.registerTask('default', ['clean','cssmin', 'uglify', 'concurrent']);
     } else {
         grunt.registerTask('default', ['clean','jshint', 'csslint', 'concurrent']);
-        grunt.registerTask('recreate_db', 'recreate database', function () {
+        grunt.registerTask('db.seed', 'Seed database with sample data', function () {
             require(process.cwd() + '/server/config/seed')(this.async());
         });
     }

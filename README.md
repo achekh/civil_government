@@ -61,6 +61,10 @@ $ npm install -g grunt-cli
 
     http://localhost:3000
 
+## Seed sample data
+  In development environment database can be populated with sample data using grunt task `db.seed`. Use your IDE or console command:
+  
+    $ grunt db.seed
 
 ## Troubleshooting
 During install some of you may encounter some issues.
