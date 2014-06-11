@@ -1,0 +1,130 @@
+<div class="container-fluid" data-ng-controller="EventsController">
+
+    <div class="row">
+
+        <div class="col-md-3 col_top_row">
+        </div>
+
+        <div class="col-md-6 col_top_row">
+        </div>
+
+        <div class="col-md-3 col_top_row">
+            <div class="row">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3 col_bottom_row">
+
+            <div class="row row-header">
+                <div class="col-md-6">
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <p align="center">
+                        <button type="button" class="btn btn-default"></button>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row">
+
+            <div class="row row-header">
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <p align="center">
+                        <button type="button" class="btn btn-default"></button>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row videos videos-list-small" data-ng-controller="VideosController" data-ng-init="find()">
+
+            <div class="row row-header">
+                <div class="col-md-6">
+                    <h2>Відео</h2>
+                </div>
+                <br/>
+                <div class="col-md-6">
+                    <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                        <button type="button" class="btn btn-default dropdown-toggle">{{videoLiveStatus.label}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="" data-ng-click="setVideoLiveStatus(status)" data-ng-repeat="status in videoLiveStatuses">{{status.label}}</a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" data-ng-repeat="video in videos | limitTo: 3">
+                <div class="col-md-12">
+                    <a data-ui-sref="videos-view({videoId: video._id})">
+                        <img class="videos-preview-small" align="left" hspace="10px" alt="{{video.title}}" data-ng-src="{{getPreviewUrl(video)}}" src="" />
+                    </a>
+                    <p data-ng-if="video.live"><span class="glyphicon glyphicon-fire"></span> Наживо</p>
+                    <p data-ng-if="!video.live"><span class="glyphicon glyphicon-film"></span> Архів</p>
+                    <p>
+                        {{video.created | date:'dd.MM.yyyy hh:mm'}}<br/>
+                        {{video.user.username}}<br/>
+                        {{video.title}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <p align="center">
+                        <a class="btn btn-default" data-ui-sref="videos">Інші відео</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row" data-ng-controller="" data-ng-init="">
+
+            <div class="row row-header">
+                <div class="col-md-6">
+                </div>
+            </div>
+
+
+            <div class="row" data-ng-repeat="">
+                <div class="col-md-12">
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <p align="center">
+                        <button type="button" class="btn btn-default"></button>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
