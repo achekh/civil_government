@@ -1,14 +1,22 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Global', 'Events',
-    function ($scope, $stateParams, $location, Global, Events) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Events',
+    function ($scope, $stateParams, $location, Events) {
 
-        $scope.global = Global;
         $scope.find = function () {
             Events.query(function (events) {
                 $scope.events = events;
             });
         };
+
+        $scope.findOne = function() {
+            Events.get({
+                eventId: $stateParams.eventId
+            }, function(event) {
+                $scope.event = event;
+            });
+        };
+
         $scope.create = function () {
             var events = new Events({
                 description: this.description,

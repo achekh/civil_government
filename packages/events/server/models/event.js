@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 //    return this.provider;
 //};
 
-var EventsSchema = new Schema({
+var EventSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
@@ -63,9 +63,10 @@ var EventsSchema = new Schema({
     }
 });
 
-EventsSchema.statics.load = function (id, cb) {
+EventSchema.statics.load = function (id, cb) {
     this.findOne({
         _id: id
     }).populate('user', 'name username').exec(cb);
 };
-mongoose.model('Events', EventsSchema);
+
+mongoose.model('Event', EventSchema);

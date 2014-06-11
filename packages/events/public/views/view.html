@@ -1,15 +1,29 @@
-<div class="container-fluid" data-ng-controller="EventsController">
+<div class="container-fluid" data-ng-controller="EventsController" data-ng-init="findOne()">
 
     <div class="row">
 
         <div class="col-md-3 col_top_row">
+            <h2>Організатор</h2>
+            <a data-ui-sref="organizations-view({organizationId: event.organization._id})">
+                <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
+            </a>
+            {{event.organization}}
         </div>
 
-        <div class="col-md-6 col_top_row">
+        <div class="col-md-3 col_top_row">
+            <h2>{{event.title}}</h2>
+            {{event.description}}
+        </div>
+
+        <div class="col-md-3 col_top_row">
+            {{event.sites}}<br/>
+            {{event.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
+            {{event.status}}
         </div>
 
         <div class="col-md-3 col_top_row">
             <div class="row">
+
             </div>
         </div>
 
@@ -102,15 +116,14 @@
 
         </div>
 
-        <div class="col-md-3 col_bottom_row" data-ng-controller="" data-ng-init="">
+        <div class="col-md-3 col_bottom_row">
 
             <div class="row row-header">
                 <div class="col-md-6">
                 </div>
             </div>
 
-
-            <div class="row" data-ng-repeat="">
+            <div class="row">
                 <div class="col-md-12">
                 </div>
             </div>

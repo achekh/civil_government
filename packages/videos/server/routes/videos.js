@@ -2,7 +2,7 @@
 
 var videos = require('../controllers/videos');
 
-// Article authorization helpers
+// authorization helpers
 var hasAuthorization = function(req, res, next) {
     if (!req.user.isAdmin && req.video.user.id !== req.user.id) {
         return res.send(401, 'User is not authorized');
@@ -20,6 +20,6 @@ module.exports = function(Videos, app, auth) {
         .put(auth.requiresLogin, hasAuthorization, videos.update)
         .delete(auth.requiresLogin, hasAuthorization, videos.destroy);
 
-    // Finish with setting up the videoId param
     app.param('videoId', videos.video);
+
 };

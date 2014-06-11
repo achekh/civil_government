@@ -95,6 +95,9 @@ exports.all = function(req, res) {
     if (req.query.userId) {
         query.user = req.query.userId;
     }
+    if (req.query.eventId) {
+        query.event = req.query.eventId;
+    }
     Video
         .find(query)
         .sort('-created')

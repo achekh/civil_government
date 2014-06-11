@@ -36,7 +36,7 @@ var VideoSchema = new Schema({
     event: {
         type: Schema.ObjectId,
         required: true,
-        ref: 'Events'
+        ref: 'Event'
     }
 });
 

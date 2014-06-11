@@ -143,7 +143,7 @@
                 </div>
             </div>
 
-            <div class="row" data-ng-repeat="event in events">
+            <div class="row" data-ng-repeat="event in events | limitTo: 3">
                 <div class="col-md-12">
                     <a data-ui-sref="events-view({eventId: event._id})">
                         <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">

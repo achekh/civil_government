@@ -27,7 +27,7 @@ angular.module('mean').config(['$stateProvider',
 
         $stateProvider
             .state('videos', {
-                url: '/videos?live',
+                url: '/videos?live&userId&eventId',
                 templateUrl: 'videos/views/list.html'
             })
             .state('videos-add', {
