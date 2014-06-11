@@ -1,0 +1,52 @@
+<div class="container-fluid" data-ng-controller="ProfileController" data-ng-init="init()">
+
+    <div class="row">
+        <div class="col-md-3 col_top_row">
+            <img data-ng-src="{{getLeaderImageUrl(activist)}}" alt="картинка" class="img-rounded"
+                 hspace="10px" vspace="10px" width="200" height="200">
+        </div>
+
+        <div class="col-md-3 col_top_row text-center" >
+            <p>
+                <span class="h3">{{activist.fullName}}</span>
+                <br><a data-ng-show="canEdit" class="small" href="#!/activist?update">Изменить</a>
+            </p>
+            <p>
+                {{activist.country}}, {{activist.city}}
+                <br>{{activist.emails[0]}}
+                <br>{{activist.phones[0]}}
+            </p>
+        </div>
+
+        <div class="col-md-3 col_top_row text-center">
+            <p>
+                <span class="h3">О себе</span>
+                <br><a data-ng-show="canEdit" class="small" href="#!/activist?update">Изменить</a>
+            </p>
+            <p>
+                {{activist.aboutMe}}
+            </p>
+        </div>
+
+        <div class="col-md-3 col_top_row text-center">
+            <p><span class="h4">Мои рекорды</span></p>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td class="text-right">{{activist.eventsTotal}}</td><td class="text-left">Всего событий</td>
+                </tr>
+                <tr>
+                    <td class="text-right">{{activist.eventsOwn}}</td><td class="text-left">Моих событий</td>
+                </tr>
+                <tr>
+                    <td class="text-right">{{activist.winPercentage}}</td><td class="text-left">% Побед</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+    </div>
+
+</div>

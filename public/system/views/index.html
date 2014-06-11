@@ -225,7 +225,7 @@
                     <img data-ng-src="{{getLeaderImageUrl(leader)}}" alt="картинка" class="img-rounded" align="left"
                          hspace="10px" width="100" height="100">
                     <p>
-                        <b>{{leader.fullName}} - {{leader.city}}</b><br/>
+                        <a data-ui-sref="profile({activistId:leader._id})"><b>{{leader.fullName}} - {{leader.city}}</b></a><br/>
                         В системі: {{getLeaderInSystemDurationSeconds(leader) / 60 / 60 / 24 / 30 / 12 | number:0}}г {{getLeaderInSystemDurationSeconds(leader) / 60 / 60 / 24 / 30 | number:0}}м {{getLeaderInSystemDurationSeconds(leader) / 60 / 60 / 24 | number:0}}д<br/>
                         Всього подій: {{leader.eventsTotal}}<br/>
                         Своїх подій: {{leader.eventsOwn}}<br/>

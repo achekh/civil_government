@@ -7,5 +7,9 @@
 <script type="text/javascript" src="{{'http://' + req.host + ':35729/livereload.js'}}"></script>
 {% endif %}
 
-<script type="text/javascript" src="/modules/aggregated.js"></script>
+<!-- do not use aggregated packages for ease of development.
+switch back to aggregated when gone to prod.
+delete "packages/*/public/*/*.js" in 'assets.json',
+delete app.use('/packages', express.static(config.root + '/packages')); in 'express.js' -->
+<!--<script type="text/javascript" src="/modules/aggregated.js"></script>-->
 
