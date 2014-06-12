@@ -181,7 +181,11 @@ angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '
         };
 
         $scope.find = function() {
-            Videos.query({live: $scope.videoLiveStatus.value}, function(videos) {
+            Videos.query({
+                live: $scope.videoLiveStatus.value,
+                userId: $stateParams.userId,
+                eventId: $stateParams.eventId
+            }, function(videos) {
                 $scope.videos = videos;
             });
         };

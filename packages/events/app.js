@@ -57,8 +57,8 @@ Events.register(function(app, auth, database) {
         //you now have the settings object
     });
     */
-    //Events.aggregateAsset('css', 'articles.css');
-    Events.aggregateAsset('css', 'bootstrap-datepicker.css');
-    Events.aggregateAsset('js', 'bootstrap-datepicker.min.js');
+    Events.aggregateAsset('css', 'events.css');
+//    Events.aggregateAsset('css', 'bootstrap-datepicker.css');
+//    Events.aggregateAsset('js', 'bootstrap-datepicker.min.js');
     return Events;
 });
