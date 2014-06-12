@@ -1,0 +1,117 @@
+'use strict';
+
+/**
+ * Module dependencies.
+ */
+var mongoose = require('mongoose'),
+    participant = mongoose.model('participant'),
+    _ = require('lodash');
+
+
+/**
+ * Find participant by id
+ */
+exports.participant = function(req, res, next, id) {
+    participant.load(id, function(err, participant) {
+        if (err) return next(err);
+        if (!participant) return next(new Error('Failed to load participant ' + id));
+        req.participant = participant;
+        next();
+    });
+};
+
+/**
+ * Create an participant
+ */
+exports.create = function(req, res) {
+    var participant = new participant(req.body);
+    participant.user = req.user;
+
+    participant.save(function(err) {
+        if (err) {
+            return res.send('users/signup', {
+                errors: err.errors,
+                participant: participant
+            });
+        } else {
+            res.jsonp(participant);
+        }
+    });
+};
+
+/**
+ * Update an participant
+ */
+exports.update = function(req, res) {
+    var participant = req.participant;
+
+    participant = _.extend(participant, req.body);
+
+    participant.save(function(err) {
+        if (err) {
+            return res.send('users/signup', {
+                errors: err.errors,
+                participant: participant
+            });
+        } else {
+            res.jsonp(participant);
+        }
+    });
+};
+
+/**
+ * Delete an participant
+ */
+exports.destroy = function(req, res) {
+    var participant = req.participant;
+
+    participant.remove(function(err) {
+        if (err) {
+            return res.send('users/signup', {
+                errors: err.errors,
+                participant: participant
+            });
+        } else {
+            res.jsonp(participant);
+        }
+    });
+};
+
+/**
+ * Show an participant
+ */
+exports.show = function(req, res) {
+    res.jsonp(req.participant);
+};
+
+/**
+ * List of participants
+ */
+exports.all = function(req, res) {
+    var query = {};
+    if (req.query.coordinator && (req.query.coordinator === 'true' || req.query.coordinator === 'false')) {
+        query.coordinator = req.query.coordinator;
+    }
+    if (req.query.activistId) {
+        query.activist = req.query.activistId;
+    }
+    if (req.query.eventId) {
+        query.event = req.query.eventId;
+    }
+    participant
+        .find(query)
+        .sort('-created')
+//        .populate('activist', 'username')
+//        .populate('event', 'title')
+        .exec(function(err, participants) {
+            if (err) {
+                res.render('error', {
+                    status: 500
+                });
+            } else {
+                res.jsonp(participants);
+            }
+        })
+    ;
+};
+
