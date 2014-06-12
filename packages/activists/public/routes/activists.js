@@ -14,5 +14,10 @@ angular.module('mean.activists').config(['$stateProvider',
             url: '/profiles/:activistId',
             templateUrl: 'activists/views/profile.html'
         });
+
+        $stateProvider.state('profile_my', {
+            url: '/profile',
+            templateUrl: 'activists/views/profile.html'
+        });
     }
 ]);

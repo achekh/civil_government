@@ -9,7 +9,7 @@
         <div class="col-md-3 col_top_row text-center" >
             <p>
                 <span class="h3">{{activist.fullName}}</span>
-                <br><a data-ng-show="canEdit" class="small" href="#!/activist?update">Изменить</a>
+                <br><a data-ng-show="canEdit" class="small" data-ng-click="open()">Изменить</a>
             </p>
             <p>
                 {{activist.country}}, {{activist.city}}
@@ -21,7 +21,7 @@
         <div class="col-md-3 col_top_row text-center">
             <p>
                 <span class="h3">О себе</span>
-                <br><a data-ng-show="canEdit" class="small" href="#!/activist?update">Изменить</a>
+                <br><a data-ng-show="canEdit" class="small" data-ng-click="open()">Изменить</a>
             </p>
             <p>
                 {{activist.aboutMe}}

@@ -6,10 +6,10 @@ app.controller('ActivistsController', ['$scope', '$rootScope', '$stateParams', '
         $scope.global = Global;
 
         $scope.getTitle = function() {
-            if ($location.search().update) {
-                return 'O себе';
+            if ($location.search().register) {
+                return 'Регистрация активиста';
             }
-            return 'Регистрация активиста';
+            return 'O себе';
         };
 
         $scope.init = function() {
@@ -24,27 +24,41 @@ app.controller('ActivistsController', ['$scope', '$rootScope', '$stateParams', '
                 activist.updated = [];
             }
             activist.updated.push(new Date().getTime());
-
             activist.$update(function() {
-                $location.path('!#');
+                doneClose('close');
             });
         };
 
         $scope.cancel = function() {
-            $location.path('!#');
+            doneClose('dismiss');
         };
+
+        function doneClose(op) {
+            try {
+                $scope.$parent.$parent.$parent.modelInstanceFromProfile[op]();
+            } catch (e) {
+                $location.path('!#');
+            }
+        }
     }
 ]);
 
-app.controller('ProfileController', ['$scope', '$rootScope', '$stateParams', '$location', '$log', '$http', 'Global', 'Activists',
-    function($scope, $rootScope, $stateParams, $location, $log, $http, Global, Activists) {
+app.controller('ProfileController',
+    ['$scope', '$modal', '$rootScope', '$stateParams', '$location', '$log', '$http', 'Global', 'Activists',
+    function($scope, $modal, $rootScope, $stateParams, $location, $log, $http, Global, Activists) {
         $scope.global = Global;
 
-        $scope.getTitle = function() {
-            if ($location.search().update) {
-                return 'O себе';
-            }
-            return 'Регистрация активиста';
+        $scope.open = function() {
+            $scope.fromProfile = true;
+            $scope.modelInstanceFromProfile = $modal.open({
+                templateUrl: 'activists/views/index.html'
+                ,size:'lg'
+                ,scope:$scope
+                ,backdrop:'static'
+            });
+            $scope.modelInstanceFromProfile.result.then(function(){
+                $scope.init();
+            });
         };
 
         $scope.getLeaderImageUrl = function(leader) {
@@ -55,26 +69,20 @@ app.controller('ProfileController', ['$scope', '$rootScope', '$stateParams', '$l
         };
 
         $scope.init = function() {
-            Activists.get({'activistId':$stateParams.activistId}, function(activist) {
-                $scope.activist = activist;
-                $scope.canEdit = activist.user._id === window.user._id;
-            });
-        };
-
-        $scope.update = function() {
-            var activist = $scope.activist;
-            if (!activist.updated) {
-                activist.updated = [];
+            if($stateParams.activistId) {
+                Activists.get({'activistId':$stateParams.activistId}, function(activist) {
+                    $scope.activist = activist;
+                    $scope.canEdit = activist.user._id === (window.user._id || $scope.user._id);
+                });
+            } else {
+                var user = window.user._id || $scope.user._id;
+                return Activists.query({'user':user}, function(activists) {
+                    $scope.activist = activists[0];
+                    $scope.canEdit = activists[0].user._id === (window.user._id || $scope.user._id);
+                });
             }
-            activist.updated.push(new Date().getTime());
-
-            activist.$update(function() {
-                $location.path('!#');
-            });
         };
 
-        $scope.cancel = function() {
-            $location.path('!#');
-        };
     }
 ]);
+
