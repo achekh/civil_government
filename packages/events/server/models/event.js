@@ -30,6 +30,10 @@ var EventSchema = new Schema({
         ref: 'User',
         index: true
     },
+    participants: [{
+        type: Schema.ObjectId,
+        ref: 'User'
+    }],
     organization: {
         type: String,
         required: true

@@ -17,7 +17,7 @@ module.exports = function(Events, app, auth) {
         .post(auth.requiresLogin, events.create);
     app.route('/events/:eventId')
         .get(events.show)
-//        .put(auth.requiresLogin, hasAuthorization, events.update)
+        .put(auth.requiresLogin, hasAuthorization, events.update)
         .delete(auth.requiresLogin, hasAuthorization, events.destroy);
 
     app.param('eventId', events.event);

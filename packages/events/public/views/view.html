@@ -22,8 +22,12 @@
         </div>
 
         <div class="col-md-3 col_top_row">
+            <div class="row text-center">
+                <h4>{{getParticipationStatus()}}</h4>
+            </div>
             <div class="row">
-
+                <button class="btn-link" data-ng-click="joinEvent()">Пойду</button>
+                <button class="btn-link" data-ng-click="leaveEvent()">Не пойду</button>
             </div>
         </div>
 

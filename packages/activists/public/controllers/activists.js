@@ -74,6 +74,7 @@ app.controller('ProfileController',
                     $scope.activist = activist;
                     $scope.canEdit = activist.user._id === (window.user._id || $scope.user._id);
                     $scope.findMyEvents();
+                    $scope.findEventsParticipated();
                 });
             } else {
                 var userId = window.user._id || $scope.user._id;
@@ -81,6 +82,7 @@ app.controller('ProfileController',
                     $scope.activist = activists[0];
                     $scope.canEdit = activists[0].user._id === (window.user._id || $scope.user._id);
                     $scope.findMyEvents();
+                    $scope.findEventsParticipated();
                 });
             }
         };
@@ -90,6 +92,13 @@ app.controller('ProfileController',
             Events.query({userId:$scope.activist.user._id}, function(events) {
                 $scope.events = events;
             });
+        };
+
+        $scope.findEventsParticipated = function findEventsParticipated() {
+            Events.query({participantId:$scope.activist.user._id}, function(eventsParticipated) {
+                $scope.eventsParticipated = eventsParticipated;
+            });
+            $scope.eventsParticipated = [];
         };
 
 

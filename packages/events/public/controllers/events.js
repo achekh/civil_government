@@ -59,5 +59,25 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         $scope.show = function () {
             console.log('we here;');
         };
+        $scope.joinEvent = function joinEvent() {
+            $scope.event.$update({join:true}, function(response) {
+            });
+        };
+        $scope.leaveEvent = function leaveEvent() {
+            $scope.event.$update({leave:true}, function(response) {
+            });
+        };
+        $scope.getParticipationStatus = function getParticipationStatus() {
+            try {
+                var userId = window.user._id || $scope.user._id;
+                if ($scope.event.participants.indexOf(userId) < 0) {
+                    return 'Не участвую';
+                } else {
+                    return 'Участвую';
+                }
+            } catch (e) {
+                return '';
+            }
+        };
     }
 ]);

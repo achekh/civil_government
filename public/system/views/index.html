@@ -221,8 +221,10 @@
 
             <div class="row" data-ng-repeat="leader in leaders | limitTo: 3">
                 <div class="col-md-12">
-                    <img data-ng-src="{{getLeaderImageUrl(leader)}}" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px" width="100" height="100">
+                    <a data-ui-sref="profile({activistId:leader._id})">
+                        <img data-ng-src="{{getLeaderImageUrl(leader)}}" alt="картинка" class="img-rounded" align="left"
+                             hspace="10px" width="100" height="100">
+                    </a>
                     <p>
                         <a data-ui-sref="profile({activistId:leader._id})"><b>{{leader.fullName}} - {{leader.city}}</b></a><br/>
                         В системі: {{getLeaderInSystemDurationSeconds(leader) / 60 / 60 / 24 / 30 / 12 | number:0}}г {{getLeaderInSystemDurationSeconds(leader) / 60 / 60 / 24 / 30 | number:0}}м {{getLeaderInSystemDurationSeconds(leader) / 60 / 60 / 24 | number:0}}д<br/>

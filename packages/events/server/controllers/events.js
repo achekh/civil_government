@@ -40,7 +40,11 @@ exports.all = function (req, res) {
     if (req.query.userId) {
         query.user = req.query.userId;
     }
-    Event.find(query).sort('-created').populate('user', 'username').exec(function (err, events) {
+    var find = Event.find(query);
+    if (req.query.participantId) {
+        find = find.where('participants').in([req.query.participantId]);
+    }
+    find.sort('-created').populate('user', 'username').exec(function (err, events) {
         if (err) {
             res.render('error', {
                 status: 500
@@ -58,4 +62,32 @@ exports.destroy = function (req, res) {
 
      });*/
 
+};
+
+exports.update = function update(req, res) {
+    var event = req.event;
+    if (req.query.join) {
+        if (event.participants.indexOf(req.user._id) < 0) {
+            event.participants.push(req.user);
+            event.save(function(err, event) {
+                if (err) {
+                    res.render('error', {status: 500});
+                } else {
+                    res.jsonp(event);
+                }
+            });
+        }
+    } else if (req.query.leave) {
+        var index = event.participants.indexOf(req.user._id);
+        if (index >= 0) {
+            event.participants.splice(index, 1);
+            event.save(function(err, event) {
+                if (err) {
+                    res.render('error', {status: 500});
+                } else {
+                    res.jsonp(event);
+                }
+            });
+        }
+    }
 };
