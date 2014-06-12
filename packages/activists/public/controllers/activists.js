@@ -44,8 +44,8 @@ app.controller('ActivistsController', ['$scope', '$rootScope', '$stateParams', '
 ]);
 
 app.controller('ProfileController',
-    ['$scope', '$modal', '$rootScope', '$stateParams', '$location', '$log', '$http', 'Global', 'Activists',
-    function($scope, $modal, $rootScope, $stateParams, $location, $log, $http, Global, Activists) {
+    ['$scope', '$modal', '$rootScope', '$stateParams', '$location', '$log', '$http', 'Global', 'Activists', 'Events',
+    function($scope, $modal, $rootScope, $stateParams, $location, $log, $http, Global, Activists, Events) {
         $scope.global = Global;
 
         $scope.open = function() {
@@ -73,15 +73,25 @@ app.controller('ProfileController',
                 Activists.get({'activistId':$stateParams.activistId}, function(activist) {
                     $scope.activist = activist;
                     $scope.canEdit = activist.user._id === (window.user._id || $scope.user._id);
+                    $scope.findMyEvents();
                 });
             } else {
-                var user = window.user._id || $scope.user._id;
-                return Activists.query({'user':user}, function(activists) {
+                var userId = window.user._id || $scope.user._id;
+                return Activists.query({userId:userId}, function(activists) {
                     $scope.activist = activists[0];
                     $scope.canEdit = activists[0].user._id === (window.user._id || $scope.user._id);
+                    $scope.findMyEvents();
                 });
             }
         };
+
+
+        $scope.findMyEvents = function findMyEvents() {
+            Events.query({userId:$scope.activist.user._id}, function(events) {
+                $scope.events = events;
+            });
+        };
+
 
     }
 ]);

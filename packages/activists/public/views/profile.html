@@ -47,6 +47,44 @@
     </div>
 
     <div class="row">
+        <div class="col-md-3 col_bottom_row text-center">
+            <h4>Мои организации</h4>
+        </div>
+
+        <div class="col-md-3 col_bottom_row text-center">
+            <h4>Мои события</h4>
+
+            <div class="row" data-ng-repeat="event in events | limitTo: 3">
+                <div class="col-md-12">
+                    <a data-ui-sref="events-view({eventId: event._id})">
+                        <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
+                    </a>
+                    <p>
+                        {{event.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
+                        {{event.sites}}<br/>
+                        {{event.title}}<br/>
+                        <span class="glyphicon glyphicon-user"></span> 0<br/>
+                        <span class="glyphicon glyphicon-check"></span> {{event.status}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <p align="center">
+                        <a class="btn btn-default" data-ui-sref="events">Календар</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col_bottom_row text-center">
+            <h4>Участвую</h4>
+        </div>
+
+        <div class="col-md-3 col_bottom_row text-center">
+            <h5>FB|VK|TW</h5>
+        </div>
     </div>
 
 </div>

@@ -5,7 +5,6 @@
  */
 var mongoose = require('mongoose'),
     Activist = mongoose.model('Activist'),
-    ObjectId = require('mongoose').Types.ObjectId,
     _ = require('lodash');
 
 
@@ -28,33 +27,28 @@ exports.get = function(req, res) {
     if (req.activist) {
         res.jsonp(req.activist);
     } else {
-        var query = req.query;
-        if (query.user !== undefined) {
-            query.user = new ObjectId(query.user);
-        }
-        var sortBy, limitTo;
-        if (query.sortBy) {
-            sortBy = query.sortBy;
-            delete query.sortBy;
-        }
-        if (query.limitTo) {
-            limitTo = query.limitTo;
-            delete query.limitTo;
+        var query = {};
+        if (req.query.userId !== undefined) {
+            query.user = req.query.userId;
         }
         var find = Activist.find(query);
-        if (sortBy) {
-            find = find.sort(sortBy);
+        if (req.query.sortBy) {
+            find = find.sort(req.query.sortBy);
+        } else {
+            find = find.sort('-created');
         }
-        if (limitTo) {
-            find = find.limit(limitTo);
+        if (req.query.limitTo) {
+            find = find.limit(req.query.limitTo);
         }
-        find.populate('user', 'name username').exec(function(err, activists) {
-            if (err) {
-                res.render('error', {status: 500});
-            } else {
-                res.jsonp(activists);
-            }
-        });
+        find
+            .populate('user', 'name username')
+            .exec(function(err, activists) {
+                if (err) {
+                    res.render('error', {status: 500});
+                } else {
+                    res.jsonp(activists);
+                }
+            });
     }
 };
 
@@ -64,7 +58,7 @@ exports.get = function(req, res) {
 exports.create = function(req, res) {
     Activist
     .find({
-        user: new ObjectId(req.user.id)
+        user: req.user.id
     })
     .exec(function(err, activists) {
         if (err) {
