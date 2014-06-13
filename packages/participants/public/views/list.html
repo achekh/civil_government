@@ -1,0 +1,43 @@
+<section class="participants participants-list" data-ng-controller="participantsController" data-ng-init="find()">
+
+    <div class="row row-header">
+        <div class="col-md-4">
+            <h2><a data-ui-sref="participants">Учасники</a></h2>
+        </div>
+        <br/>
+        <div class="col-md-8">
+            <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                <button type="button" class="btn btn-default dropdown-toggle">{{participantStatus.label}} <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="" data-ng-click="setParticipantStatus(status)" data-ng-repeat="status in participantStatuses">{{status.label}}</a>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-default" data-ui-sref="participants-add" data-ng-if="isAuthenticated()">Приєднатися <i class="glyphicon glyphicon-plus"></i></button>
+        </div>
+    </div>
+
+    <div class="row" data-ng-repeat="participant in participants">
+        <!--<div class="participant-preview">-->
+            <!--<a data-ui-sref="activists-view({activistId: participant.activist._id})">-->
+                <!--<img class="participants-preview" data-ng-src="{{getPreviewUrl(participant, 'hq')}}" src="" />-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="participant-info">-->
+            <!--<p data-ng-if="participant.live"><span class="glyphicon glyphicon-fire"></span> Наживо</p>-->
+            <!--<p data-ng-if="!participant.live"><span class="glyphicon glyphicon-film"></span> Архів</p>-->
+            <!--<p>-->
+                <!--Додано: {{participant.created | date:'dd.MM.yyyy hh:mm'}}<br/>-->
+                <!--Активіст: {{participant.user.username}}<br/>-->
+                <!--Назва: {{participant.title}}-->
+            <!--</p>-->
+            <!--<p>-->
+                <!--Подія: {{participant.event.title}}-->
+            <!--</p>-->
+        <!--</div>-->
+        {{participant}}
+    </div>
+
+    <div class="row row-footer">
+    </div>
+
+</section>
