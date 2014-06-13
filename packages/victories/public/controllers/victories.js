@@ -3,8 +3,8 @@
 angular
     .module('mean.victories')
     .controller('VictoriesController',
-    ['$scope', 'Global', 'Victories',
-    function($scope, Global, Victories) {
+    ['$scope', '$stateParams', 'Global', 'Victories',
+    function($scope, $stateParams, Global, Victories) {
         $scope.global = Global;
         $scope.package = {
             name: 'victories'
@@ -24,5 +24,41 @@ angular
             else
                 return '';
         };
+
+        $scope.init = function init() {
+            if ($stateParams.victoryId) {
+                Victories.get({victoryId:$stateParams.victoryId}, function(victory) {
+                    $scope.victory = victory;
+                });
+            } else {
+                $scope.victory = new Victories();
+            }
+        };
+
+        $scope.getCreateEditTitle = function getCreateEditTitle() {
+            if ($stateParams.victoryId) {
+               return 'Редактирование победы';
+            } else {
+                return 'Создание победы';
+            }
+        };
+
+        $scope.cancel = function cancel() {
+            window.history.back();
+        };
+
+        $scope.save = function save() {
+            if ($scope.victory._id) {
+                $scope.victory.$update(function(victory) {
+                    debugger;
+                    window.history.back();
+                });
+            } else {
+                $scope.victory.$save(function(victory) {
+                    window.history.back();
+                });
+            }
+        };
+
     }
 ]);
