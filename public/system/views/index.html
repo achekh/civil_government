@@ -65,7 +65,7 @@
 
     <div class="row">
 
-        <div class="col-md-3 col_bottom_row">
+        <div class="col-md-3 col_bottom_row" data-ng-controller="VictoriesController" data-ng-init="find()">
 
             <div class="row row-header">
                 <div class="col-md-6">
@@ -74,47 +74,46 @@
             </div>
 
 
-            <div class="row">
+            <div class="row" data-ng-repeat="victory in victories | limitTo: 3">
                 <div class="col-md-12">
-                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
-
-                    <p><b>28.04.2014 - Київ</b></p>
-
-                    <p>Верховная Рада прийняла закон про амнистію</p><br/>
-
+                    <img data-ng-src="{{getVictoryImageUrl(victory)}}"
+                         alt="картинка" class="img-rounded" align="left" hspace="10px"
+                            width="100px" height="100px">
+                    <p><b>{{victory.datetime | date:'dd.MM.yyyy'}} - {{victory.city}}</b></p>
+                    <p>{{victory.title}}</p><br/>
                 </div>
             </div>
 
 
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px">
+            <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                    <!--<img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"-->
+                         <!--hspace="10px">-->
 
-                    <p><b>28.04.2014 - Київ</b></p>
+                    <!--<p><b>28.04.2014 - Київ</b></p>-->
 
-                    <p>Верховная Рада прийняла закон про амнистію</p><br/>
+                    <!--<p>Верховная Рада прийняла закон про амнистію</p><br/>-->
 
-                </div>
-            </div>
+                <!--</div>-->
+            <!--</div>-->
 
 
-            <div class="row">
-                <div class="col-md-12">
-                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"
-                         hspace="10px">
+            <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                    <!--<img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left"-->
+                         <!--hspace="10px">-->
 
-                    <p><b>28.04.2014 - Київ</b></p>
+                    <!--<p><b>28.04.2014 - Київ</b></p>-->
 
-                    <p>Верховная Рада прийняла закон про амнистію</p><br/>
+                    <!--<p>Верховная Рада прийняла закон про амнистію</p><br/>-->
 
-                </div>
-            </div>
+                <!--</div>-->
+            <!--</div>-->
 
             <div class="row row-footer">
                 <div class="col-md-12">
                     <p align="center">
-                        <button type="button" class="btn btn-default">Ще перемоги</button>
+                        <button type="button" class="btn btn-default" data-ui-sref="victories">Ще перемоги</button>
                     </p>
                 </div>
             </div>

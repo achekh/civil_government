@@ -2,15 +2,17 @@
 
 //require(process.cwd() + '/server');
 require(process.cwd() + '/server/models/user');
-require(process.cwd() + '/packages/events/server/models/events');
+require(process.cwd() + '/packages/events/server/models/event');
 require(process.cwd() + '/packages/videos/server/models/video');
 require(process.cwd() + '/packages/activists/server/models/activist');
+require(process.cwd() + '/packages/victories/server/models/victory');
 
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
-    Events = mongoose.model('Events'),
+    Event = mongoose.model('Event'),
     Video = mongoose.model('Video'),
-    Activist = mongoose.model('Activist');
+    Activist = mongoose.model('Activist'),
+    Victory = mongoose.model('Victory');
 
 module.exports = function (done) {
 
@@ -77,10 +79,10 @@ module.exports = function (done) {
                 ];
 
                 console.log('Seed events');
-                return seed(Events, events)
+                return seed(Event, events)
                     .then(function() {
                         console.log('Find event "Admin: Путін Хуйло"');
-                        return Events.findOne({title: 'Admin: Путін Хуйло'}).exec();
+                        return Event.findOne({title: 'Admin: Путін Хуйло'}).exec();
                     })
                     .then(function(event) {
 
@@ -100,7 +102,7 @@ module.exports = function (done) {
                     })
                     .then(function() {
                         console.log('Find event "ВатаВарта"');
-                        return Events.findOne({title: 'ВатаВарта'}).exec();
+                        return Event.findOne({title: 'ВатаВарта'}).exec();
                     })
                     .then(function(event) {
 
@@ -150,10 +152,10 @@ module.exports = function (done) {
                 ];
 
                 console.log('Seed events');
-                return seed(Events, events)
+                return seed(Event, events)
                     .then(function() {
                         console.log('Find event "Путін Хуйло"');
-                        return Events.findOne({title: 'Путін Хуйло'}).exec();
+                        return Event.findOne({title: 'Путін Хуйло'}).exec();
                     })
                     .then(function(event) {
 
@@ -179,7 +181,7 @@ module.exports = function (done) {
                     })
                     .then(function() {
                         console.log('Find event "Пісні UA"');
-                        return Events.findOne({title: 'Пісні UA'}).exec();
+                        return Event.findOne({title: 'Пісні UA'}).exec();
                     })
                     .then(function(event) {
 
@@ -209,6 +211,16 @@ module.exports = function (done) {
                         }];
                         console.log('Seed activist');
                         return seed(Activist, activists);
+                    })
+                    .then(function() {
+                        var victories = [{
+                            title: 'Верховная Рада прийняла закон про амнистію',
+                            datetime: new Date(),
+                            city: 'Київ',
+                            img: 'http://nvip.com.ua/sites/default/files/imagecache/original_watermark/pictures/news/gallery/util-final10.jpg'
+                        }];
+                        console.log('Seed victory');
+                        return seed(Victory, victories);
                     })
                 ;
 
