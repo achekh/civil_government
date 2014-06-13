@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Victory = mongoose.model('Victory');
+    Victory = mongoose.model('Victory'),
+    _ = require('lodash');
 
 exports.create = function (req, res) {
     var victory = new Victory(req.body);
@@ -61,6 +62,7 @@ exports.destroy = function (req, res) {
 
 exports.update = function update(req, res) {
     var victory = req.victory;
+    victory = _.extend(victory, req.body);
     victory.save(function(err, victory) {
         if (err) {
             res.render('error', {status: 500});
