@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    participant = mongoose.model('participant'),
+    Participant = mongoose.model('Participant'),
     _ = require('lodash');
 
 
@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
  * Find participant by id
  */
 exports.participant = function(req, res, next, id) {
-    participant.load(id, function(err, participant) {
+    Participant.load(id, function(err, participant) {
         if (err) return next(err);
         if (!participant) return next(new Error('Failed to load participant ' + id));
         req.participant = participant;
@@ -24,7 +24,7 @@ exports.participant = function(req, res, next, id) {
  * Create an participant
  */
 exports.create = function(req, res) {
-    var participant = new participant(req.body);
+    var participant = new Participant(req.body);
     participant.user = req.user;
 
     participant.save(function(err) {
@@ -92,23 +92,34 @@ exports.all = function(req, res) {
     if (req.query.coordinator && (req.query.coordinator === 'true' || req.query.coordinator === 'false')) {
         query.coordinator = req.query.coordinator;
     }
+    if (req.query.appeared && (req.query.appeared === 'true' || req.query.appeared === 'false')) {
+        query.appeared = req.query.appeared;
+    }
     if (req.query.activistId) {
         query.activist = req.query.activistId;
     }
     if (req.query.eventId) {
         query.event = req.query.eventId;
     }
-    participant
+    var userId;
+    if (req.query.userId) {
+        userId = req.query.userId;
+    }
+    Participant
         .find(query)
         .sort('-created')
-//        .populate('activist', 'username')
-//        .populate('event', 'title')
+        .populate('activist')
         .exec(function(err, participants) {
             if (err) {
                 res.render('error', {
                     status: 500
                 });
             } else {
+                if (userId) {
+                    participants = participants.filter(function (participant) {
+                        return participant.activist.user.toString() === userId;
+                    });
+                }
                 res.jsonp(participants);
             }
         })

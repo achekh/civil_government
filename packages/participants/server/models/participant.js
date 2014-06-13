@@ -27,6 +27,10 @@ var ParticipantSchema = new Schema({
     coordinator: {
         type: Boolean,
         default: false
+    },
+    appeared: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -35,8 +39,22 @@ var ParticipantSchema = new Schema({
  */
 ParticipantSchema.statics.load = function (id, cb) {
     this.findOne({_id: id})
-//        .populate('activist', 'username')
+        .populate('activist')
         .exec(cb);
 };
 
-mongoose.model('Participant', ParticipantSchema);
+var Participant = mongoose.model('Participant', ParticipantSchema);
+
+ParticipantSchema.pre('save', function (next) {
+    // TODO: not sure if it is a good way to prevent duplication
+    var self = this;
+    return Participant.findOne({event: self.event, activist: self.activist}, function (err, participant) {
+        if (err) {
+            return next(err);
+        }
+        if (participant) {
+            self._id = participant._id;
+        }
+        next();
+    }).exec();
+});

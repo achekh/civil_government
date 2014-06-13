@@ -1,7 +1,12 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Events',
-    function ($scope, $stateParams, $location, Events) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'Activists',
+    function ($scope, $stateParams, $location, $state, Events, Activists) {
+
+        $scope.activist = null;
+        Activists.query({user: $scope.global.user._id}, function (response) {
+            $scope.activist = response[0];
+        });
 
         $scope.find = function () {
             Events.query(function (events) {
@@ -9,10 +14,10 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             });
         };
 
-        $scope.findOne = function() {
+        $scope.findOne = function () {
             Events.get({
                 eventId: $stateParams.eventId
-            }, function(event) {
+            }, function (event) {
                 $scope.event = event;
             });
         };
@@ -41,6 +46,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 }
             });
         };
+
         $scope.remove = function (event) {
             if (event) {
                 event.$remove();
@@ -56,8 +62,6 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 });
             }
         };
-        $scope.show = function () {
-            console.log('we here;');
-        };
+
     }
 ]);
