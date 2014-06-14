@@ -19,6 +19,7 @@ body {
 .col_bottom_row > .row.row-footer
 {
     height: auto;
+    text-align: center;
 }
 
 .col_bottom_row > .row.row-header > div,
@@ -29,4 +30,8 @@ body {
 
 .videos.videos-list-small > .row {
     margin-bottom: 0;
+}
+
+.dropdown-menu {
+    text-align: start;
 }

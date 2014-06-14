@@ -73,7 +73,6 @@
                 </div>
             </div>
 
-
             <div class="row" data-ng-repeat="victory in victories | limitTo: 3">
                 <div class="col-md-12">
                     <a data-ui-sref="victory-update({victoryId:victory._id})">
@@ -88,9 +87,7 @@
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <p align="center">
-                        <button type="button" class="btn btn-default" data-ui-sref="victories">Ще перемоги</button>
-                    </p>
+                    <a class="btn btn-default" data-ui-sref="victories">Ще перемоги</a>
                 </div>
             </div>
 
@@ -120,24 +117,13 @@
 
             <div class="row" data-ng-repeat="event in events | limitTo: 3">
                 <div class="col-md-12">
-                    <a data-ui-sref="events-view({eventId: event._id})">
-                        <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
-                    </a>
-                    <p>
-                        {{event.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
-                        {{event.sites}}<br/>
-                        {{event.title}}<br/>
-                        <span class="glyphicon glyphicon-user"></span> 0<br/>
-                        <span class="glyphicon glyphicon-check"></span> {{event.status}}
-                    </p>
+                    <cg-event-digest data="event"></cg-event-digest>
                 </div>
             </div>
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <p align="center">
-                        <a class="btn btn-default" data-ui-sref="events">Календар</a>
-                    </p>
+                    <a class="btn btn-default" data-ui-sref="events">Календар</a>
                 </div>
             </div>
 
@@ -177,9 +163,7 @@
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <p align="center">
-                        <a class="btn btn-default" data-ui-sref="videos">Інші відео</a>
-                    </p>
+                    <a class="btn btn-default" data-ui-sref="videos">Інші відео</a>
                 </div>
             </div>
 
@@ -192,7 +176,6 @@
                     <h2>Лідери</h2>
                 </div>
             </div>
-
 
             <div class="row" data-ng-repeat="leader in leaders | limitTo: 3">
                 <div class="col-md-12">
@@ -212,9 +195,7 @@
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <p align="center">
-                        <button type="button" class="btn btn-default">Всі лідери</button>
-                    </p>
+                    <a class="btn btn-default">Всі лідери</a>
                 </div>
             </div>
 

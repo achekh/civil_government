@@ -1,0 +1,10 @@
+<a data-ui-sref="events-view({eventId: event._id})">
+    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
+</a>
+<p>
+    {{event.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
+    {{event.sites}}<br/>
+    {{event.title}}<br/>
+    <span class="glyphicon glyphicon-user"></span> 0<br/>
+    <span class="glyphicon glyphicon-check"></span> {{event.status}}
+</p>
