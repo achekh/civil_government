@@ -49,15 +49,7 @@
 
             <div class="row" data-ng-repeat="participant in participants | limitTo: 3">
                 <div class="col-md-12">
-                    <a data-ui-sref="activist-view({activistId: participant.activist._id})">
-                        <img class="videos-preview-small" align="left" hspace="10px" data-ng-src="{{participant.activist.img}}" src="" />
-                    </a>
-                    <p>
-                        {{participant.activist.fullName}}<br/>
-                        {{participant.activist.city}}<br/>
-                        Всього подій: {{participant.activist.eventsTotal}}<br/>
-                        Перемог: {{participant.activist.winPercentage}}
-                    </p>
+                    <cg-activist-digest data="participant.activist"></cg-activist-digest>
                 </div>
             </div>
 
@@ -79,15 +71,7 @@
 
             <div class="row" data-ng-repeat="participant in participants | limitTo: 3">
                 <div class="col-md-12">
-                    <a data-ui-sref="activist-view({activistId: participant.activist._id})">
-                        <img class="videos-preview-small" align="left" hspace="10px" data-ng-src="{{participant.activist.img}}" src="" />
-                    </a>
-                    <p>
-                        {{participant.activist.fullName}}<br/>
-                        {{participant.activist.city}}<br/>
-                        Всього подій: {{participant.activist.eventsTotal}}<br/>
-                        Перемог: {{participant.activist.winPercentage}}
-                    </p>
+                    <cg-activist-digest data="participant.activist"></cg-activist-digest>
                 </div>
             </div>
 
