@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean').config(['$stateProvider',
+angular.module('mean.videos').config(['$stateProvider',
     function($stateProvider) {
 
         // Check if the user is connected

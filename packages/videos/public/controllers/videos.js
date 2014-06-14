@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean').controller('VideosController', ['$scope', '$rootScope', '$stateParams', '$location', 'Videos', 'Events',
+angular.module('mean.videos').controller('VideosController', ['$scope', '$rootScope', '$stateParams', '$location', 'Videos', 'Events',
     function($scope, $rootScope, $stateParams, $location, Videos, Events) {
 
         $scope.videoLiveStatuses = [
