@@ -84,8 +84,8 @@
         <div class="col-md-3 col_bottom_row">
             <div class="row row-header">
                 <div class="col-md-12">
-                    <h4 data-ng-if="isOwner"><a data-ui-sref="events-create"><span class="glyphicon glyphicon-plus-sign"></span></a> Мои события</h4>
-                    <h4 data-ng-if="!isOwner">Участвует в событиях</h4>
+                    <h4 data-ng-if="isOwner"><a data-ui-sref="events-create"><span class="glyphicon glyphicon-plus-sign"></span></a> Участвую</h4>
+                    <h4 data-ng-if="!isOwner">Участвует</h4>
                 </div>
             </div>
             <div class="row" data-ng-repeat="event in eventsParticipated | limitTo: 3">
