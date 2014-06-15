@@ -4,7 +4,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
     function ($scope, $stateParams, $location, $state, Events, Activists) {
 
         $scope.activist = null;
-        Activists.query({user: $scope.global.user._id}, function (response) {
+        Activists.query({userId: $scope.global.user._id}, function (response) {
             $scope.activist = response[0];
         });
 
