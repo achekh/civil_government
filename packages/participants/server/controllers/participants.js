@@ -109,6 +109,7 @@ exports.all = function(req, res) {
         .find(query)
         .sort('-created')
         .populate('activist')
+        .populate('event')
         .exec(function(err, participants) {
             if (err) {
                 res.render('error', {

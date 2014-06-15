@@ -17,12 +17,12 @@ Activists.register(function(app, auth, database) {
     Activists.routes(app, auth, database);
 
     //We are adding a link to the main menu for all authenticated users
-    Activists.menus.add({
-        title: 'activists example page',
-        link: 'activists example page',
-        roles: ['authenticated'],
-        menu: 'main'
-    });
+//    Activists.menus.add({
+//        title: 'activists example page',
+//        link: 'activists example page',
+//        roles: ['authenticated'],
+//        menu: 'main'
+//    });
 
     /**
     //Uncomment to use. Requires meanio@0.3.7 or above

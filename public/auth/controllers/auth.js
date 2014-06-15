@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('mean.controllers.login', [])
-    .controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$location',
-        function($scope, $rootScope, $http, $location) {
+    .controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state',
+        function($scope, $rootScope, $http, $state) {
             // This object will be filled by the form
             $scope.user = {};
 
@@ -25,7 +25,7 @@ angular.module('mean.controllers.login', [])
                                 window.location = response.redirect;
                             }
                         } else {
-                            $location.url('/');
+                            $state.go('activists-view');
                         }
                     })
                     .error(function() {
@@ -34,8 +34,8 @@ angular.module('mean.controllers.login', [])
             };
         }
     ])
-    .controller('RegisterCtrl', ['$scope', '$rootScope', '$http', '$location',
-        function($scope, $rootScope, $http, $location) {
+    .controller('RegisterCtrl', ['$scope', '$rootScope', '$http', '$state',
+        function($scope, $rootScope, $http, $state) {
             $scope.user = {};
 
             $scope.register = function() {
@@ -54,7 +54,7 @@ angular.module('mean.controllers.login', [])
                         $http.get('/loggedin').success(function(user) {
                             $rootScope.user = user;
                             $rootScope.$emit('loggedin');
-                            $location.url('/activist?register');
+                            $state.go('activists-view');
                         });
                     })
                     .error(function(error) {

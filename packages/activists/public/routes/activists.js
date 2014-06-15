@@ -2,22 +2,23 @@
 
 angular.module('mean.activists').config(['$stateProvider',
     function($stateProvider) {
-        $stateProvider.state('activist', {
-            url: '/activist',
-            templateUrl: 'activists/views/index.html'
-        });
-
-        //url: '/inbox/:inboxId/messages/{sorted}?from&to'
-        // $stateParams: {inboxId: '123', sorted: 'ascending', from: 10, to: 20}
-
-        $stateProvider.state('profile', {
-            url: '/profiles/:activistId',
-            templateUrl: 'activists/views/profile.html'
-        });
-
-        $stateProvider.state('profile_my', {
-            url: '/profile',
-            templateUrl: 'activists/views/profile.html'
-        });
+        $stateProvider
+            .state('activists', {
+                url: '/activists',
+                templateUrl: 'activists/views/list.html'
+            })
+            .state('activists-create', {
+                url: '/activists/create',
+                templateUrl: 'activists/views/edit.html'
+            })
+            .state('activists-edit', {
+                url: '/activists/edit',
+                templateUrl: 'activists/views/edit.html'
+            })
+            .state('activists-view', {
+                url: '/activists/:activistId',
+                templateUrl: 'activists/views/view.html'
+            })
+        ;
     }
 ]);

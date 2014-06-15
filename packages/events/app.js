@@ -17,24 +17,18 @@ Events.register(function(app, auth, database) {
     Events.routes(app, auth, database);
 
     //We are adding a link to the main menu for all authenticated users
-    Events.menus.add({
-        title: 'События',
-        link: 'events',
-        roles: ['authenticated'],
-        menu: 'main'
-    });
-    Events.menus.add({
-        title: 'Добавить событие',
-        link: 'events create',
-        roles: ['authenticated'],
-        menu: 'main'
-    });
- Events.menus.add({
-        title: 'test',
-        link: 'testing',
-        roles: ['authenticated'],
-        menu: 'main'
-    });
+//    Events.menus.add({
+//        title: 'События',
+//        link: 'events',
+//        roles: ['authenticated'],
+//        menu: 'main'
+//    });
+//    Events.menus.add({
+//        title: 'Добавить событие',
+//        link: 'events create',
+//        roles: ['authenticated'],
+//        menu: 'main'
+//    });
 
     /**
     //Uncomment to use. Requires meanio@0.3.7 or above

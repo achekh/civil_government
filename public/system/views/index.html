@@ -2,7 +2,7 @@
 
     <div class="row">
 
-        <div class="col-md-3 col_top_row" data-ng-controller="LoginCtrl" data-ng-if="!isAuthenticated()">
+        <div class="col-md-3 col_top_row" data-ng-if="!isAuthenticated()" data-ng-controller="LoginCtrl">
             <form data-ng-submit="login()">
                 <p align="center"><br/><br/>
                     <input class="form-inline" type="text" name="email" placeholder="e-mail" data-ng-model="user.email"><br/><br/>
@@ -15,7 +15,7 @@
         </div>
 
         <div class="col-md-3 col_top_row" data-ng-if="isAuthenticated()" data-ng-controller="ActivistsController" data-ng-init="init()">
-            <p><span class="h3">{{activist.fullName}}</span><br><a class="small" href="#!/activist">Изменить</a></p>
+            <p><span class="h3">{{activist.fullName}}</span><br><a class="small" data-ui-sref="activists-edit">Изменить</a></p>
             <p>
                 {{activist.country}}, {{activist.city}}
                 <br>{{activist.emails[0]}}
