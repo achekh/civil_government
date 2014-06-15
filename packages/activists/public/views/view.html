@@ -1,16 +1,18 @@
 <div class="container-fluid" data-ng-controller="ActivistsController" data-ng-init="init()">
 
     <div class="row">
+
         <div class="col-md-3 col_top_row">
-            <img data-ng-src="{{getLeaderImageUrl(activist)}}" alt="картинка" class="img-rounded"
-                 hspace="10px" vspace="10px" width="200" height="200">
+            <img data-ng-src="{{getLeaderImageUrl(activist)}}" alt="картинка" class="img-rounded" hspace="10px"
+                 vspace="10px" width="200" height="200">
         </div>
 
-        <div class="col-md-3 col_top_row text-center" >
+        <div class="col-md-3 col_top_row text-center">
             <p>
                 <span class="h3">{{activist.fullName}}</span><br>
-                <a data-ng-if="hasAuthorization(activist)" class="small" data-ui-sref="activists-edit">Изменить</a>
+                <a data-ng-if="canEdit" class="small" data-ui-sref="activists-edit">Изменить</a>
             </p>
+
             <p>
                 {{activist.country}}, {{activist.city}}
                 <br>{{activist.emails[0]}}
@@ -21,7 +23,7 @@
         <div class="col-md-3 col_top_row text-center">
             <p>
                 <span class="h3">О себе</span><br>
-                <a data-ng-show="canEdit" class="small" data-ui-sref="activists-edit">Изменить</a>
+                <a data-ng-if="canEdit" class="small" data-ui-sref="activists-edit">Изменить</a>
             </p>
             <p>
                 {{activist.aboutMe}}
@@ -29,17 +31,21 @@
         </div>
 
         <div class="col-md-3 col_top_row text-center">
-            <p><span class="h4">Мои рекорды</span></p>
+            <h4 data-ng-if="isOwner">Мои рекорды</h4>
+            <h4 data-ng-if="!isOwner">Рекорды</h4>
             <table class="table">
                 <tbody>
                 <tr>
-                    <td class="text-right">{{activist.eventsTotal}}</td><td class="text-left">Всего событий</td>
+                    <td class="text-right">{{activist.eventsTotal}}</td>
+                    <td class="text-left">Всего событий</td>
                 </tr>
                 <tr>
-                    <td class="text-right">{{activist.eventsOwn}}</td><td class="text-left">Моих событий</td>
+                    <td class="text-right">{{activist.eventsOwn}}</td>
+                    <td class="text-left">{{isOwner ? 'Моих событий' : 'Собственных'}}</td>
                 </tr>
                 <tr>
-                    <td class="text-right">{{activist.winPercentage}}</td><td class="text-left">% Побед</td>
+                    <td class="text-right">{{activist.winPercentage}}</td>
+                    <td class="text-left">% побед</td>
                 </tr>
                 </tbody>
             </table>
@@ -50,7 +56,8 @@
         <div class="col-md-3 col_bottom_row">
             <div class="row row-header">
                 <div class="col-md-12">
-                    <h4><a data-ui-sref="#"><span class="glyphicon glyphicon-plus-sign"></span></a> Мои организации</h4>
+                    <h4 data-ng-if="isOwner"><a data-ui-sref="#"><span class="glyphicon glyphicon-plus-sign"></span></a> Мои организации</h4>
+                    <h4 data-ng-if="!isOwner">Состоит в организациях</h4>
                 </div>
             </div>
         </div>
@@ -58,7 +65,8 @@
         <div class="col-md-3 col_bottom_row">
             <div class="row row-header">
                 <div class="col-md-12">
-                    <h4><a data-ui-sref="events-create"><span class="glyphicon glyphicon-plus-sign"></span></a> Мои события</h4>
+                    <h4 data-ng-if="isOwner"><a data-ui-sref="events-create"><span class="glyphicon glyphicon-plus-sign"></span></a> Мои события</h4>
+                    <h4 data-ng-if="!isOwner">Инициированые события</h4>
                 </div>
             </div>
             <div class="row" data-ng-repeat="event in eventsOwned | limitTo: 3">
@@ -76,7 +84,8 @@
         <div class="col-md-3 col_bottom_row">
             <div class="row row-header">
                 <div class="col-md-12">
-                    <h4><a data-ui-sref="#"><span class="glyphicon glyphicon-plus-sign"></span></a> Участвую</h4>
+                    <h4 data-ng-if="isOwner"><a data-ui-sref="events-create"><span class="glyphicon glyphicon-plus-sign"></span></a> Мои события</h4>
+                    <h4 data-ng-if="!isOwner">Участвует в событиях</h4>
                 </div>
             </div>
             <div class="row" data-ng-repeat="event in eventsParticipated | limitTo: 3">

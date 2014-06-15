@@ -25,7 +25,7 @@ angular.module('mean.controllers.login', [])
                                 window.location = response.redirect;
                             }
                         } else {
-                            $state.go('activists-view');
+                            $state.go('activists-view-self');
                         }
                     })
                     .error(function() {
@@ -54,7 +54,7 @@ angular.module('mean.controllers.login', [])
                         $http.get('/loggedin').success(function(user) {
                             $rootScope.user = user;
                             $rootScope.$emit('loggedin');
-                            $state.go('activists-view');
+                            $state.go('activists-view-self');
                         });
                     })
                     .error(function(error) {

@@ -11,9 +11,14 @@ angular.module('mean.system').service('Global', ['$rootScope', function ($rootSc
         return user && user.roles && user.roles.indexOf('admin') > -1;
     }
 
+    function isOwner (user, obj) {
+        if (!(user && obj && obj.user)) return false;
+        return user._id === obj.user._id;
+    }
+
     function hasAuthorization(user, obj) {
         if (!(user && obj && obj.user)) return false;
-        return isAdmin(user) || user._id === obj.user._id;
+        return isAdmin(user) || isOwner(user, obj);
     }
 
     function getUserGlobals (scope) {
@@ -46,6 +51,7 @@ angular.module('mean.system').service('Global', ['$rootScope', function ($rootSc
 
     this.isAuthenticated = isAuthenticated;
     this.isAdmin = isAdmin;
+    this.isOwner = isOwner;
     this.hasAuthorization = hasAuthorization;
 
 }]);

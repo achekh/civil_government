@@ -7,7 +7,8 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
 
         var handleGetActivistSuccess = function (activist) {
             $scope.activist = activist;
-            $scope.canEdit = activist.user._id === (window.user._id || $scope.user._id);
+            $scope.canEdit = $scope.hasAuthorization(activist);
+            $scope.isOwner = $scope.isOwner(activist);
             $scope.findOwnedEvents();
             $scope.findParticipatedEvents();
         };

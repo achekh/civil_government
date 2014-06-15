@@ -23,6 +23,12 @@ angular.module('mean.system', ['mean.controllers.login', 'mean-factory-intercept
             return Global.hasAuthorization($rootScope.global.user, obj);
         };
 
+        $rootScope.isOwner = function(obj) {
+            if (!checkGlobalUser()) return false;
+            if (!checkUserObject(obj)) return false;
+            return Global.isOwner($rootScope.global.user, obj);
+        };
+
         $rootScope.isAuthenticated = function () {
             if (!checkGlobalUser()) return false;
             return Global.isAuthenticated($rootScope.global.user);
