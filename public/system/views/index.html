@@ -15,7 +15,7 @@
         </div>
 
         <div class="col-md-3 col_top_row" data-ng-if="isAuthenticated()" data-ng-controller="ActivistsController" data-ng-init="init()">
-            <p><span class="h3">{{activist.fullName}}</span><br><a class="small" data-ui-sref="activists-edit">Изменить</a></p>
+            <p><span class="h3">{{activist.displayName}}</span><br><a class="small" data-ui-sref="activists-edit">Изменить</a></p>
             <p>
                 {{activist.country}}, {{activist.city}}
                 <br>{{activist.emails[0]}}
@@ -160,7 +160,7 @@
 
         </div>
 
-        <div class="col-md-3 col_bottom_row" data-ng-controller="LeadersController" data-ng-init="find()">
+        <div class="col-md-3 col_bottom_row" data-ng-controller="ActivistsController" data-ng-init="findLeaders()">
 
             <div class="row row-header">
                 <div class="col-md-6">
@@ -175,7 +175,7 @@
                              hspace="10px" width="100" height="100">
                     </a>
                     <p>
-                        <a data-ui-sref="profile({activistId:leader._id})"><b>{{leader.fullName}} - {{leader.city}}</b></a><br/>
+                        <a data-ui-sref="profile({activistId:leader._id})"><b>{{leader.displayName}} - {{leader.city}}</b></a><br/>
                         В системі: {{getLeaderInSystemDurationSeconds(leader) / 60 / 60 / 24 / 30 / 12 | number:0}}г {{getLeaderInSystemDurationSeconds(leader) / 60 / 60 / 24 / 30 | number:0}}м {{getLeaderInSystemDurationSeconds(leader) / 60 / 60 / 24 | number:0}}д<br/>
                         Всього подій: {{leader.eventsTotal}}<br/>
                         Своїх подій: {{leader.eventsOwn}}<br/>

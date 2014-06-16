@@ -19,7 +19,12 @@ var ActivistSchema = new Schema({
         type: [Date],
         default: []
     },
-    fullName: {
+    name: {
+        type: String,
+        default: '',
+        trim: true
+    },
+    lastName: {
         type: String,
         default: '',
         trim: true
@@ -74,9 +79,9 @@ var ActivistSchema = new Schema({
 /**
  * Validations
  */
-ActivistSchema.path('fullName').validate(function(fullName) {
-    return fullName.length;
-}, 'fullName cannot be blank');
+ActivistSchema.path('name').validate(function(name) {
+    return name.length;
+}, 'name cannot be blank');
 
 /**
  * Statics
@@ -86,5 +91,21 @@ ActivistSchema.statics.load = function(id, cb) {
         _id: id
     }).populate('user', 'name username').exec(cb);
 };
+
+ActivistSchema.virtual('displayName').get(function () {
+    if (this.lastName && this.lastName.length) {
+        return this.name + ' ' + this.lastName.substr(0, 1) + '.';
+    }
+    return this.name;
+});
+
+ActivistSchema.set('toJSON', {
+    virtuals: true
+    , transform: function (doc, ret, options) {
+        if (!options.lastName) {
+            delete ret.lastName;
+        }
+    }
+});
 
 mongoose.model('Activist', ActivistSchema);

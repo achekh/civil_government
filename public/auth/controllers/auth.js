@@ -46,7 +46,8 @@ angular.module('mean.controllers.login', [])
                     password: $scope.user.password,
                     confirmPassword: $scope.user.confirmPassword,
                     username: $scope.user.username,
-                    name: $scope.user.name
+                    name: $scope.user.name,
+                    lastName: $scope.user.lastName
                 })
                     .success(function() {
                         // registration OK

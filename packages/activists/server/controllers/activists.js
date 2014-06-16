@@ -65,17 +65,18 @@ exports.create = function(req, res) {
             res.render('error', {status: 500});
         } else {
             if (activists[0]) {
-                res.jsonp(activists[0]);
+                res.jsonp(activists[0].toJSON({lastName:true}));
             } else {
                 var activist = new Activist();
                 activist.user = req.user;
-                activist.fullName = req.user.name;
+                activist.name = req.user.name;
+                activist.lastName = req.user.lastName;
                 activist.emails = [req.user.email];
                 activist.save(function(err) {
                     if (err) {
                         res.render('error', {status: 500});
                     } else {
-                        res.jsonp(activist);
+                        res.jsonp(activist.toJSON({lastName:true}));
                     }
                 });
             }

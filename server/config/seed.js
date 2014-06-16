@@ -202,7 +202,7 @@ module.exports = function (done) {
                     .then(function() {
                         var activists = [{
                            user: user,
-                           fullName: user.name,
+                           name: user.name,
                            emails:[user.email],
                            country:'Украiна',
                            city:'Кieв',

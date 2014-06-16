@@ -67,6 +67,18 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
             });
         };
 
+        $scope.findLeaders = function() {
+            Activists.query({sortBy: '-eventsTotal', limitTo: 3}, function(leaders) {
+                $scope.leaders = leaders;
+            });
+        };
+
+        $scope.getLeaderInSystemDurationSeconds = function(leader) {
+            return (new Date().getTime() - new Date(leader.created).getTime()) / 1000;
+        };
+
+        $scope.nowDate = new Date();
+
     }
 ]);
 
