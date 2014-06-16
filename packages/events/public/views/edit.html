@@ -1,0 +1,117 @@
+<section class="events events-edit" data-ng-controller="EventsController" data-ng-init="init()">
+
+    <div class="row row-header">
+        <div class="col-md-8">
+            <h2>{{isNew ? 'Створення події' : 'Редагування події'}}</h2>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <form class="form-horizontal col-md-12" role="form" data-ng-submit="(isNew) ? create() : update()">
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="title" placeholder="назва" required data-ng-model="title">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                        <button type="button" class="btn btn-default dropdown-toggle">{{eventOrganization.title}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="" data-ng-click="setEventOrganization(organization)" data-ng-repeat="organization in activistOrganizations">{{organization.title}}</a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-6">
+                    <!--<input type="text" class="form-control" id="date" placeholder="дата" required data-ng-model="date">-->
+                    <cg-datapicker data-ng-model="date"></cg-datapicker>
+                </div>
+                <div class="col-md-6">
+                    <!--<input type="text" class="form-control" id="time" placeholder="час" required data-ng-model="time">-->
+                    <timepicker ng-model="time" hour-step="1" minute-step="5" show-meridian="false"></timepicker>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <cg-dropdown options="[
+                        {label:'На затвердженні', value:'FOR_APPROVAL'},
+                        {label:'Затверджено', value:'APPROVED'},
+                        {label:'Узгоджено', value:'AGREED'},
+                        {label:'В процесі', value:'IN_PROGRESS'},
+                        {label:'Закінчено', value:'FINISHED'},
+                        {label:'Відмінено', value:'CANCELED'},
+                        {label:'Перемога', value:'WIN'}
+                    ]" data-ng-model="status"></cg-dropdown><br>
+                    <span><a>завантажити офіційні документи</a></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="sites" placeholder="сайти (кожен з нового рядка, через Enter)" data-ng-model="sites">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <textarea class="form-control" id="description" placeholder="інформація" data-ng-model="description"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-6">
+                    <input type="number" class="form-control" id="min_part" placeholder="мін. учасників" min="0" data-ng-model="min_part">
+                </div>
+                <div class="col-md-6">
+                    <input type="number" class="form-control" id="max_part" placeholder="макс. учасників" min="{{min_part + 1}}" data-ng-model="max_part">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="gps" placeholder="GPS-координати" data-ng-model="gps">
+                    <span><a>вказати на карті</a></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    MAP
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit">Зберегти <i class="glyphicon glyphicon-save"></i></button>
+                    <button class="btn btn-default" data-ui-sref="activists-view-self">Скасувати <i class="glyphicon glyphicon-backward"></i></button>
+                </div>
+            </div>
+
+            <div class="form-group" data-ng-if="errors">
+                <div class="col-md-12" data-ng-repeat="error in errors">
+                    <div class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{error.message}}
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script>
+    $('#date').datepicker({
+        format: 'dd/MM/yyyy hh:mm:ss',
+        language: 'pt-BR'
+    });
+</script>

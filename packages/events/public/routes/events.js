@@ -8,13 +8,18 @@ angular.module('mean.events').config(['$stateProvider',
                 templateUrl: 'events/views/list.html',
                 reload: true
             })
-            .state('events-view', {
-                url: '/events/:eventId',
-                templateUrl: 'events/views/view.html'
-            })
             .state('events-create', {
                 url:'/events/create',
-                templateUrl:'events/views/create.html'
-            });
+                templateUrl:'events/views/edit.html'
+            })
+            .state('events-edit', {
+                url: '/events/edit/:eventId',
+                templateUrl: 'events/views/edit.html'
+            })
+            .state('events-view', {
+                url: '/events/view/:eventId',
+                templateUrl: 'events/views/view.html'
+            })
+        ;
     }
 ]);

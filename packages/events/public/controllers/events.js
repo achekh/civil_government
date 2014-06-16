@@ -3,10 +3,18 @@
 angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'Activists',
     function ($scope, $stateParams, $location, $state, Events, Activists) {
 
-        $scope.activist = null;
-        Activists.query({userId: $scope.global.user._id}, function (response) {
-            $scope.activist = response[0];
-        });
+        $scope.isNew = $state.is('events-create');
+
+//        $scope.activist = null;
+//        Activists.query({userId: $scope.global.user._id}, function (response) {
+//            $scope.activist = response[0];
+//        });
+
+        $scope.init = function () {
+            if (!$scope.isNew) {
+                $scope.findOne();
+            }
+        };
 
         $scope.find = function () {
             Events.query(function (events) {
@@ -34,23 +42,39 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 max_part: this.max_part,
                 gps: this.gps
             });
-            events.$save(function (resp) {
-                if (resp.errors) {
-                    $('#errors').show();
-                    $('#errors ul').empty();
-                    $.each(resp.errors, function (key, val) {
-                        $('#errors ul').append('<li>' + val.message + '</val>');
-                    });
+            events.$save(function (response) {
+                if (response.errors) {
+                    $scope.errors = response.errors;
                 } else {
-                    $location.path('events');
+                    $location.path('events/' + response._id);
                 }
+
+            });
+        };
+
+        $scope.update = function() {
+            var event = $scope.event;
+            event.description = this.description;
+            event.title = this.title;
+            event.organization = this.organization;
+            event.datetime = this.date + ' ' + this.time;
+            event.status = this.status;
+            event.sites = this.sites;
+            event.min_part = this.min_part;
+            event.max_part = this.max_part;
+            event.gps = this.gps;
+            if (!event.updated) {
+                event.updated = [];
+            }
+            event.updated.push(new Date().getTime());
+            event.$update(function() {
+                $location.path('events/' + event._id);
             });
         };
 
         $scope.remove = function (event) {
             if (event) {
                 event.$remove();
-
                 for (var i in $scope.events) {
                     if ($scope.events[i] === event) {
                         $scope.events.splice(i, 1);
@@ -62,8 +86,6 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 });
             }
         };
-        $scope.show = function () {
-            console.log('we here;');
-        };
+
     }
 ]);
