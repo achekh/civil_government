@@ -115,10 +115,12 @@ module.exports = function(grunt) {
         grunt.registerTask('default', ['clean','cssmin', 'uglify', 'concurrent']);
     } else {
         grunt.registerTask('default', ['clean','jshint', 'csslint', 'concurrent']);
-        grunt.registerTask('db.seed', 'Seed database with sample data', function () {
-            require(process.cwd() + '/server/config/seed')(this.async());
-        });
     }
+
+    //Db seed
+    grunt.registerTask('db.seed', 'Seed database with sample data', function () {
+        require(process.cwd() + '/server/config/seed')(this.async());
+    });
 
     //Test task.
     grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
