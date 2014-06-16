@@ -1,17 +1,17 @@
 'use strict';
 
 //Global service for global variables
-angular.module('mean.system').service('Global', ['$rootScope', function ($rootScope) {
+angular.module('mean.system').service('Global', ['$rootScope', 'Activists', function ($rootScope, Activists) {
 
-    function isAuthenticated (user) {
+    function isAuthenticated(user) {
         return user && user.roles && user.roles.length > 0;
     }
 
-    function isAdmin (user) {
+    function isAdmin(user) {
         return user && user.roles && user.roles.indexOf('admin') > -1;
     }
 
-    function isOwner (user, obj) {
+    function isOwner(user, obj) {
         if (!(user && obj && obj.user)) return false;
         return user._id === obj.user._id;
     }
@@ -21,7 +21,26 @@ angular.module('mean.system').service('Global', ['$rootScope', function ($rootSc
         return isAdmin(user) || isOwner(user, obj);
     }
 
-    function getUserGlobals (scope) {
+    function populateUserGlobals(globals) {
+        if (globals.user && globals.user.roles) {
+            globals.authenticated = isAuthenticated(globals.user);
+            globals.isAdmin = isAdmin(globals.user);
+        }
+    }
+
+    function populateActivist(globals) {
+        if (globals.user && globals.user._id) {
+            Activists.query({userId: globals.user._id}, function (response) {
+                if (!response.errors) {
+                    globals.activist = response[0];
+                }
+            });
+        }
+    }
+
+    this.getGlobals = function (scope) {
+
+        scope = scope || $rootScope;
 
         var globals = {
             user: scope.user,
@@ -29,24 +48,11 @@ angular.module('mean.system').service('Global', ['$rootScope', function ($rootSc
             isAdmin: false
         };
 
-        if (scope.user && scope.user.roles) {
-            globals.authenticated = isAuthenticated(scope.user);
-            globals.isAdmin = isAdmin(scope.user);
-        }
+        populateUserGlobals(globals);
+        populateActivist(globals);
 
         return globals;
 
-    }
-
-    this.getWindowGlobals = function () {
-        var globals = getUserGlobals(window);
-        return globals;
-    };
-
-    this.getScopeGlobals = function (scope) {
-        scope = scope || $rootScope;
-        var globals = getUserGlobals(scope);
-        return globals;
     };
 
     this.isAuthenticated = isAuthenticated;

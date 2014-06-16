@@ -42,10 +42,10 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
 
         $scope.join = function () {
             var participant = new Participants({
-                activist: $scope.activist._id,
+                activist: $scope.global.activist._id,
                 event: $stateParams.eventId
             });
-            participant.$save(function() {
+            participant.$save(function () {
                 $state.go('events-view', {}, {reload: true});
             });
         };

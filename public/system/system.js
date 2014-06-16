@@ -3,10 +3,14 @@
 angular.module('mean.system', ['mean.controllers.login', 'mean-factory-interceptor'])
     .run(['$rootScope', 'Global', function ($rootScope, Global) {
 
-        $rootScope.global = Global.getWindowGlobals();
+        $rootScope.global = Global.getGlobals(window);
 
         $rootScope.$on('loggedin', function() {
-            $rootScope.global = Global.getScopeGlobals($rootScope);
+            $rootScope.global = Global.getGlobals($rootScope);
+        });
+
+        $rootScope.$on('activist-updated', function(activist) {
+            $rootScope.global.activist = activist;
         });
 
         function checkGlobalUser() {

@@ -92,7 +92,8 @@ app.controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$s
                 activist.updated = [];
             }
             activist.updated.push(new Date().getTime());
-            activist.$update(function () {
+            activist.$update(function (response) {
+                $rootScope.$emit('activist-updated', response);
                 $state.go('activists-view');
             });
         };
