@@ -56,6 +56,10 @@ var ActivistSchema = new Schema({
         type: String,
         default: 'image_default_activist.png',
         trim: true
+        ,get: function(img) {
+            if (!img) return img;
+            return img.indexOf('http://') === 0 ? img : 'http://dummyimage.com/100x100/858585/' + img;
+        }
     },
     eventsTotal: {
         type: Number,
@@ -101,6 +105,7 @@ ActivistSchema.virtual('displayName').get(function () {
 
 ActivistSchema.set('toJSON', {
     virtuals: true
+    ,getters: true
     , transform: function (doc, ret, options) {
         if (!options.lastName) {
             delete ret.lastName;

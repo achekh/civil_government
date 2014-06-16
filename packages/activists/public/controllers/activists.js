@@ -44,13 +44,6 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
 //            });
 //        };
 
-        $scope.getLeaderImageUrl = function (leader) {
-            if (leader)
-                return String(leader.img).indexOf('http://') === 0 ? leader.img : 'http://dummyimage.com/100x100/858585/' + leader.img;
-            else
-                return '';
-        };
-
         $scope.findOwnedEvents = function findMyEvents() {
             $scope.eventsOwned = [];
             Events.query({userId: $scope.activist.user._id}, function (events) {
