@@ -2,8 +2,8 @@
 
 var app = angular.module('mean.activists', ['ui.bootstrap']);
 
-app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state', '$stateParams', 'Activists', 'Events', 'Participants',
-    function ($scope, $modal, $rootScope, $state, $stateParams, Activists, Events, Participants) {
+app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state', '$stateParams', 'Activists', 'Events', 'Participants', 'Organisations', 'Members',
+    function ($scope, $modal, $rootScope, $state, $stateParams, Activists, Events, Participants, Organisations, Members) {
 
         var handleGetActivistSuccess = function (activist) {
             $scope.activist = activist;
@@ -11,6 +11,7 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
             $scope.isOwner = $scope.isOwner(activist);
             $scope.findOwnedEvents();
             $scope.findParticipatedEvents();
+            $scope.findOrganisations();
         };
 
         $scope.init = function () {
@@ -56,6 +57,15 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
             Participants.query({activistId: $scope.activist._id}, function (participants) {
                 participants.forEach(function (participant) {
                     $scope.eventsParticipated.push(participant.event);
+                });
+            });
+        };
+
+        $scope.findOrganisations = function findOrganisations() {
+            $scope.organisations = [];
+            Members.query({activistId: $scope.activist._id}, function (members) {
+                members.forEach(function (member) {
+                    $scope.organisations.push(member.organisation);
                 });
             });
         };

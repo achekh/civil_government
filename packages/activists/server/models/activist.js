@@ -96,6 +96,12 @@ ActivistSchema.statics.load = function(id, cb) {
     }).populate('user', 'name username').exec(cb);
 };
 
+ActivistSchema.statics.loadByUserId = function(userId, cb) {
+    this.findOne({
+        user: userId
+    }).populate('user', 'name username').exec(cb);
+};
+
 ActivistSchema.virtual('displayName').get(function () {
     if (this.lastName && this.lastName.length) {
         return this.name + ' ' + this.lastName.substr(0, 1) + '.';

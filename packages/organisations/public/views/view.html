@@ -1,0 +1,141 @@
+<div class="container-fluid" data-ng-controller="OrganisationsController" data-ng-init="findOne()">
+
+    <div class="row">
+
+        <div class="col-md-3 col_top_row">
+            <a data-ui-sref="organizations-view({organizationId: organisation.organization._id})">
+                <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
+            </a>
+        </div>
+
+        <div class="col-md-3 col_top_row">
+            <h2 editable-text="organisation.title" e-form="title" ng-click="inlineEdit(title)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'title',data:$data})">{{organisation.title}}</h2>
+            <span editable-text="organisation.description" e-form="description" ng-click="inlineEdit(description)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'description',data:$data})">{{organisation.description || "Нет информации"}}</span>
+        </div>
+
+        <div class="col-md-3 col_top_row">
+            {{organisation.sites}}<br/>
+            {{organisation.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
+            {{organisation.status}}
+        </div>
+
+        <div class="col-md-3 col_top_row" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">
+            <div class="row" data-ng-if="global.authenticated">
+                <h1 data-ng-if="!participant">
+                    <a class="btn btn-default" data-ng-click="join()"><span class="glyphicon glyphicon-plus"> Піду</span></a>
+                </h1>
+                <h1 data-ng-if="participant && !participant.appeared">
+                    <a class="btn btn-default" data-ng-click="appear()"><span class="glyphicon glyphicon-play"> Прийшов</span></a>
+                </h1>
+                <h1 data-ng-if="participant">
+                    <a class="btn btn-default" data-ng-click="leave()"><span class="glyphicon glyphicon-minus"> Відмова</span></a>
+                </h1>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3 col_bottom_row activists activists-list-small" data-ng-controller="ParticipantsController" data-ng-init="load({coordinator: true})">
+
+            <div class="row row-header">
+                <div class="col-md-12">
+                    <h2>Координатори</h2>
+                </div>
+            </div>
+
+            <div class="row" data-ng-repeat="participant in participants | limitTo: 3">
+                <div class="col-md-12">
+                    <cg-activist-digest data="participant.activist"></cg-activist-digest>
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <a class="btn btn-default">Інші координатори</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row activists activists-list-small" data-ng-controller="ParticipantsController" data-ng-init="find()">
+
+            <div class="row row-header">
+                <div class="col-md-12">
+                    <h2>Учасники</h2>
+                </div>
+            </div>
+
+            <div class="row" data-ng-repeat="participant in participants | limitTo: 3">
+                <div class="col-md-12">
+                    <cg-activist-digest data="participant.activist"></cg-activist-digest>
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <a class="btn btn-default">Інші учасники</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row videos videos-list-small" data-ng-controller="VideosController"
+             data-ng-init="find()">
+
+            <div class="row row-header">
+                <div class="col-md-6">
+                    <h2>Відео</h2>
+                </div>
+                <br/>
+
+                <div class="col-md-6">
+                    <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                        <button type="button" class="btn btn-default dropdown-toggle">{{videoLiveStatus.label}} <span
+                                class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="" data-ng-click="setVideoLiveStatus(status)"
+                                   data-ng-repeat="status in videoLiveStatuses">{{status.label}}</a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" data-ng-repeat="video in videos | limitTo: 3">
+                <div class="col-md-12">
+                    <cg-video-digest data="video" preview-url="getPreviewUrl(video)"></cg-video-digest>
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <a class="btn btn-default" data-ui-sref="videos">Інші відео</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row">
+
+            <div class="row row-header">
+                <div class="col-md-12">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <a class="btn btn-default"></a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

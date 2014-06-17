@@ -1,0 +1,41 @@
+<section class="organisations organisations-list" data-ng-controller="OrganisationsController" data-ng-init="find()">
+
+    <div class="row row-header">
+        <div class="col-md-4">
+            <h2><a data-ui-sref="organisations">Організації</a></h2>
+        </div>
+        <br/>
+        <div class="col-md-8">
+            <!--<div class="btn-group dropdown" data-cg-dropdown-autoclose>-->
+                <!--<button type="button" class="btn btn-default dropdown-toggle">{{organisationSite.label}} <span class="caret"></span></button>-->
+                <!--<ul class="dropdown-menu" role="menu">-->
+                    <!--<li><a href="" data-ng-click="setOrganisationSite(site)" data-ng-repeat="site in organisationSites">{{site.label}}</a>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <button type="button" class="btn btn-default" data-ui-sref="organisations-create" data-ng-if="isAuthenticated()">Додати ще <i class="glyphicon glyphicon-plus"></i></button>
+        </div>
+    </div>
+
+    <div class="row" data-ng-repeat="organisation in organisations">
+        <div class="col-md-3">
+            <a class="pull-right" data-ng-if="isOwner(organisation)" data-ng-click="remove(organisation)"><span class="glyphicon glyphicon-remove-sign"></span></a>
+
+            <div class="organisation-preview">
+                <a data-ui-sref="organisations-view({organisationId: organisation._id})">
+                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
+                </a>
+            </div>
+            <div class="organisation-info">
+                <p>
+                    <b>{{organisation.title}}</b><br/>
+                    Всего событий: <br/>
+                    Победы (%):
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-footer">
+    </div>
+
+</section>
