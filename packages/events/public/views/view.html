@@ -18,7 +18,7 @@
         <div class="col-md-3 col_top_row">
             {{event.sites}}<br/>
             {{event.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
-            {{event.status}}
+            {{getLabel(event.status)}}
         </div>
 
         <div class="col-md-3 col_top_row" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">

@@ -1,14 +1,11 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'Activists',
-    function ($scope, $stateParams, $location, $state, Events, Activists) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses',
+    function ($scope, $stateParams, $location, $state, Events, EventStatuses) {
 
         $scope.isNew = $state.is('events-create');
-
-//        $scope.activist = null;
-//        Activists.query({userId: $scope.global.user._id}, function (response) {
-//            $scope.activist = response[0];
-//        });
+        $scope.statuses = EventStatuses.all;
+        $scope.getLabel = EventStatuses.getLabel;
 
         $scope.init = function () {
             if (!$scope.isNew) {

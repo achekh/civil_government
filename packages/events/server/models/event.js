@@ -3,6 +3,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var statuses = ['FOR_APPROVAL', 'APPROVED', 'AGREED', 'IN_PROGRESS', 'FINISHED', 'CANCELED', 'WIN'];
+
 var EventSchema = new Schema({
     created: {
         type: Date,
@@ -31,6 +33,7 @@ var EventSchema = new Schema({
     },
     status: {
         type: String,
+        enum: statuses,
         required: true
     },
     sites: {
@@ -40,7 +43,7 @@ var EventSchema = new Schema({
     },
     description: {
         type: String,
-        default: ""
+        default: ''
     },
     min_part: {
         type: Number,
@@ -62,5 +65,7 @@ EventSchema.statics.load = function (id, cb) {
         _id: id
     }).populate('user', 'name username').exec(cb);
 };
+
+EventSchema.statics.statuses = statuses;
 
 mongoose.model('Event', EventSchema);

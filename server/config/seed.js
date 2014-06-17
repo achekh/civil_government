@@ -62,7 +62,7 @@ module.exports = function (done) {
                         description: 'Всеукраїнська акція',
                         user: user,
                         organization: 'Об’єднання Майдан Моніторинг',
-                        status: 'Initial',
+                        status: 'FOR_APPROVAL',
                         datetime: new Date(),
                         sites: 'Україна'
                     },
@@ -71,7 +71,7 @@ module.exports = function (done) {
                         description: 'А де вата?',
                         user: user,
                         organization: 'На Варті',
-                        status: 'Initial',
+                        status: 'FOR_APPROVAL',
                         datetime: new Date(),
                         sites: 'Харків'
                     }
@@ -136,7 +136,7 @@ module.exports = function (done) {
                         description: 'Всеукраїнська акція',
                         user: user,
                         organization: 'Об’єднання Майдан Моніторинг',
-                        status: 'Initial',
+                        status: 'FOR_APPROVAL',
                         datetime: new Date(),
                         sites: 'Україна'
                     },
@@ -145,7 +145,7 @@ module.exports = function (done) {
                         description: 'Всеукраїнська акція',
                         user: user,
                         organization: 'Об’єднання Майдан Моніторинг',
-                        status: 'Initial',
+                        status: 'FOR_APPROVAL',
                         datetime: new Date(),
                         sites: 'Україна'
                     }

@@ -34,15 +34,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <cg-dropdown
-                        options="[
-                            {label:'На затвердженні', value:'FOR_APPROVAL'},
-                            {label:'Затверджено', value:'APPROVED'},
-                            {label:'Узгоджено', value:'AGREED'},
-                            {label:'В процесі', value:'IN_PROGRESS'},
-                            {label:'Закінчено', value:'FINISHED'},
-                            {label:'Відмінено', value:'CANCELED'},
-                            {label:'Перемога', value:'WIN'}
-                        ]"
+                        options="statuses"
                         data-ng-model="status"
                         data-ng-required="true"
                     ></cg-dropdown><br>
