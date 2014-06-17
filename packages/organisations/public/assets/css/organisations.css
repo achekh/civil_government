@@ -1,0 +1,11 @@
+.organisations > .row {
+    margin-bottom: 2em;
+}
+
+.editable-click {
+    border-bottom: none;
+}
+
+.editable-empty, .editable-empty:hover {
+    color: black;
+}

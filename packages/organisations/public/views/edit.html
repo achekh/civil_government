@@ -1,0 +1,82 @@
+<section class="organisations organisations-edit" data-ng-controller="OrganisationsController" data-ng-init="init()">
+
+    <div class="row row-header">
+        <div class="col-md-8">
+            <h2>{{isNew ? 'Створення організації' : 'Редагування організації'}}</h2>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <form class="form-horizontal col-md-12" role="form" data-ng-submit="(isNew) ? create() : update()">
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="title" placeholder="назва" required data-ng-model="organisation.title">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" id="shortTitle" placeholder="скорочена назва" data-ng-model="organisation.shortTitle1">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4">
+                    <cg-dropdown options="[
+                        {label:'TODO: Затвердзіць статусы организации', value:'TODO_ORG_STATUSES'}
+                    ]" data-ng-model="organisation.status"></cg-dropdown>
+
+                </div>
+                <div class="col-md-4">
+                    <span><a>завантажити офіційні документи</a></span>
+                </div>
+                <div class="col-md-4">
+                    <cg-dropdown options="[
+                        {label:'TODO: Затвердзіць условия приема', value:'TODO_ORG_ENTER_CONDITIONS'}
+                    ]" data-ng-model="organisation.enterCondition"></cg-dropdown>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <textarea class="form-control" id="sites" placeholder="сайти (кожен з нового рядка, через Enter)" data-ng-model="organisation.sites"></textarea>
+                    <!--<input type="text" class="form-control" id="sites" placeholder="сайти (кожен з нового рядка, через Enter)" data-ng-model="sites">-->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <textarea class="form-control" id="description" placeholder="інформація" data-ng-model="organisation.description"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit">Зберегти <i class="glyphicon glyphicon-save"></i></button>
+                    <button class="btn btn-default" data-ng-click="cancel()">Скасувати <i class="glyphicon glyphicon-backward"></i></button>
+                </div>
+            </div>
+
+            <div class="form-group" data-ng-if="errors">
+                <div class="col-md-12" data-ng-repeat="error in errors">
+                    <div class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{error.message}}
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script>
+//    $('#date').datepicker({
+//        format: 'dd/MM/yyyy hh:mm:ss',
+//        language: 'pt-BR'
+//    });
+</script>

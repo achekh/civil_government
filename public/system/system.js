@@ -43,5 +43,12 @@ angular.module('mean.system', ['mean.controllers.login', 'mean-factory-intercept
             return Global.isAdmin($rootScope.global.user);
         };
 
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
+            toState.previous = fromState;
+            if (!toState.previous || !toState.previous.name) {
+                toState.previous = toState;
+            }
+        });
+
     }])
 ;
