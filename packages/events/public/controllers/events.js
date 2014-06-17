@@ -13,21 +13,32 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         $scope.init = function () {
             if (!$scope.isNew) {
                 $scope.findOne();
+            } else {
+                // todo; change after Organization will be added to app
+                $scope.activistOrganizations = ['Об’єднання Майдан Моніторинг', 'На Варті'];
             }
         };
 
         $scope.find = function () {
-            Events.query(function (events) {
+            return Events.query(function (events) {
                 $scope.events = events;
             });
         };
 
         $scope.findOne = function () {
-            Events.get({
+            return Events.get({
                 eventId: $stateParams.eventId
             }, function (event) {
                 $scope.event = event;
             });
+        };
+
+        $scope.submit = function () {
+            if ($scope.isNew) {
+                return $scope.create();
+            } else {
+                return $scope.update();
+            }
         };
 
         $scope.create = function () {
@@ -35,18 +46,18 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 description: this.description,
                 title: this.title,
                 organization: this.organization,
-                datetime: this.date + ' ' + this.time,
+                datetime: this.datetime,
                 status: this.status,
                 sites: this.sites,
                 min_part: this.min_part,
                 max_part: this.max_part,
                 gps: this.gps
             });
-            events.$save(function (response) {
+            return events.$save(function (response) {
                 if (response.errors) {
                     $scope.errors = response.errors;
                 } else {
-                    $location.path('events/' + response._id);
+                    $location.path('events/view/' + response._id);
                 }
 
             });
@@ -67,21 +78,22 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 event.updated = [];
             }
             event.updated.push(new Date().getTime());
-            event.$update(function() {
+            return event.$update(function() {
                 $location.path('events/' + event._id);
             });
         };
 
         $scope.remove = function (event) {
             if (event) {
-                event.$remove();
-                for (var i in $scope.events) {
-                    if ($scope.events[i] === event) {
-                        $scope.events.splice(i, 1);
+                return event.$remove(function () {
+                    for (var i in $scope.events) {
+                        if ($scope.events[i] === event) {
+                            $scope.events.splice(i, 1);
+                        }
                     }
-                }
+                });
             } else {
-                $scope.event.$remove(function (response) {
+                return $scope.event.$remove(function (response) {
                     $location.path('events');
                 });
             }

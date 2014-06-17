@@ -18,19 +18,31 @@ angular.module('mean.system')
             restrict: 'E',
             templateUrl: 'public/system/views/dropdown.html',
             scope: {
-                ngModel: '=',
+                value: '=ngModel',
                 options: '='
             },
             controller: ['$scope', function ($scope) {
-                if (!$scope.ngModel) {
-                    $scope.ngModel = $scope.options[0].value;
+                if (!Array.isArray($scope.options)) {
+                    throw new Error('Options is not Array');
                 }
-                $scope.selectedOption = $scope.options.filter(function (option) {
-                    return option.value === $scope.ngModel;
+                $scope.internalOptions = [];
+                $scope.options.forEach(function (option) {
+                    if (option.hasOwnProperty('value') && option.hasOwnProperty('label')) {
+                        $scope.internalOptions.push({value: option.value, label: option.label});
+                    } else {
+                        $scope.internalOptions.push({value: option, label: option.toString()});
+                    }
+                });
+
+                if (!$scope.value) {
+                    $scope.value = $scope.internalOptions[0].value;
+                }
+                $scope.selectedOption = $scope.internalOptions.filter(function (option) {
+                    return option.value === $scope.value;
                 })[0];
                 $scope.select = function (option) {
                     $scope.selectedOption = option;
-                    $scope.ngModel = $scope.selectedOption.value;
+                    $scope.value = $scope.selectedOption.value;
                 };
             }],
             link: function (scope, element, attrs, ctrl) {
@@ -42,10 +54,34 @@ angular.module('mean.system')
             restrict: 'E',
             templateUrl: 'public/system/views/datepicker.html',
             scope: {
-                ngModel: '=',
-                options: '='
+                value: '=ngModel'
             },
             controller: ['$scope', function ($scope) {
+                $scope.collapsed = true;
+                $scope.toggle = function ($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.collapsed = !$scope.collapsed;
+                };
+            }],
+            link: function (scope, element, attrs, ctrl) {
+            }
+        };
+    })
+    .directive('cgTimepicker', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'public/system/views/timepicker.html',
+            scope: {
+                value: '=ngModel'
+            },
+            controller: ['$scope', function ($scope) {
+                $scope.collapsed = true;
+                $scope.toggle = function ($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.collapsed = !$scope.collapsed;
+                };
             }],
             link: function (scope, element, attrs, ctrl) {
             }

@@ -1,53 +1,46 @@
-/**
- * Created by legalt on 26.05.2014.
- */
 'use strict';
 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
-
-//var validatePresenceOf = function (value) {
-//    return this.provider;
-//};
 
 var EventSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
     },
-    title: {
-        type: String,
-        required: true
-        // message: 'Необходимо заполнить поле "Информация"'
-        // validate: [validatePresenceOf, 'Необходимо заполнить поле "Наименование"']
-    },
-    description: {
-        type: String, required: true,
-        ErrMsg: 'Необходимо заполнить поле "Информация"'
+    updated: {
+        type: [Date],
+        default: []
     },
     user: {
         type: Schema.ObjectId,
         ref: 'User',
         index: true
     },
-    organization: {
+    title: {
         type: String,
         required: true
-
     },
-    status: {
+    organization: {
         type: String,
         required: true
     },
     datetime: {
         type: Date,
         required: true
-        //  validate: [notEmpty, 'Необходимо выбрать "Дату"']
+    },
+    status: {
+        type: String,
+        required: true
     },
     sites: {
         type: String,
         default: '',
         trim: true
+    },
+    description: {
+        type: String,
+        default: ""
     },
     min_part: {
         type: Number,

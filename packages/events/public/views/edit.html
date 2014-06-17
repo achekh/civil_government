@@ -8,7 +8,7 @@
 
     <div class="row">
 
-        <form class="form-horizontal col-md-12" role="form" data-ng-submit="(isNew) ? create() : update()">
+        <form class="form-horizontal col-md-12" role="form" data-ng-submit="submit()">
 
             <div class="form-group">
                 <div class="col-md-12">
@@ -18,37 +18,34 @@
 
             <div class="form-group">
                 <div class="col-md-12">
-                    <div class="btn-group dropdown" data-cg-dropdown-autoclose>
-                        <button type="button" class="btn btn-default dropdown-toggle">{{eventOrganization.title}} <span class="caret"></span></button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="" data-ng-click="setEventOrganization(organization)" data-ng-repeat="organization in activistOrganizations">{{organization.title}}</a>
-                        </ul>
-                    </div>
+                    <cg-dropdown options="activistOrganizations" data-ng-model="organization" data-ng-required="true"></cg-dropdown>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-6">
-                    <!--<input type="text" class="form-control" id="date" placeholder="дата" required data-ng-model="date">-->
-                    <cg-datapicker data-ng-model="date"></cg-datapicker>
+                    <cg-datepicker data-ng-model="datetime" data-ng-required="true"></cg-datepicker>
                 </div>
                 <div class="col-md-6">
-                    <!--<input type="text" class="form-control" id="time" placeholder="час" required data-ng-model="time">-->
-                    <timepicker ng-model="time" hour-step="1" minute-step="5" show-meridian="false"></timepicker>
+                    <cg-timepicker data-ng-model="datetime" data-ng-required="true"></cg-timepicker>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-12">
-                    <cg-dropdown options="[
-                        {label:'На затвердженні', value:'FOR_APPROVAL'},
-                        {label:'Затверджено', value:'APPROVED'},
-                        {label:'Узгоджено', value:'AGREED'},
-                        {label:'В процесі', value:'IN_PROGRESS'},
-                        {label:'Закінчено', value:'FINISHED'},
-                        {label:'Відмінено', value:'CANCELED'},
-                        {label:'Перемога', value:'WIN'}
-                    ]" data-ng-model="status"></cg-dropdown><br>
+                    <cg-dropdown
+                        options="[
+                            {label:'На затвердженні', value:'FOR_APPROVAL'},
+                            {label:'Затверджено', value:'APPROVED'},
+                            {label:'Узгоджено', value:'AGREED'},
+                            {label:'В процесі', value:'IN_PROGRESS'},
+                            {label:'Закінчено', value:'FINISHED'},
+                            {label:'Відмінено', value:'CANCELED'},
+                            {label:'Перемога', value:'WIN'}
+                        ]"
+                        data-ng-model="status"
+                        data-ng-required="true"
+                    ></cg-dropdown><br>
                     <span><a>завантажити офіційні документи</a></span>
                 </div>
             </div>
@@ -108,10 +105,3 @@
     </div>
 
 </section>
-
-<script>
-    $('#date').datepicker({
-        format: 'dd/MM/yyyy hh:mm:ss',
-        language: 'pt-BR'
-    });
-</script>

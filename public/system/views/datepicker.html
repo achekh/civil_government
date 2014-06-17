@@ -1,8 +1,11 @@
 <p class="input-group">
-    <input type="text" class="form-control" data-datepicker-popup="'dd-MMMM-yyyy'" data-is-open="isOpen" />
+    <button type="button" class="form-control btn btn-default" data-ng-click="toggle($event)">{{value | date: 'dd-MM-yyyy'}}</button>
     <span class="input-group-btn">
-        <button type="button" class="btn btn-default" data-ng-click="isOpen=!isOpen">
+        <button type="button" class="btn btn-default" data-ng-click="toggle($event)">
             <i class="glyphicon glyphicon-calendar"></i>
         </button>
     </span>
+    <div data-collapse="collapsed" class="well well-lg">
+        <datepicker data-ng-model="value"></datepicker>
+    </div>
 </p>

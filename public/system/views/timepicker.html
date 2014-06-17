@@ -1,0 +1,11 @@
+<p class="input-group">
+    <button type="button" class="form-control btn btn-default" data-ng-click="toggle($event)">{{value | date: 'HH:mm'}}</button>
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default" data-ng-click="toggle($event)">
+            <i class="glyphicon glyphicon-time"></i>
+        </button>
+    </span>
+    <div data-collapse="collapsed" class="well well-lg">
+        <timepicker data-ng-model="value" data-show-meridian="false"></timepicker>
+    </div>
+</p>

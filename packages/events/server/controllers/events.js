@@ -12,7 +12,6 @@ var mongoose = require('mongoose'),
 exports.create = function (req, res) {
     var event = new Event(req.body);
     event.user = req.user;
-
     event.save(function (err) {
         if (err) {
             return res.send('users/signup', {
@@ -50,15 +49,19 @@ exports.all = function (req, res) {
     if (req.query.userId) {
         query.user = req.query.userId;
     }
-    Event.find(query).sort('-created').populate('user', 'username').exec(function (err, events) {
-        if (err) {
-            res.render('error', {
-                status: 500
-            });
-        } else {
-            res.jsonp(events);
-        }
-    });
+    Event.find(query)
+        .sort('-created')
+        .populate('user', 'username')
+        .exec(function (err, events) {
+            if (err) {
+                res.render('error', {
+                    status: 500
+                });
+            } else {
+                res.jsonp(events);
+            }
+        })
+    ;
 };
 
 exports.destroy = function (req, res) {
@@ -71,11 +74,8 @@ exports.destroy = function (req, res) {
 };
 
 exports.update = function update(req, res) {
-
     var event = req.event;
-
     event = _.extend(event, req.body);
-
     event.save(function(err) {
         if (err) {
             return res.send('users/signup', {
@@ -86,5 +86,4 @@ exports.update = function update(req, res) {
             res.jsonp(event);
         }
     });
-
 };
