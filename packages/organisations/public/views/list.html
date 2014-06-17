@@ -18,7 +18,7 @@
 
     <div class="row" data-ng-repeat="organisation in organisations">
         <div class="col-md-3">
-            <a class="pull-right" data-ng-if="isOwner" data-ng-click="remove(organisation)"><span class="glyphicon glyphicon-remove-sign"></span></a>
+            <a class="pull-right" data-ng-if="isOwner(organisation)" data-ng-click="remove(organisation)"><span class="glyphicon glyphicon-remove-sign"></span></a>
 
             <div class="organisation-preview">
                 <a data-ui-sref="organisations-view({organisationId: organisation._id})">
