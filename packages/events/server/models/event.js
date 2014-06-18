@@ -24,7 +24,8 @@ var EventSchema = new Schema({
         required: true
     },
     organization: {
-        type: String,
+        type: Schema.ObjectId,
+        ref: 'Organization',
         required: true
     },
     datetime: {
@@ -61,9 +62,11 @@ var EventSchema = new Schema({
 });
 
 EventSchema.statics.load = function (id, cb) {
-    this.findOne({
-        _id: id
-    }).populate('user', 'name username').exec(cb);
+    this.findOne({_id: id})
+        .populate('user', 'username')
+        .populate('organization', 'title')
+        .exec(cb)
+    ;
 };
 
 EventSchema.statics.statuses = statuses;
