@@ -8,6 +8,9 @@ angular.module('mean.organizations').config(['$stateProvider',
                 templateUrl: 'organizations/views/list.html',
                 reload: true
             })
+            .state('organizations./', {
+                url: '/'
+            })
             .state('organizations-create', {
                 url:'/organizations/create',
                 templateUrl:'organizations/views/edit.html'
@@ -15,6 +18,13 @@ angular.module('mean.organizations').config(['$stateProvider',
             .state('organizations-edit', {
                 url: '/organizations/edit/:organizationId',
                 templateUrl: 'organizations/views/edit.html'
+            })
+            .state('organizations-view-list', {
+                url: '/organizations/view',
+                templateUrl: 'organizations/views/list.html'
+            })
+            .state('organizations-view-list./', {
+                url: '/'
             })
             .state('organizations-view', {
                 url: '/organizations/view/:organizationId',
