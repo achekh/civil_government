@@ -5,21 +5,21 @@
  */
 var Module = require('meanio').Module;
 
-var Organisations = new Module('Organisations');
+var Organizations = new Module('Organizations');
 
 /*
  * All MEAN packages require registration
  * Dependency injection is used to define required modules
  */
-Organisations.register(function(app, auth, database) {
+Organizations.register(function(app, auth, database) {
 
     //We enable routing. By default the Package Object is passed to the routes
-    Organisations.routes(app, auth, database);
+    Organizations.routes(app, auth, database);
 
     //We are adding a link to the main menu for all authenticated users
-//    Organisations.menus.add({
-//        title: 'organisations example page',
-//        link: 'organisations example page',
+//    Organizations.menus.add({
+//        title: 'organizations example page',
+//        link: 'organizations example page',
 //        roles: ['authenticated'],
 //        menu: 'main'
 //    });
@@ -28,7 +28,7 @@ Organisations.register(function(app, auth, database) {
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback
     // Use this for saving data from administration pages
-    Organisations.settings({
+    Organizations.settings({
         'someSetting': 'some value'
     }, function(err, settings) {
         //you now have the settings object
@@ -36,16 +36,16 @@ Organisations.register(function(app, auth, database) {
 
     // Another save settings example this time with no callback
     // This writes over the last settings.
-    Organisations.settings({
+    Organizations.settings({
         'anotherSettings': 'some value'
     });
 
     // Get settings. Retrieves latest saved settigns
-    Organisations.settings(function(err, settings) {
+    Organizations.settings(function(err, settings) {
         //you now have the settings object
     });
     */
-    Organisations.aggregateAsset('css', 'organisations.css');
+    Organizations.aggregateAsset('css', 'organizations.css');
 
-    return Organisations;
+    return Organizations;
 });

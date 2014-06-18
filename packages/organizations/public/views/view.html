@@ -1,22 +1,22 @@
-<div class="container-fluid" data-ng-controller="OrganisationsController" data-ng-init="findOne()">
+<div class="container-fluid" data-ng-controller="OrganizationsController" data-ng-init="findOne()">
 
     <div class="row">
 
         <div class="col-md-3 col_top_row">
-            <a data-ui-sref="organizations-view({organizationId: organisation.organization._id})">
+            <a data-ui-sref="organizations-view({organizationId: organization.organization._id})">
                 <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
             </a>
         </div>
 
         <div class="col-md-3 col_top_row">
-            <h2 editable-text="organisation.title" e-form="title" ng-click="inlineEdit(title)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'title',data:$data})">{{organisation.title}}</h2>
-            <span editable-text="organisation.description" e-form="description" ng-click="inlineEdit(description)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'description',data:$data})">{{organisation.description || "Нет информации"}}</span>
+            <h2 editable-text="organization.title" e-form="title" ng-click="inlineEdit(title)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'title',data:$data})">{{organization.title}}</h2>
+            <span editable-text="organization.description" e-form="description" ng-click="inlineEdit(description)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'description',data:$data})">{{organization.description || "Нет информации"}}</span>
         </div>
 
         <div class="col-md-3 col_top_row">
-            {{organisation.sites}}<br/>
-            {{organisation.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
-            {{organisation.status}}
+            {{organization.sites}}<br/>
+            {{organization.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
+            {{organization.status}}
         </div>
 
         <div class="col-md-3 col_top_row" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">

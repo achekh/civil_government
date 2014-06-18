@@ -19,10 +19,10 @@ var MemberSchema = new Schema({
         required: true,
         ref: 'Activist'
     },
-    organisation: {
+    organization: {
         type: Schema.ObjectId,
         required: true,
-        ref: 'Organisation'
+        ref: 'Organization'
     },
     user: {
         type: Schema.ObjectId,
@@ -41,7 +41,7 @@ var MemberSchema = new Schema({
 MemberSchema.statics.load = function (id, cb) {
     this.findOne({_id: id})
         .populate('activist')
-        .populate('organisation')
+        .populate('organization')
         .exec(cb);
 };
 
@@ -50,7 +50,7 @@ var Member = mongoose.model('Member', MemberSchema);
 MemberSchema.pre('save', function (next) {
     // TODO: not sure if it is a good way to prevent duplication
     var self = this;
-    return Member.findOne({organisation: self.organisation, activist: self.activist}, function (err, member) {
+    return Member.findOne({organization: self.organization, activist: self.activist}, function (err, member) {
         if (err) {
             return next(err);
         }

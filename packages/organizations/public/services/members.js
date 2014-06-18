@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.organisations').factory('Members' ,['$resource',
+angular.module('mean.organizations').factory('Members' ,['$resource',
     function($resource) {
         return $resource('members/:memberId', {
             memberId: '@_id'

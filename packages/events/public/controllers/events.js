@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses',
-    function ($scope, $stateParams, $location, $state, Events, EventStatuses) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Members',
+    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Members) {
 
         $scope.isNew = $state.is('events-create');
         $scope.statuses = EventStatuses.all;
@@ -11,8 +11,12 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             if (!$scope.isNew) {
                 $scope.findOne();
             } else {
-                // todo; change after Organization will be added to app
-                $scope.activistOrganizations = ['Об’єднання Майдан Моніторинг', 'На Варті'];
+                $scope.organizationOptions = [];
+                Members.query({userId: $scope.global.user._id}, function (members) {
+                    members.forEach(function (member) {
+                        $scope.organizationOptions.push({value: member.organization._id, label: member.organization.title});
+                    });
+                });
             }
         };
 

@@ -1,18 +1,18 @@
 'use strict';
 
-angular.module('mean.organisations')
-    .directive('cgOrganisationDigest', function () {
+angular.module('mean.organizations')
+    .directive('cgOrganizationDigest', function () {
         return {
             restrict: 'E',
-            scope: {organisation: '=data'},
-            templateUrl: 'organisations/views/digest.html'
+            scope: {organization: '=data'},
+            templateUrl: 'organizations/views/digest.html'
         };
     })
 //    .directive('cgInlineEdit', function () {
 //        return {
 //            restrict: 'A',
 //            link: function (scope, element, attrs) {
-//                scope.$watch('organisation', function (organisation) {
+//                scope.$watch('organization', function (organization) {
 //                    if (scope.canEdit) {
 //                        element.attr('editable-text', attrs.cgInlineEdit);
 //                        element.addClass('editable editable-click');

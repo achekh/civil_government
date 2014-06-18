@@ -3,7 +3,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var OrganisationSchema = new Schema({
+var OrganizationSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
@@ -30,10 +30,10 @@ var OrganisationSchema = new Schema({
     }
 });
 
-OrganisationSchema.statics.load = function (id, cb) {
+OrganizationSchema.statics.load = function (id, cb) {
     this.findOne({
         _id: id
     }).populate('leader', 'name username displayName').exec(cb);
 };
 
-mongoose.model('Organisation', OrganisationSchema);
+mongoose.model('Organization', OrganizationSchema);

@@ -56,17 +56,17 @@
         <div class="col-md-3 col_bottom_row">
             <div class="row row-header">
                 <div class="col-md-12">
-                    <h4 data-ng-if="isOwner"><a data-ui-sref="organisations-create"><span class="glyphicon glyphicon-plus-sign"></span></a> Мои организации</h4>
+                    <h4 data-ng-if="isOwner"><a data-ui-sref="organizations-create"><span class="glyphicon glyphicon-plus-sign"></span></a> Мои организации</h4>
                     <h4 data-ng-if="!isOwner">Состоит в организациях</h4>
                 </div>
-                <div class="row" data-ng-repeat="organisation in organisations | limitTo: 3">
+                <div class="row" data-ng-repeat="organization in organizations | limitTo: 3">
                     <div class="col-md-12">
-                        <cg-organisation-digest data="organisation"></cg-organisation-digest>
+                        <cg-organization-digest data="organization"></cg-organization-digest>
                     </div>
                 </div>
                 <div class="row row-footer">
                     <div class="col-md-12">
-                        <a class="btn btn-default" data-ui-sref="organisations">Остальные</a>
+                        <a class="btn btn-default" data-ui-sref="organizations">Остальные</a>
                     </div>
                 </div>
             </div>

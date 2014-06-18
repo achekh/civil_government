@@ -1,27 +1,27 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Organisation = mongoose.model('Organisation'),
+    Organization = mongoose.model('Organization'),
     Activist = mongoose.model('Activist'),
     Member = mongoose.model('Member'),
     _ = require('lodash');
 
 exports.create = function (req, res) {
-    var organisation = new Organisation(req.body);
-    organisation.user = req.user;
-    organisation.save(function (err, organisation) {
+    var organization = new Organization(req.body);
+    organization.user = req.user;
+    organization.save(function (err, organization) {
         if (err) {
             console.log(err);
             res.jsonp({errors: err.errors});
         } else {
-            res.jsonp(organisation);
-            Activist.loadByUserId(organisation.user, function (err, activist) {
+            res.jsonp(organization);
+            Activist.loadByUserId(organization.user, function (err, activist) {
                 if (err) {
                     console.log(err);
                 } else {
                     var member = new Member();
                     member.user = req.user;
-                    member.organisation = organisation;
+                    member.organization = organization;
                     member.activist = activist;
                     member.isLeader = true;
                     member.save(function (err, member) {
@@ -35,17 +35,17 @@ exports.create = function (req, res) {
     });
 };
 
-exports.organisation = function(req, res, next, id) {
-    Organisation.load(id, function(err, organisation) {
+exports.organization = function(req, res, next, id) {
+    Organization.load(id, function(err, organization) {
         if (err) return next(err);
-        if (!organisation) return next(new Error('Failed to load organisation ' + id));
-        req.organisation = organisation;
+        if (!organization) return next(new Error('Failed to load organization ' + id));
+        req.organization = organization;
         next();
     });
 };
 
 exports.show = function(req, res) {
-    res.jsonp(req.organisation);
+    res.jsonp(req.organization);
 };
 
 exports.all = function (req, res) {
@@ -53,32 +53,32 @@ exports.all = function (req, res) {
     if (req.query.userId) {
         query.user = req.query.userId;
     }
-    Organisation.find(query).sort('-created').populate('user', 'username').exec(function (err, organisations) {
+    Organization.find(query).sort('-created').populate('user', 'username').exec(function (err, organizations) {
         if (err) {
             console.log(err);
         } else {
-            res.jsonp(organisations);
+            res.jsonp(organizations);
         }
     });
 };
 
 exports.remove = function (req, res) {
-    var organisation = req.organisation;
+    var organization = req.organization;
     Member
         .find({
-            organisation: organisation
+            organization: organization
         })
         .remove(function (err, count) {
             if (err) {
                 console.log(err);
                 res.jsonp({errors: err.errors});
             } else {
-                organisation.remove(function(err, organisation){
+                organization.remove(function(err, organization){
                     if (err) {
                         console.log(err);
                         res.jsonp({errors: err.errors});
                     } else {
-                        res.jsonp(organisation);
+                        res.jsonp(organization);
                     }
                 });
             }
@@ -86,14 +86,14 @@ exports.remove = function (req, res) {
 };
 
 exports.update = function update(req, res) {
-    var organisation = req.organisation;
-    organisation = _.extend(organisation, req.body);
-    organisation.save(function(err) {
+    var organization = req.organization;
+    organization = _.extend(organization, req.body);
+    organization.save(function(err) {
         if (err) {
             console.log(err);
             res.jsonp({errors: err.errors});
         } else {
-            res.jsonp(organisation);
+            res.jsonp(organization);
         }
     });
 };

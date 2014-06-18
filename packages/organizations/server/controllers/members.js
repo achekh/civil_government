@@ -39,14 +39,14 @@ exports.all = function (req, res) {
     if (req.query.activistId) {
         query.activist = req.query.activistId;
     }
-    if (req.query.organisationId) {
-        query.organisation = req.query.organisationId;
+    if (req.query.organizationId) {
+        query.organization = req.query.organizationId;
     }
     Member.find(query)
         .sort('-created')
         .populate('user', 'username')
         .populate('activist', 'displayName country city aboutMe url')
-        .populate('organisation', 'created title shortTile url status sites description')
+        .populate('organization', 'created title shortTile url status sites description')
         .exec(function (err, members) {
         if (err) {
             console.log(err);
