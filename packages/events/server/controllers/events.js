@@ -5,7 +5,7 @@
 
 var mongoose = require('mongoose'),
     Event = mongoose.model('Event'),
-    Activist = mongoose.model('Activist'),
+//    Activist = mongoose.model('Activist'),
 //    Participant = mongoose.model('Participant'),
     _ = require('lodash');
 
@@ -14,16 +14,14 @@ exports.create = function (req, res) {
     event.user = req.user;
     event.save(function (err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                event: event
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(event);
 
-            Activist.load(req.user._id, function () {
-                console.log(arguments);
-            });
+//            Activist.load(req.user._id, function () {
+//                console.log(arguments);
+//            });
 //
 //            var participant = new Participant({});
 //            var a = Participant.load();

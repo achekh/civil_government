@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Members',
-    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Members) {
+angular.module('mean.events').controller('EventsController',
+    ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Activists', 'Members',
+    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Activists, Members) {
 
         $scope.isNew = $state.is('events-create');
         $scope.statuses = EventStatuses.all;
@@ -10,14 +11,32 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         $scope.init = function () {
             if (!$scope.isNew) {
                 $scope.findOne();
-            } else {
-                $scope.organizationOptions = [];
-                Members.query({userId: $scope.global.user._id}, function (members) {
-                    members.forEach(function (member) {
-                        $scope.organizationOptions.push({value: member.organization._id, label: member.organization.title});
-                    });
-                });
             }
+            $scope.findActivistOrganizations();
+        };
+
+        $scope.findActivistOrganizations = function findActivistOrganizations() {
+            $scope.activistOrganizations = [];
+            // find current user activist
+            Activists.query({userId: $scope.global.user._id}, function (activists) {
+                if (activists.length) {
+                    // activist found
+                    $scope.activist = activists[0];
+                    //find activist organizations, where the activist is the leader of an organization
+                    Members.query({activistId: $scope.activist._id, isLeader: true}, function (members) {
+                        members.forEach(function(member) {
+                            $scope.activistOrganizations.push({
+                                value: member.organization,
+                                label: member.organization.title
+                            });
+                        });
+                    });
+                } else {
+                    // current user have no activist yet
+                    // go create one
+                    $state.go('activists-create');
+                }
+            });
         };
 
         $scope.find = function () {
@@ -46,7 +65,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             var events = new Events({
                 description: this.description,
                 title: this.title,
-                organization: this.organization,
+                organization: this.organization._id,
                 datetime: this.datetime,
                 status: this.status,
                 sites: this.sites,
@@ -58,7 +77,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 if (response.errors) {
                     $scope.errors = response.errors;
                 } else {
-                    $location.path('events/view/' + response._id);
+                    $state.go('events-view', {eventId: response._id});
                 }
 
             });
