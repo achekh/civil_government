@@ -52,7 +52,7 @@ Events.register(function(app, auth, database) {
     });
     */
     Events.aggregateAsset('css', 'events.css');
-//    Events.aggregateAsset('css', 'bootstrap-datepicker.css');
-//    Events.aggregateAsset('js', 'bootstrap-datepicker.min.js');
+
     return Events;
+
 });
