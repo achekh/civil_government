@@ -5,6 +5,7 @@ body {
 .col_top_row {
     height: 20em;
     box-shadow: 1px 1px 1px;
+    padding-top: 1em;
 }
 
 .col_bottom_row {
