@@ -1,10 +1,7 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Participants', 'Members',
-    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Participants, Members) {
-angular.module('mean.events').controller('EventsController',
-    ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Activists', 'Members',
-    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Activists, Members) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Activists', 'Participants', 'Members',
+    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Activists, Participants, Members) {
 
         $scope.isNew = $state.is('events-create');
         $scope.statuses = EventStatuses.all;
@@ -37,7 +34,7 @@ angular.module('mean.events').controller('EventsController',
             $scope.datetime = new Date();
         };
 
-        $scope.findActivistOrganizations = function findActivistOrganizations() {
+        $scope.findActivistOrganizations = function findActivistOrganizations () {
             $scope.activistOrganizations = [];
             // find current user activist
             Activists.query({userId: $scope.global.user._id}, function (activists) {
@@ -48,7 +45,7 @@ angular.module('mean.events').controller('EventsController',
                     Members.query({activistId: $scope.activist._id, isLeader: true}, function (members) {
                         members.forEach(function(member) {
                             $scope.activistOrganizations.push({
-                                value: member.organization,
+                                value: member.organization._id,
                                 label: member.organization.title
                             });
                         });

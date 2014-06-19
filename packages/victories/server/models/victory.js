@@ -48,7 +48,7 @@ VictorySchema.statics.load = function (id, cb) {
 };
 
 VictorySchema.post('save', function updateVictoryOrganizationVictoryCount(victory) {
-    event.model('Organization').findById(victory.organization, function(err, organization) {
+    mongoose.model('Organization').findById(victory.organization, function(err, organization) {
         if (err) {
             console.log(err);
         } else {
