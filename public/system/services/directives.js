@@ -19,50 +19,53 @@ angular.module('mean.system')
             templateUrl: 'public/system/views/dropdown.html',
             scope: {
                 value: '=ngModel',
-                options: '='
+                options: '=',
+                placeholder: '=',
+                required: '=',
+                preselect: '='
             },
             controller: ['$scope', function ($scope) {
-
-                function init() {
-
-                    if (!Array.isArray($scope.options)) {
+                $scope.setOptions = function setOptions(options) {
+                    if (!Array.isArray(options)) {
                         throw new Error('Options is not Array');
                     }
-
                     $scope.internalOptions = [];
-                    if ($scope.options.length) {
-                        $scope.options.forEach(function (option) {
-                            if (option.hasOwnProperty('value') && option.hasOwnProperty('label')) {
-                                $scope.internalOptions.push({value: option.value, label: option.label});
-                            } else {
-                                $scope.internalOptions.push({value: option, label: option.toString()});
+                    options.forEach(function (option) {
+                        if (option.hasOwnProperty('value') && option.hasOwnProperty('label')) {
+                            $scope.internalOptions.push({value: option.value, label: option.label});
+                        } else {
+                            $scope.internalOptions.push({value: option, label: option.toString()});
+                        }
+                    });
+                    if ($scope.preselect !== undefined) {
+                        if (typeof $scope.preselect === 'number') {
+                            if ($scope.internalOptions.length) {
+                                $scope.select($scope.internalOptions[$scope.preselect < $scope.internalOptions.length ? $scope.preselect : ($scope.internalOptions.length - 1)]);
                             }
-                        });
-                    } else {
-                        $scope.internalOptions.push({label: 'No options'});
+                        } else {
+                            $scope.internalOptions.every(function (option) {
+                                if (option.value === $scope.preselect) {
+                                    $scope.select(option);
+                                    return false;
+                                }
+                                return true;
+                            });
+                        }
                     }
-
-                    if (!$scope.value) {
-                        $scope.value = $scope.internalOptions[0].value;
-                    }
-
-                    $scope.selectedOption = $scope.internalOptions.filter(function (option) {
-                        return option.value === $scope.value;
-                    })[0];
-
-                }
-
-                init();
-
-                $scope.$watch('options', init, true);
-
+                };
                 $scope.select = function (option) {
                     $scope.selectedOption = option;
                     $scope.value = $scope.selectedOption.value;
                 };
-
+                $scope.setOptions($scope.options);
             }],
             link: function (scope, element, attrs, ctrl) {
+                if (scope.required) {
+                    element.find('input').attr('required', 'true');
+                }
+                scope.$watchCollection('options', function(current, previous) {
+                    scope.setOptions(current);
+                });
             }
         };
     })

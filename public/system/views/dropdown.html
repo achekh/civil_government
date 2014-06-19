@@ -1,6 +1,10 @@
 <div class="btn-group dropdown" data-cg-dropdown-autoclose>
-    <button type="button" class="btn btn-default dropdown-toggle">{{selectedOption.label}} <span class="caret"></span></button>
+    <button type="button" class="btn btn-default dropdown-toggle">
+        <input placeholder="{{placeholder}}" style="border: none; color:inherit; background-color: inherit;" value="{{selectedOption.label}}" />
+        <span class="caret"></span>
+    </button>
     <ul class="dropdown-menu" role="menu">
+        <li><a href="" data-ng-click="select({})">&nbsp;</a></li>
         <li><a href="" data-ng-repeat="option in internalOptions" data-ng-click="select(option)">{{option.label}}</a></li>
     </ul>
 </div>

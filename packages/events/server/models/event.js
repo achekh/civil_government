@@ -71,4 +71,14 @@ EventSchema.statics.load = function (id, cb) {
 
 EventSchema.statics.statuses = statuses;
 
+EventSchema.post('save', function updateEventOrganizationEventCount(event) {
+    event.model('Organization').findById(event.organization, function(err, organization) {
+        if (err) {
+            console.log(err);
+        } else {
+            return organization.updateEventCount();
+        }
+    });
+});
+
 mongoose.model('Event', EventSchema);

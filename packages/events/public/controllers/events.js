@@ -2,6 +2,9 @@
 
 angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Participants', 'Members',
     function ($scope, $stateParams, $location, $state, Events, EventStatuses, Participants, Members) {
+angular.module('mean.events').controller('EventsController',
+    ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Activists', 'Members',
+    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Activists, Members) {
 
         $scope.isNew = $state.is('events-create');
         $scope.statuses = EventStatuses.all;
@@ -30,6 +33,32 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             } else {
                 $scope.findOne();
             }
+            $scope.findActivistOrganizations();
+            $scope.datetime = new Date();
+        };
+
+        $scope.findActivistOrganizations = function findActivistOrganizations() {
+            $scope.activistOrganizations = [];
+            // find current user activist
+            Activists.query({userId: $scope.global.user._id}, function (activists) {
+                if (activists.length) {
+                    // activist found
+                    $scope.activist = activists[0];
+                    //find activist organizations, where the activist is the leader of an organization
+                    Members.query({activistId: $scope.activist._id, isLeader: true}, function (members) {
+                        members.forEach(function(member) {
+                            $scope.activistOrganizations.push({
+                                value: member.organization,
+                                label: member.organization.title
+                            });
+                        });
+                    });
+                } else {
+                    // current user have no activist yet
+                    // go create one
+                    $state.go('activists-create');
+                }
+            });
         };
 
         $scope.find = function () {
@@ -77,7 +106,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 if (response.errors) {
                     $scope.errors = response.errors;
                 } else {
-                    $location.path('events/view/' + response._id);
+                    $state.go('events-view', {eventId: response._id});
                 }
 
             });

@@ -6,13 +6,15 @@ require(process.cwd() + '/packages/events/server/models/event');
 require(process.cwd() + '/packages/videos/server/models/video');
 require(process.cwd() + '/packages/activists/server/models/activist');
 require(process.cwd() + '/packages/victories/server/models/victory');
+require(process.cwd() + '/packages/organizations/server/models/organization');
 
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Event = mongoose.model('Event'),
     Video = mongoose.model('Video'),
     Activist = mongoose.model('Activist'),
-    Victory = mongoose.model('Victory');
+    Victory = mongoose.model('Victory'),
+    Organization = mongoose.model('Organization');
 
 module.exports = function (done) {
 
@@ -56,69 +58,57 @@ module.exports = function (done) {
             })
             .then(function(user) {
 
-                var events = [
+                var organizations = [
                     {
-                        title: 'Admin: Путін Хуйло',
-                        description: 'Всеукраїнська акція',
-                        user: user,
-                        organization: 'Об’єднання Майдан Моніторинг',
-                        status: 'FOR_APPROVAL',
-                        datetime: new Date(),
-                        sites: 'Україна'
-                    },
-                    {
-                        title: 'ВатаВарта',
-                        description: 'А де вата?',
-                        user: user,
-                        organization: 'На Варті',
-                        status: 'FOR_APPROVAL',
-                        datetime: new Date(),
-                        sites: 'Харків'
+                        title: 'На Варті',
+                        user: user
                     }
-
                 ];
 
-                console.log('Seed events');
-                return seed(Event, events)
-                    .then(function() {
-                        console.log('Find event "Admin: Путін Хуйло"');
-                        return Event.findOne({title: 'Admin: Путін Хуйло'}).exec();
+                console.log('Seed organizations');
+                return seed(Organization, organizations)
+                    .then(function () {
+                        console.log('Find organizations');
+                        return Organization.find().exec();
                     })
-                    .then(function(event) {
+                    .then(function (organizations) {
 
-                        var videos = [
+                        var events = [
                             {
-                                title: 'Admin: Путін Хуйло, Донбас не віддамо! #Харків',
-                                url: 'http://youtu.be/3CcKS0z7Bwo',
+                                title: 'ВатаВарта',
+                                description: 'А де вата?',
                                 user: user,
-                                event: event
+                                organization: organizations[0],
+                                status: 'FOR_APPROVAL',
+                                datetime: new Date(),
+                                sites: 'Харків'
                             }
 
                         ];
 
-                        console.log('Seed videos');
-                        return seed(Video, videos);
+                        console.log('Seed events');
+                        return seed(Event, events)
+                            .then(function () {
+                                console.log('Find events');
+                                return Event.find().exec();
+                            })
+                            .then(function (events) {
 
-                    })
-                    .then(function() {
-                        console.log('Find event "ВатаВарта"');
-                        return Event.findOne({title: 'ВатаВарта'}).exec();
-                    })
-                    .then(function(event) {
+                                var videos = [
+                                    {
+                                        title: 'Майдан Свободи На Варті',
+                                        url: 'http://www.ustream.tv/channel/17823917',
+                                        user: user,
+                                        event: events[0],
+                                        live: true
+                                    }
+                                ];
 
-                        var videos = [
-                            {
-                                title: 'Майдан Свободи На Варті',
-                                url: 'http://www.ustream.tv/channel/17823917',
-                                user: user,
-                                event: event,
-                                live: true
-                            }
+                                console.log('Seed videos');
+                                return seed(Video, videos);
 
-                        ];
-
-                        console.log('Seed videos');
-                        return seed(Video, videos);
+                            })
+                        ;
 
                     })
                 ;
@@ -130,100 +120,117 @@ module.exports = function (done) {
             })
             .then(function(user) {
 
-                var events = [
+                var organizations = [
                     {
-                        title: 'Путін Хуйло',
-                        description: 'Всеукраїнська акція',
-                        user: user,
-                        organization: 'Об’єднання Майдан Моніторинг',
-                        status: 'FOR_APPROVAL',
-                        datetime: new Date(),
-                        sites: 'Україна'
-                    },
-                    {
-                        title: 'Пісні UA',
-                        description: 'Всеукраїнська акція',
-                        user: user,
-                        organization: 'Об’єднання Майдан Моніторинг',
-                        status: 'FOR_APPROVAL',
-                        datetime: new Date(),
-                        sites: 'Україна'
+                        title: 'Об’єднання Майдан Моніторинг',
+                        user: user
                     }
                 ];
 
-                console.log('Seed events');
-                return seed(Event, events)
-                    .then(function() {
-                        console.log('Find event "Путін Хуйло"');
-                        return Event.findOne({title: 'Путін Хуйло'}).exec();
+                console.log('Seed organizations');
+                return seed(Organization, organizations)
+                    .then(function () {
+                        console.log('Find organizations');
+                        return Organization.find().exec();
                     })
-                    .then(function(event) {
+                    .then(function (organizations) {
 
-                        var videos = [
+                        var events = [
                             {
-                                title: 'Путін Хуйло, Донбас не віддамо! #Харків',
-                                url: 'http://youtu.be/3CcKS0z7Bwo',
+                                title: 'Путін Хуйло',
+                                description: 'Всеукраїнська акція',
                                 user: user,
-                                event: event
+                                organization: organizations[0],
+                                status: 'FOR_APPROVAL',
+                                datetime: new Date(),
+                                sites: 'Україна'
                             },
                             {
-                                title: 'Путін Хуйло, Донбас не віддамо! #WC2014',
-                                url: 'http://www.youtube.com/watch?feature=player_embedded&v=SRHkwaVf1Ok',
+                                title: 'Пісні UA',
+                                description: 'Всеукраїнська акція',
                                 user: user,
-                                event: event
+                                organization: organizations[0],
+                                status: 'FOR_APPROVAL',
+                                datetime: new Date(),
+                                sites: 'Україна'
                             }
-
                         ];
 
-                        console.log('Seed videos');
-                        return seed(Video, videos);
+                        console.log('Seed events');
+                        return seed(Event, events)
+                            .then(function() {
+                                console.log('Find event "Путін Хуйло"');
+                                return Event.findOne({title: 'Путін Хуйло'}).exec();
+                            })
+                            .then(function(event) {
 
-                    })
-                    .then(function() {
-                        console.log('Find event "Пісні UA"');
-                        return Event.findOne({title: 'Пісні UA'}).exec();
-                    })
-                    .then(function(event) {
+                                var videos = [
+                                    {
+                                        title: 'Путін Хуйло, Донбас не віддамо! #Харків',
+                                        url: 'http://youtu.be/3CcKS0z7Bwo',
+                                        user: user,
+                                        event: event
+                                    },
+                                    {
+                                        title: 'Путін Хуйло, Донбас не віддамо! #WC2014',
+                                        url: 'http://www.youtube.com/watch?feature=player_embedded&v=SRHkwaVf1Ok',
+                                        user: user,
+                                        event: event
+                                    }
 
-                        var videos = [
-                            {
-                                title: 'Финальная песня - Набери "Украина" в Гугле',
-                                url: 'http://youtu.be/-OWTWVwvtNw',
-                                user: user,
-                                event: event
-                            }
+                                ];
 
-                        ];
+                                console.log('Seed videos');
+                                return seed(Video, videos);
 
-                        console.log('Seed videos');
-                        return seed(Video, videos);
+                            })
+                            .then(function() {
+                                console.log('Find event "Пісні UA"');
+                                return Event.findOne({title: 'Пісні UA'}).exec();
+                            })
+                            .then(function(event) {
 
-                    })
-                    .then(function() {
-                        var activists = [{
-                           user: user,
-                           name: user.name,
-                           emails:[user.email],
-                           country:'Украiна',
-                           city:'Кieв',
-                           phones:['+380'],
-                           img:'http://ts4.mm.bing.net/th?id=HN.608052457444082755&pid=15.1'
-                        }];
-                        console.log('Seed activist');
-                        return seed(Activist, activists);
-                    })
-                    .then(function() {
-                        var victories = [{
-                            title: 'Верховная Рада прийняла закон про амнистію',
-                            datetime: new Date(),
-                            city: 'Київ',
-                            img: 'http://nvip.com.ua/sites/default/files/imagecache/original_watermark/pictures/news/gallery/util-final10.jpg'
-                        }];
-                        console.log('Seed victory');
-                        return seed(Victory, victories);
+                                var videos = [
+                                    {
+                                        title: 'Финальная песня - Набери "Украина" в Гугле',
+                                        url: 'http://youtu.be/-OWTWVwvtNw',
+                                        user: user,
+                                        event: event
+                                    }
+
+                                ];
+
+                                console.log('Seed videos');
+                                return seed(Video, videos);
+
+                            })
+                            .then(function() {
+                                var activists = [{
+                                    user: user,
+                                    name: user.name,
+                                    emails:[user.email],
+                                    country:'Украiна',
+                                    city:'Кieв',
+                                    phones:['+380'],
+                                    img:'http://ts4.mm.bing.net/th?id=HN.608052457444082755&pid=15.1'
+                                }];
+                                console.log('Seed activist');
+                                return seed(Activist, activists);
+                            })
+                            .then(function() {
+                                var victories = [{
+                                    title: 'Верховная Рада прийняла закон про амнистію',
+                                    datetime: new Date(),
+                                    city: 'Київ',
+                                    img: 'http://nvip.com.ua/sites/default/files/imagecache/original_watermark/pictures/news/gallery/util-final10.jpg'
+                                }];
+                                console.log('Seed victory');
+                                return seed(Victory, victories);
+                            })
+                        ;
+
                     })
                 ;
-
             })
             .then(function () {
                 console.log('Done seeding');

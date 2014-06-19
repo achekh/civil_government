@@ -18,7 +18,12 @@
 
             <div class="form-group">
                 <div class="col-md-12">
-                    <cg-dropdown options="organizationOptions" data-ng-model="organization" data-ng-required="true"></cg-dropdown>
+                    <cg-dropdown
+                            options="activistOrganizations"
+                            data-ng-model="organization"
+                            placeholder="'Організація'"
+                            preselect="0"
+                            required="true"></cg-dropdown>
                 </div>
             </div>
 
@@ -36,7 +41,9 @@
                     <cg-dropdown
                         options="statuses"
                         data-ng-model="status"
-                        data-ng-required="true"
+                        placeholder="'Статус'"
+                        preselect="0"
+                        required="true"
                     ></cg-dropdown><br>
                     <span><a>завантажити офіційні документи</a></span>
                 </div>

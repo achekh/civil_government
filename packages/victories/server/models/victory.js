@@ -18,15 +18,11 @@ var VictorySchema = new Schema({
     },
     user: {
         type: Schema.ObjectId,
-        ref: 'User',
-        index: true
+        ref: 'User' //user, who created the victory instance. Technical field, not business logic one.
     },
-    participants: [{
-        type: Schema.ObjectId,
-        ref: 'User'
-    }],
     organization: {
-        type: String
+        type: Schema.ObjectId,
+        ref: 'Organization' //Organization, which achieved the victory. Organizations, which provided support for the victory, are stored as SupportVictory.
     },
     status: {
         type: String
@@ -50,5 +46,15 @@ VictorySchema.statics.load = function (id, cb) {
         _id: id
     }).populate('user', 'name username').exec(cb);
 };
+
+VictorySchema.post('save', function updateVictoryOrganizationVictoryCount(victory) {
+    event.model('Organization').findById(victory.organization, function(err, organization) {
+        if (err) {
+            console.log(err);
+        } else {
+            return organization.updateVictoryCount();
+        }
+    });
+});
 
 mongoose.model('Victory', VictorySchema);

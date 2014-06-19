@@ -14,10 +14,8 @@ exports.create = function (req, res) {
     event.user = req.user;
     event.save(function (err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                event: event
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             Activist.loadByUserId(req.user._id, function (err, activist) {
                 var participant = new Participant({activist: activist, event: event, coordinator: true});
@@ -83,10 +81,8 @@ exports.update = function update(req, res) {
     event = _.extend(event, req.body);
     event.save(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                event: event
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(event);
         }

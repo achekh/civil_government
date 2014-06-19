@@ -35,13 +35,45 @@ exports.create = function (req, res) {
     });
 };
 
+function updateCalculatedFields(organization) {
+    var promise = new mongoose.Promise();
+    promise.fulfill();
+    promise = promise
+        .then(function() {
+            if (organization.eventCount === undefined) {
+                return organization.updateEventCount();
+            }
+        })
+        .then(function() {
+            if (organization.supportedEventCount === undefined) {
+                return organization.updateSupportedEventCount();
+            }
+        })
+        .then(function() {
+            if (organization.victoryCount === undefined) {
+                return organization.updateVictoryCount();
+            }
+        })
+        .then(function() {
+            if (organization.supportedVictoryCount === undefined) {
+                return organization.updateSupportedVictoryCount();
+            }
+        })
+    ;
+    return promise;
+}
+
 exports.organization = function(req, res, next, id) {
-    Organization.load(id, function(err, organization) {
-        if (err) return next(err);
-        if (!organization) return next(new Error('Failed to load organization ' + id));
-        req.organization = organization;
-        next();
-    });
+    Organization.load(id)
+        .then(function(organization) {
+            if (!organization) throw new Error('Failed to load organization ' + id);
+            req.organization = organization;
+            return updateCalculatedFields(organization);
+        }).then(function() {
+            next();
+        }, function(err) {
+            if (err) return next(err);
+        });
 };
 
 exports.show = function(req, res) {
@@ -97,3 +129,4 @@ exports.update = function update(req, res) {
         }
     });
 };
+

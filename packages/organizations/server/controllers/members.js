@@ -39,6 +39,9 @@ exports.all = function (req, res) {
     if (req.query.activistId) {
         query.activist = req.query.activistId;
     }
+    if (req.query.isLeader !== undefined) {
+        query.isLeader = req.query.isLeader;
+    }
     if (req.query.organizationId) {
         query.organization = req.query.organizationId;
     }
@@ -48,12 +51,12 @@ exports.all = function (req, res) {
         .populate('activist', 'displayName country city aboutMe url')
         .populate('organization', 'created title shortTile url status sites description')
         .exec(function (err, members) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.jsonp(members);
-        }
-    });
+            if (err) {
+                console.log(err);
+            } else {
+                res.jsonp(members);
+            }
+        });
 };
 
 exports.remove = function (req, res) {
