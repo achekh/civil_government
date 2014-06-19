@@ -28,7 +28,8 @@ var OrganizationSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User'
     },
-    eventCount: Number
+    eventCount: Number,
+    supportedEventCount: Number
 });
 
 OrganizationSchema.statics.load = function (id, cb) {
@@ -37,7 +38,7 @@ OrganizationSchema.statics.load = function (id, cb) {
     }).populate('leader', 'name username displayName').exec(cb);
 };
 
-OrganizationSchema.method('calcEventCount', function calcEventCount() {
+OrganizationSchema.method('updateEventCount', function updateEventCount() {
     var organization = this;
     var p = new mongoose.Promise();
     this.model('Event').count({organization:this}, function(err, count) {
@@ -45,6 +46,25 @@ OrganizationSchema.method('calcEventCount', function calcEventCount() {
             p.reject(err);
         } else {
             organization.eventCount = count;
+            organization.save(function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+            p.fulfill(organization, count);
+        }
+    });
+    return p;
+});
+
+OrganizationSchema.method('updateSupportedEventCount', function updateSupportedEventCount() {
+    var organization = this;
+    var p = new mongoose.Promise();
+    this.model('Support').count({organization:this}, function(err, count) {
+        if (err) {
+            p.reject(err);
+        } else {
+            organization.supportedEventCount = count;
             organization.save(function(err) {
                 if (err) {
                     console.log(err);

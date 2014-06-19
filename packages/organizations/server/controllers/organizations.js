@@ -41,7 +41,10 @@ exports.organization = function(req, res, next, id) {
             if (!organization) throw new Error('Failed to load organization ' + id);
             req.organization = organization;
             if (organization.eventCount === undefined) {
-                return organization.calcEventCount();
+                return organization.updateEventCount();
+            }
+            if (organization.supportedEventCount === undefined) {
+                return organization.updateSupportedEventCount();
             }
         }).then(function() {
             next();

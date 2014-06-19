@@ -60,3 +60,4 @@ MemberSchema.pre('save', function (next) {
         next();
     }).exec();
 });
+
