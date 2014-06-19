@@ -2,24 +2,35 @@
 
     <div class="row">
 
-        <div class="col-md-3 col_top_row">
+        <div class="col-md-2 col_top_row">
             <a data-ui-sref="organizations-view({organizationId: organization._id})">
                 <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
             </a>
         </div>
 
-        <div class="col-md-3 col_top_row">
+        <div class="col-md-4 col_top_row">
             <h2 editable-text="organization.title" e-form="title" ng-click="inlineEdit(title)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'title',data:$data})">{{organization.title}}</h2>
             <span editable-text="organization.description" e-form="description" ng-click="inlineEdit(description)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'description',data:$data})">{{organization.description || "Нет информации"}}</span>
         </div>
 
-        <div class="col-md-3 col_top_row">
-            {{organization.sites}}<br/>
-            {{organization.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
-            {{organization.status}}
+        <div class="col-md-4 col_top_row">
+            <table class="table-condensed">
+                <tr class="row">
+                    <td class="text-right">{{organization._id}}</td>
+                    <th>ID организации</th>
+                </tr>
+                <tr class="row">
+                    <td class="text-right">{{organization.created | date:'yyyy-MM-dd'}}</td>
+                    <th>Дата создания</th>
+                </tr>
+                <tr class="row">
+                    <td class="text-right">{{organization.eventCount}}</td>
+                    <th>Создано событий</th>
+                </tr>
+            </table>
         </div>
 
-        <div class="col-md-3 col_top_row" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">
+        <div class="col-md-2 col_top_row" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">
             <div class="row" data-ng-if="global.authenticated">
                 <h1 data-ng-if="!participant">
                     <a class="btn btn-default" data-ng-click="join()"><span class="glyphicon glyphicon-plus"> Піду</span></a>

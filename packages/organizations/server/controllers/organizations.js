@@ -36,12 +36,17 @@ exports.create = function (req, res) {
 };
 
 exports.organization = function(req, res, next, id) {
-    Organization.load(id, function(err, organization) {
-        if (err) return next(err);
-        if (!organization) return next(new Error('Failed to load organization ' + id));
-        req.organization = organization;
-        next();
-    });
+    Organization.load(id)
+        .then(function(organization) {
+            if (!organization) throw new Error('Failed to load organization ' + id);
+            req.organization = organization;
+            return organization.calcEventCount();
+        }).then(function() {
+            next();
+        }, function(err) {
+            debugger;
+            if (err) return next(err);
+        });
 };
 
 exports.show = function(req, res) {
