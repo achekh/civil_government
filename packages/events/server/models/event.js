@@ -64,7 +64,7 @@ var EventSchema = new Schema({
 EventSchema.statics.load = function (id, cb) {
     this.findOne({_id: id})
         .populate('user', 'username')
-        .populate('organization', 'title')
+        .populate('organization')
         .exec(cb)
     ;
 };

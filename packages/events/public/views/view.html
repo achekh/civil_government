@@ -2,36 +2,38 @@
 
     <div class="row">
 
-        <div class="col-md-3 col_top_row">
-            <h2>Організатор</h2>
-            <a data-ui-sref="organizations-view({organizationId: event.organization._id})">
-                <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
-            </a>
-            {{event.organization.title}}
+        <div class="col-md-3 col_top_row text-center">
+            <h4>Організатор</h4>
+            <div>
+                <a data-ui-sref="organizations-view({organizationId: event.organization._id})">
+                    <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" hspace="10px">
+                </a>
+            </div>
+            <h4>{{event.organization.title}}</h4>
         </div>
 
         <div class="col-md-3 col_top_row">
             <h2>{{event.title}}</h2>
-            {{event.description}}
+            <p>{{event.description}}</p>
         </div>
 
-        <div class="col-md-3 col_top_row">
-            {{event.sites}}<br/>
-            {{event.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
-            {{getLabel(event.status)}}
+        <div class="col-md-3 col_top_row text-center">
+            <h4>{{event.datetime | date:'dd.MM.yyyy hh:mm'}}</h4>
+            <h4>{{event.gps}}</h4>
+            <h4>Стан: {{getLabel(event.status)}}</h4>
         </div>
 
-        <div class="col-md-3 col_top_row" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">
+        <div class="col-md-3 col_top_row text-center" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">
             <div class="row" data-ng-if="global.authenticated">
-                <h1 data-ng-if="!participant">
+                <h4 data-ng-if="!participant">
                     <a class="btn btn-default" data-ng-click="join()"><span class="glyphicon glyphicon-plus"> Піду</span></a>
-                </h1>
-                <h1 data-ng-if="participant && !participant.appeared">
+                </h4>
+                <h4 data-ng-if="participant && !participant.appeared">
                     <a class="btn btn-default" data-ng-click="appear()"><span class="glyphicon glyphicon-play"> Прийшов</span></a>
-                </h1>
-                <h1 data-ng-if="participant">
+                </h4>
+                <h4 data-ng-if="participant">
                     <a class="btn btn-default" data-ng-click="leave()"><span class="glyphicon glyphicon-minus"> Відмова</span></a>
-                </h1>
+                </h4>
             </div>
         </div>
 
@@ -43,7 +45,7 @@
 
             <div class="row row-header">
                 <div class="col-md-12">
-                    <h2>Координатори</h2>
+                    <h4><a data-ng-if="isHead()" data-ui-sref="coordinators-add"><span class="glyphicon glyphicon-plus-sign"></span></a> Координатори</h4>
                 </div>
             </div>
 
@@ -61,11 +63,11 @@
 
         </div>
 
-        <div class="col-md-3 col_bottom_row activists activists-list-small" data-ng-controller="ParticipantsController" data-ng-init="find()">
+        <div class="col-md-3 col_bottom_row activists activists-list-small" data-ng-controller="ParticipantsController" data-ng-init="load({coordinator: false})">
 
             <div class="row row-header">
                 <div class="col-md-12">
-                    <h2>Учасники</h2>
+                    <h4><a data-ng-if="isCoordinator()" data-ui-sref="participants-add"><span class="glyphicon glyphicon-plus-sign"></span></a> Учасники</h4>
                 </div>
             </div>
 
@@ -88,7 +90,7 @@
 
             <div class="row row-header">
                 <div class="col-md-6">
-                    <h2>Відео</h2>
+                    <h4><a data-ng-if="isParticipant()" data-ui-sref="videos-add"><span class="glyphicon glyphicon-plus-sign"></span></a> Відео</h4>
                 </div>
                 <br/>
 

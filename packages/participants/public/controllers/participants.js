@@ -66,7 +66,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         $scope.load = function (parameters) {
-            if (parameters.coordinator) {
+            if (parameters.coordinator === true || parameters.coordinator === false) {
                 $scope.coordinator = parameters.coordinator;
             }
             if (parameters.appeared) {

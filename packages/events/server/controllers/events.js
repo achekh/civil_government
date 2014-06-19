@@ -20,7 +20,6 @@ exports.create = function (req, res) {
             });
         } else {
             Activist.loadByUserId(req.user._id, function (err, activist) {
-                console.log(arguments);
                 var participant = new Participant({activist: activist, event: event, coordinator: true});
                 participant.save(function (err) {
                     if (err) {

@@ -1,22 +1,34 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Members',
-    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Members) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Participants', 'Members',
+    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Participants, Members) {
 
         $scope.isNew = $state.is('events-create');
         $scope.statuses = EventStatuses.all;
         $scope.getLabel = EventStatuses.getLabel;
 
+        $scope.isHead = function () {
+            return $scope.event && $scope.isOwner($scope.event.organization);
+        };
+
+        $scope.isParticipant = function () {
+            return $scope.participant && $scope.isOwner($scope.participant.activist);
+        };
+
+        $scope.isCoordinator = function () {
+            return $scope.isParticipant() && $scope.participant.coordinator;
+        };
+
         $scope.init = function () {
-            if (!$scope.isNew) {
-                $scope.findOne();
-            } else {
+            if ($scope.isNew && $scope.isAuthenticated()) {
                 $scope.organizationOptions = [];
                 Members.query({userId: $scope.global.user._id}, function (members) {
                     members.forEach(function (member) {
                         $scope.organizationOptions.push({value: member.organization._id, label: member.organization.title});
                     });
                 });
+            } else {
+                $scope.findOne();
             }
         };
 
@@ -27,6 +39,13 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.findOne = function () {
+            if ($scope.isAuthenticated()) {
+                Participants.query({userId: $scope.global.user._id, eventId: $stateParams.eventId}, function (participants) {
+                    if (!participants.errors && participants.length === 1) {
+                        $scope.participant = participants[0];
+                    }
+                });
+            }
             return Events.get({
                 eventId: $stateParams.eventId
             }, function (event) {
