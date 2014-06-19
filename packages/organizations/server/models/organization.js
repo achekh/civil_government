@@ -1,7 +1,6 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Event = mongoose.model('Event'),
     Schema = mongoose.Schema;
 
 var OrganizationSchema = new Schema({
@@ -41,12 +40,17 @@ OrganizationSchema.statics.load = function (id, cb) {
 OrganizationSchema.method('calcEventCount', function calcEventCount() {
     var organization = this;
     var p = new mongoose.Promise();
-    Event.find({organization:this}).count(function(err, count) {
+    this.model('Event').count({organization:this}, function(err, count) {
         if (err) {
             p.reject(err);
         } else {
             organization.eventCount = count;
-            p.complete(organization, count);
+            organization.save(function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+            p.fulfill(organization, count);
         }
     });
     return p;

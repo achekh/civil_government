@@ -13,6 +13,7 @@ angular.module('mean.events').controller('EventsController',
                 $scope.findOne();
             }
             $scope.findActivistOrganizations();
+            $scope.datetime = new Date();
         };
 
         $scope.findActivistOrganizations = function findActivistOrganizations() {
