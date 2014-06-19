@@ -29,7 +29,9 @@ var OrganizationSchema = new Schema({
         ref: 'User'
     },
     eventCount: Number,
-    supportedEventCount: Number
+    supportedEventCount: Number,
+    victoryCount: Number,
+    supportedVictoryCount: Number
 });
 
 OrganizationSchema.statics.load = function (id, cb) {
@@ -40,10 +42,10 @@ OrganizationSchema.statics.load = function (id, cb) {
 
 OrganizationSchema.method('updateEventCount', function updateEventCount() {
     var organization = this;
-    var p = new mongoose.Promise();
+    var promise = new mongoose.Promise();
     this.model('Event').count({organization:this}, function(err, count) {
         if (err) {
-            p.reject(err);
+            promise.reject(err);
         } else {
             organization.eventCount = count;
             organization.save(function(err) {
@@ -51,18 +53,18 @@ OrganizationSchema.method('updateEventCount', function updateEventCount() {
                     console.log(err);
                 }
             });
-            p.fulfill(organization, count);
+            promise.fulfill(organization);
         }
     });
-    return p;
+    return promise;
 });
 
 OrganizationSchema.method('updateSupportedEventCount', function updateSupportedEventCount() {
     var organization = this;
-    var p = new mongoose.Promise();
+    var promise = new mongoose.Promise();
     this.model('Support').count({organization:this}, function(err, count) {
         if (err) {
-            p.reject(err);
+            promise.reject(err);
         } else {
             organization.supportedEventCount = count;
             organization.save(function(err) {
@@ -70,10 +72,48 @@ OrganizationSchema.method('updateSupportedEventCount', function updateSupportedE
                     console.log(err);
                 }
             });
-            p.fulfill(organization, count);
+            promise.complete(organization);
         }
     });
-    return p;
+    return promise;
+});
+
+OrganizationSchema.method('updateVictoryCount', function updateVictoryCount() {
+    var organization = this;
+    var promise = new mongoose.Promise();
+    this.model('Victory').count({organization:this}, function(err, count) {
+        if (err) {
+            promise.reject(err);
+        } else {
+            organization.victoryCount = count;
+            organization.save(function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+            promise.complete(organization);
+        }
+    });
+    return promise;
+});
+
+OrganizationSchema.method('updateSupportedVictoryCount', function updateSupportedVictoryCount() {
+    var organization = this;
+    var promise = new mongoose.Promise();
+    this.model('SupportVictory').count({organization:this}, function(err, count) {
+        if (err) {
+            promise.reject(err);
+        } else {
+            organization.supportedVictoryCount = count;
+            organization.save(function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+            promise.complete(organization);
+        }
+    });
+    return promise;
 });
 
 OrganizationSchema.set('toJSON', {
