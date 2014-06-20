@@ -48,8 +48,8 @@ exports.all = function (req, res) {
     Member.find(query)
         .sort('-created')
         .populate('user', 'username')
-        .populate('activist', 'displayName country city aboutMe url')
-        .populate('organization', 'created title shortTile url status sites description')
+        .populate('activist')
+        .populate('organization')
         .exec(function (err, members) {
             if (err) {
                 console.log(err);

@@ -61,10 +61,8 @@ exports.update = function(req, res) {
 
     participant.save(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                participant: participant
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(participant);
         }
@@ -79,10 +77,8 @@ exports.destroy = function(req, res) {
 
     participant.remove(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                participant: participant
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(participant);
         }
@@ -124,9 +120,8 @@ exports.all = function(req, res) {
         .populate('event')
         .exec(function(err, participants) {
             if (err) {
-                res.render('error', {
-                    status: 500
-                });
+                console.log(err);
+                res.jsonp({errors: err.errors || [err]});
             } else {
                 if (userId) {
                     participants = participants.filter(function (participant) {

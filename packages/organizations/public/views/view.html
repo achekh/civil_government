@@ -2,23 +2,23 @@
 
     <div class="row">
 
-        <div class="col-md-2 col_top_row">
+        <div class="col-md-3 col_top_row">
             <a data-ui-sref="organizations-view({organizationId: organization._id})">
                 <img src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" class="img-rounded" align="left" hspace="10px">
             </a>
         </div>
 
-        <div class="col-md-4 col_top_row">
+        <div class="col-md-3 col_top_row">
             <h2 editable-text="organization.title" e-form="title" ng-click="inlineEdit(title)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'title',data:$data})">{{organization.title}}</h2>
             <span editable-text="organization.description" e-form="description" ng-click="inlineEdit(description)" ng-class="{'editable-click': canEdit}" onbeforesave="update({path:'description',data:$data})">{{organization.description || "Нет информации"}}</span>
         </div>
 
-        <div class="col-md-4 col_top_row">
+        <div class="col-md-3 col_top_row">
             <table class="table-condensed">
-                <tr class="row">
-                    <td class="text-right">{{organization._id}}</td>
-                    <th>ID организации</th>
-                </tr>
+                <!--<tr class="row">-->
+                    <!--<td class="text-right">{{organization._id}}</td>-->
+                    <!--<th>ID организации</th>-->
+                <!--</tr>-->
                 <tr class="row">
                     <td class="text-right">{{organization.created | date:'yyyy-MM-dd'}}</td>
                     <th>Дата создания</th>
@@ -42,16 +42,13 @@
             </table>
         </div>
 
-        <div class="col-md-2 col_top_row" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">
-            <div class="row" data-ng-if="global.authenticated">
-                <h1 data-ng-if="!participant">
-                    <a class="btn btn-default" data-ng-click="join()"><span class="glyphicon glyphicon-plus"> Піду</span></a>
+        <div class="col-md-3 col_top_row" data-ng-controller="OrganizationsController" data-ng-init="findAuthenticated()">
+            <div data-ng-if="global.authenticated">
+                <h1 data-ng-if="!member">
+                    <a class="btn btn-default" data-ng-click="join()"><span class="glyphicon glyphicon-plus"> Вступить</span></a>
                 </h1>
-                <h1 data-ng-if="participant && !participant.appeared">
-                    <a class="btn btn-default" data-ng-click="appear()"><span class="glyphicon glyphicon-play"> Прийшов</span></a>
-                </h1>
-                <h1 data-ng-if="participant">
-                    <a class="btn btn-default" data-ng-click="leave()"><span class="glyphicon glyphicon-minus"> Відмова</span></a>
+                <h1 data-ng-if="member">
+                    <a class="btn btn-default" data-ng-click="leave()"><span class="glyphicon glyphicon-minus"> Выйти</span></a>
                 </h1>
             </div>
         </div>
@@ -60,39 +57,17 @@
 
     <div class="row">
 
-        <div class="col-md-3 col_bottom_row activists activists-list-small" data-ng-controller="ParticipantsController" data-ng-init="load({coordinator: true})">
+        <div class="col-md-3 col_bottom_row activists-list-small" data-ng-init="findMembers()">
 
             <div class="row row-header">
                 <div class="col-md-12">
-                    <h2>Координатори</h2>
+                    <h4>Учасники организации</h4>
                 </div>
             </div>
 
-            <div class="row" data-ng-repeat="participant in participants | limitTo: 3">
+            <div class="row" data-ng-repeat="member in members | limitTo: 3">
                 <div class="col-md-12">
-                    <cg-activist-digest data="participant.activist"></cg-activist-digest>
-                </div>
-            </div>
-
-            <div class="row row-footer">
-                <div class="col-md-12">
-                    <a class="btn btn-default">Інші координатори</a>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="col-md-3 col_bottom_row activists activists-list-small" data-ng-controller="ParticipantsController" data-ng-init="find()">
-
-            <div class="row row-header">
-                <div class="col-md-12">
-                    <h2>Учасники</h2>
-                </div>
-            </div>
-
-            <div class="row" data-ng-repeat="participant in participants | limitTo: 3">
-                <div class="col-md-12">
-                    <cg-activist-digest data="participant.activist"></cg-activist-digest>
+                    <cg-activist-digest data="member.activist"></cg-activist-digest>
                 </div>
             </div>
 
@@ -104,36 +79,48 @@
 
         </div>
 
-        <div class="col-md-3 col_bottom_row videos videos-list-small" data-ng-controller="VideosController"
-             data-ng-init="find()">
+        <div class="col-md-3 col_bottom_row events-list-small"data-ng-init="findEvents()">
 
             <div class="row row-header">
-                <div class="col-md-6">
-                    <h2>Відео</h2>
-                </div>
-                <br/>
-
-                <div class="col-md-6">
-                    <div class="btn-group dropdown" data-cg-dropdown-autoclose>
-                        <button type="button" class="btn btn-default dropdown-toggle">{{videoLiveStatus.label}} <span
-                                class="caret"></span></button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="" data-ng-click="setVideoLiveStatus(status)"
-                                   data-ng-repeat="status in videoLiveStatuses">{{status.label}}</a>
-                        </ul>
-                    </div>
+                <div class="col-md-12">
+                    <h4 data-ng-if="global.authenticated">
+                        <a data-ui-sref="events-create"><span class="glyphicon glyphicon-plus-sign"></span></a>
+                        <span>События организации</span>
+                    </h4>
                 </div>
             </div>
 
-            <div class="row" data-ng-repeat="video in videos | limitTo: 3">
+            <div class="row" data-ng-repeat="event in events | limitTo: 3">
                 <div class="col-md-12">
-                    <cg-video-digest data="video" preview-url="getPreviewUrl(video)"></cg-video-digest>
+                    <cg-event-digest data="event"></cg-event-digest>
                 </div>
             </div>
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <a class="btn btn-default" data-ui-sref="videos">Інші відео</a>
+                    <a class="btn btn-default" data-ui-sref="events">Календар</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 col_bottom_row events-list-small"data-ng-init="findEventsSupported()">
+
+            <div class="row row-header">
+                <div class="col-md-12">
+                    <h4>Участвуем</h4>
+                </div>
+            </div>
+
+            <div class="row" data-ng-repeat="support in supports | limitTo: 3">
+                <div class="col-md-12">
+                    <cg-event-digest data="support.event"></cg-event-digest>
+                </div>
+            </div>
+
+            <div class="row row-footer">
+                <div class="col-md-12">
+                    <a class="btn btn-default" data-ui-sref="events">Календар</a>
                 </div>
             </div>
 
@@ -153,7 +140,7 @@
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <a class="btn btn-default"></a>
+                    <!--<a class="btn btn-default"></a>-->
                 </div>
             </div>
 

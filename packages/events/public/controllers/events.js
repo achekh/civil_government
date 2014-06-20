@@ -87,6 +87,10 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             }
         };
 
+        $scope.cancel = function() {
+            $state.goBack();
+        };
+
         $scope.create = function () {
             var events = new Events({
                 description: this.description,
@@ -125,7 +129,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             }
             event.updated.push(new Date().getTime());
             return event.$update(function() {
-                $location.path('events/' + event._id);
+                $state.go('events-view', {eventId: event._id});
             });
         };
 

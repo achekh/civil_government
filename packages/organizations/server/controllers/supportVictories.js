@@ -44,8 +44,8 @@ exports.all = function (req, res) {
     SupportVictory.find(query)
         .sort('-created')
         .populate('user', 'username')
-        .populate('victory', 'created title description user organization status city img datetime')
-        .populate('organization', 'created title shortTile url status sites description')
+        .populate('victory')
+        .populate('organization')
         .exec(function (err, supportVictories) {
             if (err) {
                 console.log(err);

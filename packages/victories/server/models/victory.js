@@ -48,11 +48,12 @@ VictorySchema.statics.load = function (id, cb) {
 };
 
 VictorySchema.post('save', function updateVictoryOrganizationVictoryCount(victory) {
-    mongoose.model('Organization').findById(victory.organization, function(err, organization) {
+    victory.model('Organization').findById(victory.organization, function(err, organization) {
         if (err) {
             console.log(err);
         } else {
-            return organization.updateVictoryCount();
+            if (organization)
+                return organization.updateVictoryCount();
         }
     });
 });

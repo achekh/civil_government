@@ -32,7 +32,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         $scope.findAuthenticated = function () {
             if ($scope.global.authenticated) {
                 Participants.query({
-                    userId: $scope.global.user._id,
+                    activistId: $scope.global.activist._id,
                     eventId: $stateParams.eventId
                 }, function (participants) {
                     $scope.participant = participants[0];

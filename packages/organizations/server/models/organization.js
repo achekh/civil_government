@@ -37,7 +37,7 @@ var OrganizationSchema = new Schema({
 OrganizationSchema.statics.load = function (id, cb) {
     return this.findOne({
         _id: id
-    }).populate('leader', 'name username displayName').exec(cb);
+    }).exec(cb);
 };
 
 OrganizationSchema.method('updateEventCount', function updateEventCount() {
