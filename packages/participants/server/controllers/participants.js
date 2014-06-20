@@ -5,6 +5,8 @@
  */
 var mongoose = require('mongoose'),
     Participant = mongoose.model('Participant'),
+    Member = mongoose.model('Member'),
+    Event = mongoose.model('Event'),
     _ = require('lodash');
 
 
@@ -27,16 +29,26 @@ exports.create = function(req, res) {
     var participant = new Participant(req.body);
     participant.user = req.user;
 
-    participant.save(function(err) {
+    Event.findById(participant.event, function (err, event) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                participant: participant
-            });
-        } else {
-            res.jsonp(participant);
+            return res.jsonp({errors: err.errors, participant: participant});
         }
+        Member.findOne({activist: participant.activist, organization: event.organization}, function (err, member) {
+            if (err) {
+                return res.jsonp({errors: err.errors, participant: participant});
+            }
+            if (member) {
+                participant.save(function (err) {
+                    if (err) {
+                        return res.jsonp({errors: err.errors, participant: participant});
+                    }
+                    res.jsonp(participant);
+                });
+            }
+            // todo: else send message for user to become organization member first
+        });
     });
+
 };
 
 /**

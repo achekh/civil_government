@@ -17,6 +17,7 @@ var EventSchema = new Schema({
     user: {
         type: Schema.ObjectId,
         ref: 'User',
+        required: true,
         index: true
     },
     title: {
