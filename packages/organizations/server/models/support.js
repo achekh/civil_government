@@ -59,7 +59,8 @@ SupportSchema.post('save', function updateOrganizationSupportedEventCount(suppor
         if (err) {
             console.log(err);
         } else {
-            return organization.updateSupportedEventCount();
+            if (organization)
+                return organization.updateSupportedEventCount();
         }
     });
 });

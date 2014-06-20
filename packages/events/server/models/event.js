@@ -76,7 +76,8 @@ EventSchema.post('save', function updateEventOrganizationEventCount(event) {
         if (err) {
             console.log(err);
         } else {
-            return organization.updateEventCount();
+            if (organization)
+                return organization.updateEventCount();
         }
     });
 });

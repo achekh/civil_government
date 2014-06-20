@@ -59,7 +59,8 @@ SupportVictorySchema.post('save', function updateOrganizationSupportedVictoryCou
         if (err) {
             console.log(err);
         } else {
-            return organization.updateSupportedVictoryCount();
+            if (organization)
+                return organization.updateSupportedVictoryCount();
         }
     });
 });

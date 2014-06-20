@@ -40,6 +40,7 @@ var ParticipantSchema = new Schema({
 ParticipantSchema.statics.load = function (id, cb) {
     this.findOne({_id: id})
         .populate('activist')
+        .populate('event')
         .exec(cb);
 };
 

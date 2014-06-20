@@ -29,10 +29,8 @@ exports.create = function(req, res) {
 
     participant.save(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                participant: participant
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(participant);
         }
@@ -49,10 +47,8 @@ exports.update = function(req, res) {
 
     participant.save(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                participant: participant
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(participant);
         }
@@ -67,10 +63,8 @@ exports.destroy = function(req, res) {
 
     participant.remove(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                participant: participant
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(participant);
         }
@@ -89,10 +83,10 @@ exports.show = function(req, res) {
  */
 exports.all = function(req, res) {
     var query = {};
-    if (req.query.coordinator && (req.query.coordinator === 'true' || req.query.coordinator === 'false')) {
+    if (req.query.coordinator !== undefined) {
         query.coordinator = req.query.coordinator;
     }
-    if (req.query.appeared && (req.query.appeared === 'true' || req.query.appeared === 'false')) {
+    if (req.query.appeared !== undefined) {
         query.appeared = req.query.appeared;
     }
     if (req.query.activistId) {
@@ -108,13 +102,12 @@ exports.all = function(req, res) {
     Participant
         .find(query)
         .sort('-created')
-        .populate('activist')
         .populate('event')
+        .populate('activist')
         .exec(function(err, participants) {
             if (err) {
-                res.render('error', {
-                    status: 500
-                });
+                console.log(err);
+                res.jsonp({errors: err.errors || [err]});
             } else {
                 if (userId) {
                     participants = participants.filter(function (participant) {
