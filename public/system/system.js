@@ -43,6 +43,12 @@ angular.module('mean.system', ['mean.controllers.login', 'mean-factory-intercept
             return Global.isAdmin($rootScope.global.user);
         };
 
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (toState.authenticate && !$rootScope.global.authenticated) {
+                event.preventDefault();
+            }
+        });
+
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             toState.previous = fromState;
             toState.previousParams = fromParams;
@@ -50,10 +56,11 @@ angular.module('mean.system', ['mean.controllers.login', 'mean-factory-intercept
                 toState.previous = toState;
                 toState.previousParams = {};
             }
-            $state.goBack = $state.goBack || function goBack() {
-                $state.go($state.current.previous, $state.current.previousParams);
-            };
         });
+
+        $state.goBack = function goBack() {
+            $state.go($state.current.previous, $state.current.previousParams);
+        };
 
     }])
 ;

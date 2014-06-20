@@ -12,12 +12,12 @@ angular.module('mean.system').service('Global', ['$rootScope', 'Activists', func
     }
 
     function isOwner(user, obj) {
-        if (!(user && obj && obj.user)) return false;
+        if (!(user && user._id && obj && obj.user)) return false;
         return user._id === obj.user || user._id === obj.user._id;
     }
 
     function hasAuthorization(user, obj) {
-        if (!(user && obj && obj.user)) return false;
+        if (!(user && user._id && obj && obj.user)) return false;
         return isAdmin(user) || isOwner(user, obj);
     }
 
