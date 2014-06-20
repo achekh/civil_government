@@ -7,6 +7,26 @@ var mongoose = require('mongoose'),
     Event = mongoose.model('Event'),
     _ = require('lodash');
 
+function addUserActivistAsCoordinator(user, event) {
+    mongoose.model('Activist').findOne({user: user}).exec()
+        .then(function(activist ,err) {
+            if (err) {
+                console.log(err);
+            } else if (activist) {
+                mongoose.model('Participant').create({
+                    activist: activist,
+                    event: event,
+                    coordinator: true
+                }).then(function(participant, err){
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        })
+    ;
+}
+
 exports.create = function (req, res) {
     var event = new Event(req.body);
     event.user = req.user;
@@ -16,6 +36,7 @@ exports.create = function (req, res) {
             res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(event);
+            addUserActivistAsCoordinator(req.user, event);
         }
     });
 };
