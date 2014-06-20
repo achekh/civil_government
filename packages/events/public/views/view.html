@@ -22,7 +22,7 @@
         </div>
 
         <div class="col-md-3 col_top_row" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">
-            <div class="row" data-ng-if="global.authenticated">
+            <div data-ng-if="global.authenticated">
                 <h1 data-ng-if="!participant">
                     <a class="btn btn-default" data-ng-click="join()"><span class="glyphicon glyphicon-plus"> Піду</span></a>
                 </h1>

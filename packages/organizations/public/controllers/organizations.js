@@ -4,8 +4,10 @@ var app = angular.module('mean.organizations', ['ui.bootstrap', 'xeditable']);
 app.run(function(editableOptions) {
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
-app.controller('OrganizationsController', ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Organizations', 'Activists',
-    function ($scope, $rootScope, $stateParams, $location, $state, Organizations, Activists) {
+app.controller('OrganizationsController',
+    ['$scope', '$rootScope', '$stateParams', '$location', '$state',
+        'Organizations', 'Activists', 'Members', 'Events', 'Supports',
+    function ($scope, $rootScope, $stateParams, $location, $state, Organizations, Activists, Members, Events, Supports) {
 
         $scope.isNew = $state.is('organizations-create');
 
@@ -32,6 +34,57 @@ app.controller('OrganizationsController', ['$scope', '$rootScope', '$stateParams
             });
         };
 
+        $scope.findAuthenticated = function () {
+            if ($scope.global.authenticated) {
+                Members.query({
+                    activistId: $scope.global.activist._id,
+                    organizationId: $stateParams.organizationId
+                }, function (members) {
+                    $scope.member = members[0];
+                });
+            }
+        };
+
+        $scope.join = function () {
+            var member = new Members({
+                activist: $scope.global.activist._id,
+                organization: $stateParams.organizationId
+            });
+            member.$save(function () {
+                $state.go('organizations-view', {}, {reload: true});
+            });
+        };
+
+        $scope.leave = function () {
+            $scope.member.$remove(function() {
+                $state.go('organizations-view', {}, {reload: true});
+            });
+        };
+
+        $scope.findMembers = function () {
+            Members.query({
+                organizationId: $stateParams.organizationId
+            }, function (members) {
+                $scope.members = members;
+            });
+        };
+
+        $scope.findEvents = function () {
+            Events.query({
+                organizationId: $stateParams.organizationId
+            }, function (events) {
+                $scope.events = events;
+            });
+        };
+
+        $scope.findEventsSupported = function () {
+            Supports.query({
+                organizationId: $stateParams.organizationId
+            }, function (supports) {
+                $scope.supports = supports;
+            });
+        };
+
         $scope.inlineEdit = function inlineEdit(form) {
             if ($scope.canEdit) {
                 form.$show();
@@ -43,7 +96,7 @@ app.controller('OrganizationsController', ['$scope', '$rootScope', '$stateParams
                 if (response.errors) {
                     $scope.errors = response.errors;
                 } else {
-                    $state.go($state.current.previous);
+                    $state.goBack();
                 }
             });
         };
@@ -59,13 +112,13 @@ app.controller('OrganizationsController', ['$scope', '$rootScope', '$stateParams
             organization.updated.push(new Date().getTime());
             organization.$update(function() {
                 if (!data) {
-                    $state.go($state.current.previous);
+                    $state.goBack();
                 }
             });
         };
 
         $scope.cancel = function cancel() {
-            $state.go($state.current.previous);
+            $state.goBack();
         };
 
         $scope.remove = function (organization) {
@@ -81,7 +134,7 @@ app.controller('OrganizationsController', ['$scope', '$rootScope', '$stateParams
                 });
             } else {
                 $scope.organization.$remove(function (response) {
-                    $state.go($state.current.previous);
+                    $state.goBack();
                 });
             }
         };
@@ -89,13 +142,3 @@ app.controller('OrganizationsController', ['$scope', '$rootScope', '$stateParams
     }
 ]);
 
-//'use strict';
-//
-//angular.module('mean.organizations').controller('OrganizationsController', ['$scope', 'Global', 'Organizations',
-//    function($scope, Global, Organizations) {
-//        $scope.global = Global;
-//        $scope.package = {
-//            name: 'organizations'
-//        };
-//    }
-//]);

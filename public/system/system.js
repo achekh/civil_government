@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mean.system', ['mean.controllers.login', 'mean-factory-interceptor'])
-    .run(['$rootScope', 'Global', function ($rootScope, Global) {
+    .run(['$rootScope', '$state', 'Global', function ($rootScope, $state, Global) {
 
         $rootScope.global = Global.getGlobals(window);
 
@@ -43,11 +43,16 @@ angular.module('mean.system', ['mean.controllers.login', 'mean-factory-intercept
             return Global.isAdmin($rootScope.global.user);
         };
 
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             toState.previous = fromState;
+            toState.previousParams = fromParams;
             if (!toState.previous || !toState.previous.name) {
                 toState.previous = toState;
+                toState.previousParams = {};
             }
+            $state.goBack = $state.goBack || function goBack() {
+                $state.go($state.current.previous, $state.current.previousParams);
+            };
         });
 
     }])

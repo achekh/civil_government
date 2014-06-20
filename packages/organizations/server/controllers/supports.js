@@ -44,8 +44,8 @@ exports.all = function (req, res) {
     Support.find(query)
         .sort('-created')
         .populate('user', 'username')
-        .populate('event', 'created user title organization datetime status sites description min_part max_part gps')
-        .populate('organization', 'created title shortTile url status sites description')
+        .populate('event')
+        .populate('organization')
         .exec(function (err, supports) {
             if (err) {
                 console.log(err);
