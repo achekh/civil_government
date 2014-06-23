@@ -9,7 +9,7 @@ angular.module('mean.system', ['mean.controllers.login', 'mean-factory-intercept
             $rootScope.global = Global.getGlobals($rootScope);
         });
 
-        $rootScope.$on('activist-updated', function(activist) {
+        $rootScope.$on('activist-updated', function(event, activist) {
             $rootScope.global.activist = activist;
         });
 
