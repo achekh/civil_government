@@ -59,4 +59,4 @@ ParticipantSchema.statics.load = function (id, cb) {
         .exec(cb);
 };
 
-var Participant = mongoose.model('Participant', ParticipantSchema);
+mongoose.model('Participant', ParticipantSchema);

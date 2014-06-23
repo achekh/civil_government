@@ -13,7 +13,7 @@ var should = require('should'),
     Video = mongoose.model('Video');
 
 // Globals
-var user, event, organization, video;
+var user, userEvent, organization, video;
 
 // The tests
 describe('<Unit Test>', function() {
@@ -34,7 +34,7 @@ describe('<Unit Test>', function() {
                 title: 'user1 organization'
             });
 
-            event = new Event({
+            userEvent = new Event({
                 user: user,
                 title: 'User event',
                 organization: organization,
@@ -44,7 +44,7 @@ describe('<Unit Test>', function() {
 
             video = new Video({
                 user: user,
-                event: event,
+                event: userEvent,
                 title: 'Event video',
                 url: 'http://example.com'
             });

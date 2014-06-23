@@ -15,7 +15,7 @@ var should = require('should'),
     Event = mongoose.model('Event');
 
 // Globals
-var user, activist, organization, event;
+var user, activist, organization, userEvent;
 
 // The tests
 describe('<Unit Test>', function() {
@@ -43,7 +43,7 @@ describe('<Unit Test>', function() {
                 name: user.name
             });
 
-            event = new Event({
+            userEvent = new Event({
                 user: user,
                 title: 'user event',
                 organization: organization,
@@ -71,20 +71,20 @@ describe('<Unit Test>', function() {
             });
 
             it('should be able to save event without problems', function(done) {
-                event.save(done);
+                userEvent.save(done);
             });
 
             it('should show an error when try to save event without title', function(done) {
-                event.title = '';
-                return event.save(function(err) {
+                userEvent.title = '';
+                return userEvent.save(function(err) {
                     should.exist(err);
                     done();
                 });
             });
 
             it('should be able to save updated event without problems', function(done) {
-                event.title = 'user event';
-                event.save(done);
+                userEvent.title = 'user event';
+                userEvent.save(done);
             });
 
         });
@@ -94,7 +94,7 @@ describe('<Unit Test>', function() {
                 user.remove.bind(user),
                 activist.remove.bind(user),
                 organization.remove.bind(user),
-                event.remove.bind(user)
+                userEvent.remove.bind(user)
             ], done);
         });
 

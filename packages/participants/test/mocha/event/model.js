@@ -17,7 +17,7 @@ var should = require('should'),
     Participant = mongoose.model('Participant');
 
 // Globals
-var user, activist, organization, event, participant, participantDuplicate;
+var user, activist, organization, userEvent, participant, participantDuplicate;
 
 // The tests
 describe('<Unit Test>', function() {
@@ -45,7 +45,7 @@ describe('<Unit Test>', function() {
                 name: user.name
             });
 
-            event = new Event({
+            userEvent = new Event({
                 user: user,
                 title: 'user event',
                 organization: organization,
@@ -55,13 +55,13 @@ describe('<Unit Test>', function() {
 
             participant = new Participant({
                 activist: activist,
-                event: event,
+                event: userEvent,
                 coordinator: false
             });
 
             participantDuplicate = new Participant({
                 activist: activist,
-                event: event,
+                event: userEvent,
                 coordinator: true
             });
 
@@ -71,7 +71,7 @@ describe('<Unit Test>', function() {
                 user.save.bind(user),
                 activist.save.bind(user),
                 organization.save.bind(user),
-                event.save.bind(event)
+                userEvent.save.bind(userEvent)
             ], done);
 
         });
@@ -117,9 +117,9 @@ describe('<Unit Test>', function() {
         after(function(done) {
             async.series([
                 user.remove.bind(user),
-                activist.remove.bind(user),
-                organization.remove.bind(user),
-                event.remove.bind(user),
+                activist.remove.bind(activist),
+                organization.remove.bind(organization),
+                userEvent.remove.bind(userEvent),
                 participant.remove.bind(participant),
                 participantDuplicate.remove.bind(participantDuplicate)
             ], done);
