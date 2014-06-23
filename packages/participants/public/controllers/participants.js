@@ -10,6 +10,8 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         $scope.coordinator = $stateParams.coordinator;
         $scope.appeared = $stateParams.appeared;
 
+        $scope.participant = null;
+
         $scope.find = function () {
             Participants.query({
                 activistId: $stateParams.activistId,
@@ -30,12 +32,16 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         $scope.findAuthenticated = function () {
-            if ($scope.global.authenticated) {
+            if ($scope.isAuthenticated()) {
                 Participants.query({
                     activistId: $scope.global.activist._id,
                     eventId: $stateParams.eventId
                 }, function (participants) {
-                    $scope.participant = participants[0];
+                    if (!participants.errors) {
+                        if (participants.length === 1) {
+                            $scope.participant = participants[0];
+                        }
+                    }
                 });
             }
         };
@@ -66,7 +72,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         $scope.load = function (parameters) {
-            if (parameters.coordinator) {
+            if (parameters.coordinator === true || parameters.coordinator === false) {
                 $scope.coordinator = parameters.coordinator;
             }
             if (parameters.appeared) {

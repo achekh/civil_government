@@ -10,6 +10,11 @@ var mongoose = require('mongoose'),
  * Video Schema
  */
 var ParticipantSchema = new Schema({
+    _id: {
+        type: String,
+        required: true,
+        unique: true
+    },
     created: {
         type: Date,
         default: Date.now
@@ -34,6 +39,16 @@ var ParticipantSchema = new Schema({
     }
 });
 
+ParticipantSchema.path('event').set(function (value) {
+    this._id = '' + this.activist + value._id;
+    return value;
+});
+
+ParticipantSchema.path('activist').set(function (value) {
+    this._id = '' + value._id + this.event;
+    return value;
+});
+
 /**
  * Statics
  */
@@ -44,18 +59,4 @@ ParticipantSchema.statics.load = function (id, cb) {
         .exec(cb);
 };
 
-var Participant = mongoose.model('Participant', ParticipantSchema);
-
-ParticipantSchema.pre('save', function (next) {
-    // TODO: not sure if it is a good way to prevent duplication
-    var self = this;
-    return Participant.findOne({event: self.event, activist: self.activist}, function (err, participant) {
-        if (err) {
-            return next(err);
-        }
-        if (participant) {
-            self._id = participant._id;
-        }
-        next();
-    }).exec();
-});
+mongoose.model('Participant', ParticipantSchema);

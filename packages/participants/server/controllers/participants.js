@@ -5,6 +5,8 @@
  */
 var mongoose = require('mongoose'),
     Participant = mongoose.model('Participant'),
+    Member = mongoose.model('Member'),
+    Event = mongoose.model('Event'),
     _ = require('lodash');
 
 
@@ -27,14 +29,26 @@ exports.create = function(req, res) {
     var participant = new Participant(req.body);
     participant.user = req.user;
 
-    participant.save(function(err) {
+    Event.findById(participant.event, function (err, event) {
         if (err) {
-            console.log(err);
-            res.jsonp({errors: err.errors || [err]});
-        } else {
-            res.jsonp(participant);
+            return res.jsonp({errors: err.errors, participant: participant});
         }
+        Member.findOne({activist: participant.activist, organization: event.organization}, function (err, member) {
+            if (err) {
+                return res.jsonp({errors: err.errors, participant: participant});
+            }
+            if (member) {
+                participant.save(function (err) {
+                    if (err) {
+                        return res.jsonp({errors: err.errors, participant: participant});
+                    }
+                    res.jsonp(participant);
+                });
+            }
+            // todo: else send message for user to become organization member first
+        });
     });
+
 };
 
 /**
@@ -83,10 +97,10 @@ exports.show = function(req, res) {
  */
 exports.all = function(req, res) {
     var query = {};
-    if (req.query.coordinator !== undefined) {
+    if (req.query.coordinator && (req.query.coordinator === 'true' || req.query.coordinator === 'false')) {
         query.coordinator = req.query.coordinator;
     }
-    if (req.query.appeared !== undefined) {
+    if (req.query.appeared && (req.query.appeared === 'true' || req.query.appeared === 'false')) {
         query.appeared = req.query.appeared;
     }
     if (req.query.activistId) {
@@ -102,8 +116,8 @@ exports.all = function(req, res) {
     Participant
         .find(query)
         .sort('-created')
-        .populate('event')
         .populate('activist')
+        .populate('event')
         .exec(function(err, participants) {
             if (err) {
                 console.log(err);
