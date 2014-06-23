@@ -1,15 +1,19 @@
 'use strict';
 
-require('../../../server/models/video');
+require(process.cwd() + '/packages/events/server/models/event');
+require(process.cwd() + '/packages/organizations/server/models/organization');
+require(process.cwd() + '/packages/videos/server/models/video');
 
 // Module dependencies.
 var should = require('should'),
     mongoose = require('mongoose'),
     User = mongoose.model('User'),
+    Event = mongoose.model('Event'),
+    Organization = mongoose.model('Organization'),
     Video = mongoose.model('Video');
 
 // Globals
-var user, video;
+var user, event, organization, video;
 
 // The tests
 describe('<Unit Test>', function() {
@@ -25,8 +29,22 @@ describe('<Unit Test>', function() {
                 password: 'password'
             });
 
+            organization = new Organization({
+                user: user,
+                title: 'user1 organization'
+            });
+
+            event = new Event({
+                user: user,
+                title: 'User event',
+                organization: organization,
+                datetime: new Date(),
+                status: Event.statuses[0]
+            });
+
             video = new Video({
                 user: user,
+                event: event,
                 title: 'Event video',
                 url: 'http://example.com'
             });

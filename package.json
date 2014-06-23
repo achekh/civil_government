@@ -73,6 +73,7 @@
   },
   "devDependencies": {
     "assetmanager": "^0.1.2",
+    "async": "latest",
     "grunt-karma": "^0.8.2",
     "grunt-mocha-test": "^0.10.2",
     "karma": "^0.12.10",
