@@ -7,6 +7,11 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         $scope.statuses = EventStatuses.all;
         $scope.getLabel = EventStatuses.getLabel;
 
+        $scope.canParticipate = false;
+
+        $scope.event = null;
+        $scope.participant = null;
+
         $scope.isHead = function () {
             return $scope.event && $scope.isOwner($scope.event.organization);
         };
@@ -22,7 +27,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         $scope.init = function () {
             if ($scope.isNew && $scope.isAuthenticated()) {
                 $scope.organizationOptions = [];
-                Members.query({userId: $scope.global.user._id}, function (members) {
+                Members.query({activistId: $scope.activist._id}, function (members) {
                     members.forEach(function (member) {
                         $scope.organizationOptions.push({value: member.organization._id, label: member.organization.title});
                     });
@@ -41,7 +46,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 if (activists.length) {
                     // activist found
                     $scope.activist = activists[0];
-                    //find activist organizations, where the activist is the leader of an organization
+                    // find activist organizations, where the activist is the leader of an organization
                     Members.query({activistId: $scope.activist._id, isLeader: true}, function (members) {
                         members.forEach(function(member) {
                             $scope.activistOrganizations.push({
@@ -65,17 +70,52 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.findOne = function () {
-            if ($scope.isAuthenticated()) {
-                Participants.query({userId: $scope.global.user._id, eventId: $stateParams.eventId}, function (participants) {
-                    if (!participants.errors && participants.length === 1) {
-                        $scope.participant = participants[0];
-                    }
-                });
-            }
+
+            $scope.canParticipate = false;
+
             return Events.get({
                 eventId: $stateParams.eventId
             }, function (event) {
+
                 $scope.event = event;
+
+                if ($scope.isAuthenticated()) {
+
+                    Participants.query({
+                        activistId: $scope.global.activist._id,
+                        eventId: event._id
+                    }, function (participants) {
+
+                        if (!participants.errors) {
+
+                            if (participants.length === 0) {
+
+                                Members.query({
+                                    activistId: $scope.global.activist._id,
+                                    organizationId: event.organization._id
+                                }, function (members) {
+
+                                    if (!members.errors) {
+                                        if (members.length === 1) {
+                                            $scope.canParticipate = true;
+                                        }
+                                    }
+
+                                });
+
+                            } else if (participants.length === 1) {
+
+                                $scope.canParticipate = true;
+                                $scope.participant = participants[0];
+
+                            }
+
+                        }
+
+                    });
+
+                }
+
             });
         };
 
