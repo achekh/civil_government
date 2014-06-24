@@ -18,7 +18,12 @@ exports.create = function (req, res) {
             res.jsonp({errors: err.errors || [err]});
         } else {
             Activist.loadByUserId(req.user._id, function (err, activist) {
-                var participant = new Participant({activist: activist, event: event, coordinator: true});
+                var participant = new Participant({
+                    activist: activist,
+                    event: event,
+                    status: Participant.statuses[0],
+                    coordinator: true
+                });
                 participant.save(function (err) {
                     if (err) {
                         return res.send('users/signup', {

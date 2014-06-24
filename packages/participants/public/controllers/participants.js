@@ -1,14 +1,24 @@
 'use strict';
 
-angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$stateParams', '$state', 'Participants',
-    function($scope, $stateParams, $state, Participants) {
+angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$stateParams', '$state', 'Participants', 'ParticipantStatuses',
+    function($scope, $stateParams, $state, Participants, ParticipantStatuses) {
 
         $scope.package = {
             name: 'participants'
         };
 
         $scope.coordinator = $stateParams.coordinator;
-        $scope.appeared = $stateParams.appeared;
+        $scope.status = $stateParams.status;
+
+        $scope.participantStatuses = ParticipantStatuses;
+        $scope.participantStatus = $scope.participantStatuses.filter(function (status) {
+            return '' + status.value === '' + $stateParams.status;
+        })[0] || $scope.participantStatuses[0];
+
+        $scope.setParticipantStatus = function (status) {
+            $scope.participantStatus = status;
+            $scope.find();
+        };
 
         $scope.participant = null;
 
@@ -17,7 +27,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
                 activistId: $stateParams.activistId,
                 eventId: $stateParams.eventId,
                 coordinator: $scope.coordinator,
-                appeared: $scope.appeared
+                status: $scope.participantStatus.value
             }, function (participants) {
                 $scope.participants = participants;
             });
@@ -49,7 +59,8 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         $scope.join = function () {
             var participant = new Participants({
                 activist: $scope.global.activist._id,
-                event: $stateParams.eventId
+                event: $stateParams.eventId,
+                status: $scope.participantStatuses[1].value
             });
             participant.$save(function () {
                 $state.go('events-view', {}, {reload: true});
@@ -64,7 +75,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
 
         $scope.appear = function () {
             if ($scope.participant) {
-                $scope.participant.appeared = true;
+                $scope.participant.status = $scope.participantStatuses[2].value;
                 $scope.participant.$update(function () {
                     $state.go('events-view', {}, {reload: true});
                 });

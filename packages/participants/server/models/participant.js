@@ -6,8 +6,10 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var statuses = ['GOING', 'APPEAR', 'PARTICIPATED'];
+
 /**
- * Video Schema
+ * Participant Schema
  */
 var ParticipantSchema = new Schema({
     _id: {
@@ -33,19 +35,20 @@ var ParticipantSchema = new Schema({
         type: Boolean,
         default: false
     },
-    appeared: {
-        type: Boolean,
-        default: false
+    status: {
+        type: String,
+        enum: statuses,
+        required: true
     }
 });
 
 ParticipantSchema.path('event').set(function (value) {
-    this._id = '' + this.activist + value._id;
+    this._id = '' + this.activist + ((typeof(value) === 'string') ? value : value._id);
     return value;
 });
 
 ParticipantSchema.path('activist').set(function (value) {
-    this._id = '' + value._id + this.event;
+    this._id = '' + ((typeof(value) === 'string') ? value : value._id) + this.event;
     return value;
 });
 
@@ -58,5 +61,7 @@ ParticipantSchema.statics.load = function (id, cb) {
         .populate('event')
         .exec(cb);
 };
+
+ParticipantSchema.statics.statuses = statuses;
 
 mongoose.model('Participant', ParticipantSchema);
