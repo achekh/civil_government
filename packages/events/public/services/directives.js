@@ -7,7 +7,7 @@ angular.module('mean.events')
             scope: {event: '=data'},
             templateUrl: 'events/views/digest.html',
             controller: ['$scope', 'EventStatuses', function ($scope, EventStatuses) {
-                $scope.getLabel = EventStatuses.getLabel;
+                $scope.statuses = EventStatuses;
             }]
         };
     })

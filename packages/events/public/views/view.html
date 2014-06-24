@@ -20,7 +20,7 @@
         <div class="col-md-3 col_top_row text-center">
             <h4>{{event.datetime | date:'dd.MM.yyyy hh:mm'}}</h4>
             <h4>{{event.gps}}</h4>
-            <h4>Стан: {{getLabel(event.status)}}</h4>
+            <h4>Стан: {{statuses.getLabel(event.status)}}</h4>
         </div>
 
         <div class="col-md-3 col_top_row text-center" data-ng-controller="ParticipantsController" data-ng-init="findAuthenticated()">
@@ -57,7 +57,7 @@
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <a class="btn btn-default">Інші координатори</a>
+                    <a class="btn btn-default" data-ui-sref="participants({coordinator: true, eventId: event._id})">Інші координатори</a>
                 </div>
             </div>
 
@@ -79,7 +79,7 @@
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <a class="btn btn-default">Інші учасники</a>
+                    <a class="btn btn-default" data-ui-sref="participants({coordinator: false, eventId: event._id})">Інші учасники</a>
                 </div>
             </div>
 
@@ -96,11 +96,9 @@
 
                 <div class="col-md-6">
                     <div class="btn-group dropdown" data-cg-dropdown-autoclose>
-                        <button type="button" class="btn btn-default dropdown-toggle">{{videoLiveStatus.label}} <span
-                                class="caret"></span></button>
+                        <button type="button" class="btn btn-default dropdown-toggle">{{videoStatus.label}} <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="" data-ng-click="setVideoLiveStatus(status)"
-                                   data-ng-repeat="status in videoLiveStatuses">{{status.label}}</a>
+                            <li><a href="" data-ng-click="setVideoStatus(status)" data-ng-repeat="status in videoStatuses">{{status.label}}</a>
                         </ul>
                     </div>
                 </div>
@@ -114,7 +112,7 @@
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <a class="btn btn-default" data-ui-sref="videos">Інші відео</a>
+                    <a class="btn btn-default" data-ui-sref="videos({eventId: event._id, status: videoLiveStatus})">Інші відео</a>
                 </div>
             </div>
 

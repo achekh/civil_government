@@ -4,8 +4,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
     function ($scope, $stateParams, $location, $state, Events, EventStatuses, Activists, Participants, Members) {
 
         $scope.isNew = $state.is('events-create');
-        $scope.statuses = EventStatuses.all;
-        $scope.getLabel = EventStatuses.getLabel;
+        $scope.statuses = EventStatuses;
 
         $scope.canParticipate = false;
 

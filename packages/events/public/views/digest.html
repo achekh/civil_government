@@ -5,5 +5,5 @@
     {{event.datetime | date:'dd.MM.yyyy hh:mm'}}<br/>
     {{event.title}}<br/>
     <span class="glyphicon glyphicon-user"></span> 0<br/>
-    <span class="glyphicon glyphicon-check"></span> {{getLabel(event.status)}}
+    <span class="glyphicon glyphicon-check"></span> {{statuses.getLabel(event.status)}}
 </p>

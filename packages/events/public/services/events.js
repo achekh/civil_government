@@ -14,6 +14,7 @@ angular.module('mean.events')
     ])
     .factory('EventStatuses',
         function () {
+
             var statuses = [
                 {value:'FOR_APPROVAL', label:'На затвердженні'},
                 {value:'APPROVED', label:'Затверджено'},
@@ -23,15 +24,19 @@ angular.module('mean.events')
                 {value:'CANCELED', label:'Відмінено'},
                 {value:'WIN', label:'Перемога'}
             ];
-            return {
-                all: statuses,
-                getLabel: function (value) {
-                    var status = statuses.filter(function (status) {
-                        return status.value === value;
-                    })[0];
-                    return status ? status.label : status;
-                }
-            };
+
+            function getLabel (value) {
+                var status = statuses.filter(function (status) {
+                    return status.value === value;
+                })[0];
+                return status ? status.label : status;
+            }
+
+
+            statuses.getLabel = getLabel;
+
+            return statuses;
+
         }
     )
 ;
