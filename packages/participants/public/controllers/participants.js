@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$stateParams', '$state', 'Participants', 'ParticipantStatuses',
-    function($scope, $stateParams, $state, Participants, ParticipantStatuses) {
+angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$state', '$stateParams', 'Participants', 'ParticipantStatuses',
+    function($scope, $state, $stateParams, Participants, ParticipantStatuses) {
 
         $scope.package = {
             name: 'participants'
@@ -86,7 +86,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         $scope.confirmParticipation = function (participant) {
             if (participant) {
                 participant.confirmed = true;
-                participant.$update(function () {
+                participant.$update().then(function () {
                     $state.go('events-view', {}, {reload: true});
                 });
             }
@@ -95,7 +95,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         $scope.cancelParticipation = function (participant) {
             if (participant) {
                 participant.confirmed = false;
-                participant.$update(function () {
+                participant.$update().then(function () {
                     $state.go('events-view', {}, {reload: true});
                 });
             }

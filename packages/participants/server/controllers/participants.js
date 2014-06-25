@@ -31,22 +31,28 @@ exports.create = function(req, res) {
 
     Event.findById(participant.event, function (err, event) {
         if (err) {
-            return res.jsonp({errors: err.errors, participant: participant});
-        }
-        Member.findOne({activist: participant.activist, organization: event.organization}, function (err, member) {
-            if (err) {
-                return res.jsonp({errors: err.errors, participant: participant});
-            }
-            if (member) {
-                participant.save(function (err) {
-                    if (err) {
-                        return res.jsonp({errors: err.errors, participant: participant});
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
+        } else {
+            Member.findOne({activist: participant.activist, organization: event.organization}, function (err, member) {
+                if (err) {
+                    console.log(err);
+                    res.jsonp({errors: err.errors || [err]});
+                } else {
+                    if (member) {
+                        participant.save(function (err) {
+                            if (err) {
+                                console.log(err);
+                                res.jsonp({errors: err.errors || [err]});
+                            } else {
+                                res.jsonp(participant);
+                            }
+                        });
                     }
-                    res.jsonp(participant);
-                });
-            }
-            // todo: else send message for user to become organization member first
-        });
+                // todo: else send message for user to become organization member first
+                }
+            });
+        }
     });
 
 };

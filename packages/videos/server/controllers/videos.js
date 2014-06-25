@@ -29,10 +29,8 @@ exports.create = function(req, res) {
 
     video.save(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                video: video
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(video);
         }
@@ -49,10 +47,8 @@ exports.update = function(req, res) {
 
     video.save(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                video: video
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(video);
         }
@@ -67,10 +63,8 @@ exports.destroy = function(req, res) {
 
     video.remove(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                video: video
-            });
+            console.log(err);
+            res.jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(video);
         }

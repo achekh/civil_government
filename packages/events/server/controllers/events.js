@@ -25,10 +25,8 @@ exports.create = function (req, res) {
                 });
                 participant.save(function (err) {
                     if (err) {
-                        return res.send('users/signup', {
-                            errors: err.errors,
-                            participant: participant
-                        });
+                        console.log(err);
+                        res.jsonp({errors: err.errors || [err]});
                     } else {
                         res.jsonp(event);
                     }
