@@ -87,7 +87,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             if (participant) {
                 participant.confirmed = true;
                 participant.$update().then(function () {
-                    $state.go('events-view', {}, {reload: true});
+                    $scope.find();
                 });
             }
         };
@@ -96,7 +96,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             if (participant) {
                 participant.confirmed = false;
                 participant.$update().then(function () {
-                    $state.go('events-view', {}, {reload: true});
+                    $scope.find();
                 });
             }
         };
@@ -107,6 +107,9 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             }
             if (parameters.appeared) {
                 $scope.appeared = parameters.appeared;
+            }
+            if (parameters.confirmed) {
+                $scope.confirmed = parameters.confirmed;
             }
             $scope.find();
         };
