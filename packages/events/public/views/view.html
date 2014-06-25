@@ -28,7 +28,7 @@
                 <h4 data-ng-if="!participant">
                     <a class="btn btn-default" data-ng-click="join()"><span class="glyphicon glyphicon-plus"> Піду</span></a>
                 </h4>
-                <h4 data-ng-if="participant && participant.status === 'GOING'">
+                <h4 data-ng-if="participant && !participant.appeared">
                     <a class="btn btn-default" data-ng-click="appear()"><span class="glyphicon glyphicon-play"> Прийшов</span></a>
                 </h4>
                 <h4 data-ng-if="participant">
@@ -82,7 +82,11 @@
 
             <div class="row" data-ng-repeat="participant in participants | limitTo: 3">
                 <div class="col-md-12">
-                    <cg-activist-digest data="participant.activist"></cg-activist-digest>
+                    <cg-participant-digest data="participant"></cg-participant-digest>
+                </div>
+                <div class="col-md-12" data-ng-if="isCoordinator()">
+                    <div data-ng-if="!participant.confirmed"><a data-ng-click="confirmParticipation(participant)"><span class="glyphicon glyphicon-ok-sign"></span></a> Підтвердити участь</div>
+                    <div data-ng-if="participant.confirmed"><a data-ng-click="cancelParticipation(participant)"><span class="glyphicon glyphicon-remove-sign"></span></a> Відмінити участь</div>
                 </div>
             </div>
 

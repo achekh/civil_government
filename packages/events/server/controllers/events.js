@@ -21,7 +21,6 @@ exports.create = function (req, res) {
                 var participant = new Participant({
                     activist: activist,
                     event: event,
-                    status: Participant.statuses[0],
                     coordinator: true
                 });
                 participant.save(function (err) {

@@ -14,9 +14,9 @@ angular.module('mean.participants')
 
         var statuses = [
             {value: null, label: 'Всі'},
-            {value:'GOING', label: 'Піде'},
-            {value:'APPEAR', label: 'Прийшов'},
-            {value:'PARTICIPATED', label: 'Взяв участь'}
+            {value:'GOING', label: 'Піде', appeared: false},
+            {value:'APPEARED', label: 'Прийшов', appeared: true, confirmed: false},
+            {value:'CONFIRMED', label: 'Взяв участь', confirmed: true}
         ];
 
         function getLabel (value) {
@@ -26,8 +26,15 @@ angular.module('mean.participants')
             return status ? status.label : status;
         }
 
+        function getStatus (appeared, confirmed) {
+            return statuses.filter(function (status) {
+                return (status.hasOwnProperty('appeared') ? status.appeared === appeared : true) &&
+                    (status.hasOwnProperty('confirmed') ? status.confirmed === confirmed : true);
+            })[0];
+        }
 
         statuses.getLabel = getLabel;
+        statuses.getStatus = getStatus;
 
         return statuses;
 

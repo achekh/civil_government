@@ -8,15 +8,16 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         $scope.coordinator = $stateParams.coordinator;
-        $scope.status = $stateParams.status;
+        $scope.appeared = $stateParams.appeared;
+        $scope.confirmed = $stateParams.confirmed;
 
         $scope.participantStatuses = ParticipantStatuses;
-        $scope.participantStatus = $scope.participantStatuses.filter(function (status) {
-            return '' + status.value === '' + $stateParams.status;
-        })[0] || $scope.participantStatuses[0];
+        $scope.participantStatus = $scope.participantStatuses.getStatus($scope.appeared, $scope.confirmed);
 
         $scope.setParticipantStatus = function (status) {
             $scope.participantStatus = status;
+            $scope.appeared = status.appeared;
+            $scope.confirmed = status.confirmed;
             $scope.find();
         };
 
@@ -27,7 +28,8 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
                 activistId: $stateParams.activistId,
                 eventId: $stateParams.eventId,
                 coordinator: $scope.coordinator,
-                status: $scope.participantStatus.value
+                appeared: $scope.appeared,
+                confirmed: $scope.confirmed
             }, function (participants) {
                 $scope.participants = participants;
             });
@@ -59,8 +61,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         $scope.join = function () {
             var participant = new Participants({
                 activist: $scope.global.activist._id,
-                event: $stateParams.eventId,
-                status: $scope.participantStatuses[1].value
+                event: $stateParams.eventId
             });
             participant.$save(function () {
                 $state.go('events-view', {}, {reload: true});
@@ -75,8 +76,26 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
 
         $scope.appear = function () {
             if ($scope.participant) {
-                $scope.participant.status = $scope.participantStatuses[2].value;
+                $scope.participant.appeared = true;
                 $scope.participant.$update(function () {
+                    $state.go('events-view', {}, {reload: true});
+                });
+            }
+        };
+
+        $scope.confirmParticipation = function (participant) {
+            if (participant) {
+                participant.confirmed = true;
+                participant.$update(function () {
+                    $state.go('events-view', {}, {reload: true});
+                });
+            }
+        };
+
+        $scope.cancelParticipation = function (participant) {
+            if (participant) {
+                participant.confirmed = false;
+                participant.$update(function () {
                     $state.go('events-view', {}, {reload: true});
                 });
             }

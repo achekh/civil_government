@@ -97,17 +97,20 @@ exports.show = function(req, res) {
  */
 exports.all = function(req, res) {
     var query = {};
+    if (req.query.coordinator && (req.query.coordinator === 'true' || req.query.coordinator === 'false')) {
+        query.coordinator = req.query.coordinator;
+    }
+    if (req.query.appeared && (req.query.appeared === 'true' || req.query.appeared === 'false')) {
+        query.appeared = req.query.appeared;
+    }
+    if (req.query.confirmed && (req.query.confirmed === 'true' || req.query.confirmed === 'false')) {
+        query.confirmed = req.query.confirmed;
+    }
     if (req.query.activistId) {
         query.activist = req.query.activistId;
     }
     if (req.query.eventId) {
         query.event = req.query.eventId;
-    }
-    if (req.query.coordinator && (req.query.coordinator === 'true' || req.query.coordinator === 'false')) {
-        query.coordinator = req.query.coordinator;
-    }
-    if (req.query.status && (Participant.statuses.indexOf(req.query.status) > -1)) {
-        query.status = req.query.status;
     }
     var userId;
     if (req.query.userId) {

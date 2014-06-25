@@ -6,8 +6,6 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var statuses = ['GOING', 'APPEAR', 'PARTICIPATED'];
-
 /**
  * Participant Schema
  */
@@ -35,10 +33,13 @@ var ParticipantSchema = new Schema({
         type: Boolean,
         default: false
     },
-    status: {
-        type: String,
-        enum: statuses,
-        required: true
+    appeared: {
+        type: Boolean,
+        default: false
+    },
+    confirmed: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -61,7 +62,5 @@ ParticipantSchema.statics.load = function (id, cb) {
         .populate('event')
         .exec(cb);
 };
-
-ParticipantSchema.statics.statuses = statuses;
 
 mongoose.model('Participant', ParticipantSchema);
