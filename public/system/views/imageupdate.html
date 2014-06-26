@@ -1,0 +1,11 @@
+<a ng-hide="showUpdateImgForm" class="small" href="" ng-click="initImgUpdate()">Изменить</a>
+<div ng-show="showUpdateImgForm" class="small">
+    <label for="imgUrlInput">Введите URL изображения</label>
+    <input id="imgUrlInput" ng-model="newImgUrl" >
+    <button type="button" class="btn btn-default btn-xs" ng-click="checkImg()"><span class="glyphicon glyphicon-upload"></span> Проверить</button>
+    <label for="imgUploadInput">или закачайте с диска</label>
+    <input id="imgUploadInput" type="file" ng-file-select="onFileSelect($files)" onclick="this.value=null" >
+    <br>
+    <a ng-show="isShowSaveButton" class="btn btn-primary btn-xs" ng-click="saveImg()">Сохранить</a>
+    <a ng-show="isShowSaveButton" class="btn btn-default btn-xs" ng-click="cancelImgUpdate()">Отменить</a>
+</div>

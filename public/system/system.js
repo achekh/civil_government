@@ -62,5 +62,7 @@ angular.module('mean.system', ['mean.controllers.login', 'mean-factory-intercept
             $state.go($state.current.previous, $state.current.previousParams);
         };
 
+        $rootScope.fileServerUrl = 'http://77.91.132.7:3001/';
+
     }])
 ;

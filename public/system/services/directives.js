@@ -107,4 +107,90 @@ angular.module('mean.system')
             }
         };
     })
+    .directive('cgImgUpdate', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'public/system/views/imageupdate.html',
+            scope: {
+                model: '=',
+                property: '@',
+                showSaveButton: '@',
+                modelName: '@'
+            },
+            controller: ['$scope', '$rootScope', '$upload', '$http', function ($scope, $rootScope, $upload, $http) {
+
+                var property = $scope.property = $scope.property || 'img';
+                $scope.isShowSaveButton = $scope.showSaveButton;
+                if ($scope.showSaveButton === undefined) {
+                    $scope.isShowSaveButton = true;
+                }
+
+                $scope.initImgUpdate = function initImgUpdate() {
+                    $scope.prevImgUrl = $scope.model[property];
+                    $scope.newImgUrl = $scope.uploadedImgUrl = '';
+                    $scope.showUpdateImgForm = true;
+                };
+
+                $scope.checkImg = function checkImg() {
+                    $scope.model[property] = $scope.newImgUrl;
+                };
+
+                $scope.onFileSelect = function ($files) {
+                    var file = $files[0];
+                    $scope.upload = $upload.upload({
+                        url: $rootScope.fileServerUrl,
+                        file: file
+                    }).progress(function(evt) {
+                        //console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                    }).success(function(data, status, headers, config) {
+                        // file is uploaded successfully
+                        //console.log(data);
+                        if ($scope.uploadedImgUrl) {
+                            $http({method: 'DELETE', url: $scope.uploadedImgUrl});
+                        }
+                        $scope.model[property] = $scope.uploadedImgUrl = data.files[0].url;
+                        $scope.newImgUrl = '';
+                    });
+                    //.error(...)
+                };
+
+                $scope.saveImg = function saveImg() {
+                    if ($scope.newImgUrl) {
+                        $scope.model[property] = $scope.newImgUrl;
+                    }
+                    $scope.showUpdateImgForm = false;
+                    $scope.model.$update(function(response) {
+                        if (!response.errors) {
+                            if ($scope.prevImgUrl && $scope.prevImgUrl.indexOf($rootScope.fileServerUrl) === 0) {
+                                $http({method: 'DELETE', url: $scope.prevImgUrl});
+                            }
+                        }
+                    });
+                };
+
+                $scope.cancelImgUpdate = function cancelImgUpdate() {
+                    if ($scope.uploadedImgUrl) {
+                        $http({method: 'DELETE', url: $scope.uploadedImgUrl});
+                    }
+                    $scope.model[property] = $scope.prevImgUrl;
+                    $scope.showUpdateImgForm = false;
+                };
+
+                if ($scope.modelName) {
+                    $rootScope.$on($scope.modelName + '-updated', function(event, response) {
+                        if (!response.errors) {
+                            if ($scope.prevImgUrl && $scope.prevImgUrl.indexOf($rootScope.fileServerUrl) === 0) {
+                                $http({method: 'DELETE', url: $scope.prevImgUrl});
+                            }
+                        }
+                    });
+                    $rootScope.$on($scope.modelName + '-canceled', function(event, response) {
+                        if ($scope.uploadedImgUrl) {
+                            $http({method: 'DELETE', url: $scope.uploadedImgUrl});
+                        }
+                    });
+                }
+            }]
+        };
+    })
 ;

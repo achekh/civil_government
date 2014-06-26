@@ -24,6 +24,15 @@ var OrganizationSchema = new Schema({
     description: {
         type: String
     },
+    img: {
+        type: String,
+        default: 'image_default_organization.png',
+        trim: true
+        ,get: function(img) {
+            if (!img) return img;
+            return img.indexOf('http://') === 0 ? img : 'http://dummyimage.com/100x100/858585/' + img;
+        }
+    },
     user: {
         type: Schema.ObjectId,
         ref: 'User'
@@ -117,7 +126,8 @@ OrganizationSchema.method('updateSupportedVictoryCount', function updateSupporte
 });
 
 OrganizationSchema.set('toJSON', {
-    virtuals: true
+    virtuals: true,
+    getters: true
 });
 
 mongoose.model('Organization', OrganizationSchema);

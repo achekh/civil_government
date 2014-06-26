@@ -109,6 +109,7 @@ app.controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$s
         };
 
         $scope.cancel = function () {
+            $rootScope.$emit('activist-canceled');
             $state.go('activists-view');
         };
 
