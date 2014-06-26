@@ -211,8 +211,7 @@ module.exports = function (done) {
                                     emails:[user.email],
                                     country:'Украiна',
                                     city:'Кieв',
-                                    phones:['+380'],
-                                    img:'http://ts4.mm.bing.net/th?id=HN.608052457444082755&pid=15.1'
+                                    phones:['+380']
                                 }];
                                 console.log('Seed activist');
                                 return seed(Activist, activists);
@@ -221,8 +220,7 @@ module.exports = function (done) {
                                 var victories = [{
                                     title: 'Верховная Рада прийняла закон про амнистію',
                                     datetime: new Date(),
-                                    city: 'Київ',
-                                    img: 'http://nvip.com.ua/sites/default/files/imagecache/original_watermark/pictures/news/gallery/util-final10.jpg'
+                                    city: 'Київ'
                                 }];
                                 console.log('Seed victory');
                                 return seed(Victory, victories);
