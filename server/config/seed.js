@@ -7,6 +7,7 @@ require(process.cwd() + '/packages/videos/server/models/video');
 require(process.cwd() + '/packages/activists/server/models/activist');
 require(process.cwd() + '/packages/victories/server/models/victory');
 require(process.cwd() + '/packages/organizations/server/models/organization');
+require(process.cwd() + '/packages/organizations/server/models/member');
 
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
@@ -14,6 +15,7 @@ var mongoose = require('mongoose'),
     Video = mongoose.model('Video'),
     Activist = mongoose.model('Activist'),
     Victory = mongoose.model('Victory'),
+    Member = mongoose.model('Member'),
     Organization = mongoose.model('Organization');
 
 module.exports = function (done) {
@@ -57,178 +59,188 @@ module.exports = function (done) {
                 return User.findOne({username: 'admin'}).exec();
             })
             .then(function(user) {
-
-                var organizations = [
-                    {
-                        title: 'На Варті',
-                        user: user
-                    }
-                ];
-
-                console.log('Seed organizations');
-                return seed(Organization, organizations)
-                    .then(function () {
-                        console.log('Find organizations');
-                        return Organization.find().exec();
+                var activists = [{
+                    user: user,
+                    name: user.name,
+                    emails:[user.email],
+                    country:'Украiна',
+                    city:'Кieв',
+                    phones:['+380']
+                }];
+                console.log('Seed activist for user admin');
+                return seed(Activist, activists)
+                    .then(function(){
+                        console.log('Find activist "admin"');
+                        return Activist.findOne({user: user}).exec();
                     })
-                    .then(function (organizations) {
-
-                        var events = [
+                    .then(function(activist) {
+                        var organizations = [
                             {
-                                title: 'ВатаВарта',
-                                description: 'А де вата?',
-                                user: user,
-                                organization: organizations[0],
-                                status: 'FOR_APPROVAL',
-                                datetime: new Date(),
-                                sites: 'Харків'
+                                title: 'На Варті',
+                                user: user
                             }
-
                         ];
-
-                        console.log('Seed events');
-                        return seed(Event, events)
+                        console.log('Seed organizations for user admin');
+                        return seed(Organization, organizations)
                             .then(function () {
-                                console.log('Find events');
-                                return Event.find().exec();
+                                console.log('Find organizations for user admin');
+                                return Organization.find({user: user}).exec();
                             })
-                            .then(function (events) {
-
-                                var videos = [
-                                    {
-                                        title: 'Майдан Свободи На Варті',
-                                        url: 'http://www.ustream.tv/channel/17823917',
-                                        user: user,
-                                        event: events[0],
-                                        live: true
-                                    }
-                                ];
-
-                                console.log('Seed videos');
-                                return seed(Video, videos);
-
+                            .then(function (organizations) {
+                                var members = [{
+                                    organization: organizations[0],
+                                    activist: activist,
+                                    isLeader: true,
+                                    user: user
+                                }];
+                                console.log('Seed members for user admin');
+                                return seed(Member, members)
+                                    .then(function(){
+                                        var events = [
+                                            {
+                                                title: 'ВатаВарта',
+                                                description: 'А де вата?',
+                                                user: user,
+                                                organization: organizations[0],
+                                                status: 'FOR_APPROVAL',
+                                                datetime: new Date(),
+                                                sites: 'Харків'
+                                            }
+                                        ];
+                                        console.log('Seed events for admin');
+                                        return seed(Event, events)
+                                            .then(function () {
+                                                console.log('Find events for admin');
+                                                return Event.find().exec();
+                                            })
+                                            .then(function (events) {
+                                                var videos = [
+                                                    {
+                                                        title: 'Майдан Свободи На Варті',
+                                                        url: 'http://www.ustream.tv/channel/17823917',
+                                                        user: user,
+                                                        event: events[0],
+                                                        live: true
+                                                    }
+                                                ];
+                                                console.log('Seed videos for admin');
+                                                return seed(Video, videos);
+                                            })
+                                            ;
+                                    });
                             })
-                        ;
-
+                            ;
                     })
-                ;
-
+                    ;
             })
             .then(function () {
                 console.log('Find user "maidanmonitoring"');
                 return User.findOne({username: 'maidanmonitoring'}).exec();
             })
             .then(function(user) {
-
-                var organizations = [
-                    {
-                        title: 'Об’єднання Майдан Моніторинг',
-                        user: user
-                    }
-                ];
-
-                console.log('Seed organizations');
-                return seed(Organization, organizations)
-                    .then(function () {
-                        console.log('Find organizations');
-                        return Organization.find().exec();
+                var activists = [{
+                    user: user,
+                    name: user.name,
+                    emails:[user.email],
+                    country:'Украiна',
+                    city:'Кieв',
+                    phones:['+380']
+                }];
+                console.log('Seed activist for user maidan');
+                return seed(Activist, activists)
+                    .then(function(){
+                        console.log('Find activist maidan');
+                        return Activist.findOne({user: user}).exec();
                     })
-                    .then(function (organizations) {
-
-                        var events = [
+                    .then(function(activist) {
+                        var organizations = [
                             {
-                                title: 'Путін Хуйло',
-                                description: 'Всеукраїнська акція',
-                                user: user,
-                                organization: organizations[0],
-                                status: 'FOR_APPROVAL',
-                                datetime: new Date(),
-                                sites: 'Україна'
-                            },
-                            {
-                                title: 'Пісні UA',
-                                description: 'Всеукраїнська акція',
-                                user: user,
-                                organization: organizations[0],
-                                status: 'FOR_APPROVAL',
-                                datetime: new Date(),
-                                sites: 'Україна'
+                                title: 'Об’єднання Майдан Моніторинг',
+                                user: user
                             }
                         ];
-
-                        console.log('Seed events');
-                        return seed(Event, events)
-                            .then(function() {
-                                console.log('Find event "Путін Хуйло"');
-                                return Event.findOne({title: 'Путін Хуйло'}).exec();
+                        console.log('Seed organizations for user maidan');
+                        return seed(Organization, organizations)
+                            .then(function () {
+                                console.log('Find organizations for user maidan');
+                                return Organization.find({user: user}).exec();
                             })
-                            .then(function(event) {
-
-                                var videos = [
-                                    {
-                                        title: 'Путін Хуйло, Донбас не віддамо! #Харків',
-                                        url: 'http://youtu.be/3CcKS0z7Bwo',
-                                        user: user,
-                                        event: event
-                                    },
-                                    {
-                                        title: 'Путін Хуйло, Донбас не віддамо! #WC2014',
-                                        url: 'http://www.youtube.com/watch?feature=player_embedded&v=SRHkwaVf1Ok',
-                                        user: user,
-                                        event: event
-                                    }
-
-                                ];
-
-                                console.log('Seed videos');
-                                return seed(Video, videos);
-
-                            })
-                            .then(function() {
-                                console.log('Find event "Пісні UA"');
-                                return Event.findOne({title: 'Пісні UA'}).exec();
-                            })
-                            .then(function(event) {
-
-                                var videos = [
-                                    {
-                                        title: 'Финальная песня - Набери "Украина" в Гугле',
-                                        url: 'http://youtu.be/-OWTWVwvtNw',
-                                        user: user,
-                                        event: event
-                                    }
-
-                                ];
-
-                                console.log('Seed videos');
-                                return seed(Video, videos);
-
-                            })
-                            .then(function() {
-                                var activists = [{
-                                    user: user,
-                                    name: user.name,
-                                    emails:[user.email],
-                                    country:'Украiна',
-                                    city:'Кieв',
-                                    phones:['+380']
+                            .then(function (organizations) {
+                                var members = [{
+                                    organization: organizations[0],
+                                    activist: activist,
+                                    isLeader: true,
+                                    user: user
                                 }];
-                                console.log('Seed activist');
-                                return seed(Activist, activists);
+                                console.log('Seed members for user maidan');
+                                return seed(Member, members)
+                                    .then(function(){
+                                        var events = [
+                                            {
+                                                title: 'Путін Хуйло',
+                                                description: 'Всеукраїнська акція',
+                                                user: user,
+                                                organization: organizations[0],
+                                                status: 'FOR_APPROVAL',
+                                                datetime: new Date(),
+                                                sites: 'Україна'
+                                            },
+                                            {
+                                                title: 'Пісні UA',
+                                                description: 'Всеукраїнська акція',
+                                                user: user,
+                                                organization: organizations[0],
+                                                status: 'FOR_APPROVAL',
+                                                datetime: new Date(),
+                                                sites: 'Україна'
+                                            }
+                                        ];
+                                        console.log('Seed events for maidan');
+                                        return seed(Event, events)
+                                            .then(function () {
+                                                console.log('Find events for maidan');
+                                                return Event.find({user: user}).sort('created').exec();
+                                            })
+                                            .then(function (events) {
+                                                var videos = [
+                                                    {
+                                                        title: 'Путін Хуйло, Донбас не віддамо! #Харків',
+                                                        url: 'http://youtu.be/3CcKS0z7Bwo',
+                                                        user: user,
+                                                        event: events[0]
+                                                    },
+                                                    {
+                                                        title: 'Путін Хуйло, Донбас не віддамо! #WC2014',
+                                                        url: 'http://www.youtube.com/watch?feature=player_embedded&v=SRHkwaVf1Ok',
+                                                        user: user,
+                                                        event: events[0]
+                                                    },
+                                                    {
+                                                        title: 'Финальная песня - Набери "Украина" в Гугле',
+                                                        url: 'http://youtu.be/-OWTWVwvtNw',
+                                                        user: user,
+                                                        event: events[1]
+                                                    }
+                                                ];
+                                                console.log('Seed videos');
+                                                return seed(Video, videos);
+                                            })
+                                            ;
+                                    });
                             })
-                            .then(function() {
-                                var victories = [{
-                                    title: 'Верховная Рада прийняла закон про амнистію',
-                                    datetime: new Date(),
-                                    city: 'Київ'
-                                }];
-                                console.log('Seed victory');
-                                return seed(Victory, victories);
-                            })
-                        ;
-
+                            ;
                     })
-                ;
+                    .then(function(){
+                        var victories = [{
+                            title: 'Верховная Рада прийняла закон про амнистію',
+                            datetime: new Date(),
+                            city: 'Київ',
+                            user: user
+                        }];
+                        console.log('Seed victory');
+                        return seed(Victory, victories);
+                    })
+                    ;
             })
             .then(function () {
                 console.log('Done seeding');
@@ -238,7 +250,6 @@ module.exports = function (done) {
                 return false;
             })
         ;
-
     }
 
     function dropDb() {

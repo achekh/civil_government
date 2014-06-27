@@ -54,6 +54,9 @@ exports.all = function (req, res) {
     if (req.query.userId) {
         query.user = req.query.userId;
     }
+    if (req.query.organizationId) {
+        query.organization = req.query.organizationId;
+    }
     Event.find(query)
         .sort('-created')
         .populate('user', 'username')

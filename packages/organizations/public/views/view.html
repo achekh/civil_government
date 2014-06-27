@@ -84,8 +84,8 @@
 
             <div class="row row-header">
                 <div class="col-md-12">
-                    <h4 data-ng-if="global.authenticated">
-                        <a data-ui-sref="events-create"><span class="glyphicon glyphicon-plus-sign"></span></a>
+                    <h4>
+                        <a data-ng-if="canEdit" data-ui-sref="events-create"><span class="glyphicon glyphicon-plus-sign"></span></a>
                         <span>События организации</span>
                     </h4>
                 </div>
