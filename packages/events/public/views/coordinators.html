@@ -1,0 +1,22 @@
+<section class="activists activists-list" data-ng-controller="EventsCoordinatorsController" data-ng-init="find()">
+
+    <div class="row row-header">
+        <div class="col-md-12">
+            <h2><a data-ui-sref="events-coordinators">Члени організації</a></h2>
+        </div>
+    </div>
+
+    <div class="row" data-ng-repeat="member in members">
+        <div class="col-md-12">
+            <cg-activist-digest data="member.activist"></cg-activist-digest>
+        </div>
+        <div class="col-md-12" data-ng-if="isHead()">
+            <div data-ng-if="!isCoordinator(member.activist)"><a data-ng-click="toggleCoordinator(member.activist)"><span class="glyphicon glyphicon-ok-sign"></span></a> Зробити координатором</div>
+            <div data-ng-if="isCoordinator(member.activist)"><a data-ng-click="toggleCoordinator(member.activist)"><span class="glyphicon glyphicon-remove-sign"></span></a> Зняти координаторство</div>
+        </div>
+    </div>
+
+    <div class="row row-footer">
+    </div>
+
+</section>
