@@ -49,9 +49,9 @@ angular.module('mean.events').config(['$stateProvider',
                     loggedin: checkLoggedin
                 }
             })
-            .state('events-coordinators', {
-                url: '/events/:eventId/coordinators',
-                templateUrl: 'events/views/coordinators.html',
+            .state('events-participants', {
+                url: '/events/:eventId/participants',
+                templateUrl: 'events/views/participants.html',
                 resolve: {
                     loggedin: checkLoggedin
                 }

@@ -46,6 +46,8 @@ Participants.register(function(app, auth, database) {
     });
     */
 
+    Participants.aggregateAsset('css', 'participants.css');
+
     return Participants;
 
 });
