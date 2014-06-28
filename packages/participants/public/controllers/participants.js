@@ -1,12 +1,14 @@
 'use strict';
 
-angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$state', '$stateParams', 'Participants', 'ParticipantStatuses',
-    function($scope, $state, $stateParams, Participants, ParticipantStatuses) {
+angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$state', '$stateParams', 'Participants', 'ParticipantStatuses', 'Events', 'Members',
+    function($scope, $state, $stateParams, Participants, ParticipantStatuses, Events, Members) {
 
         $scope.package = {
             name: 'participants'
         };
 
+        $scope.eventId = $stateParams.eventId;
+        $scope.activistId = $stateParams.activistId;
         $scope.coordinator = $stateParams.coordinator;
         $scope.appeared = $stateParams.appeared;
         $scope.confirmed = $stateParams.confirmed;
@@ -21,7 +23,24 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             $scope.find();
         };
 
-        $scope.participant = null;
+        $scope.isHead = false;
+        if ($stateParams.eventId) {
+            Events.get({eventId: $stateParams.eventId}, function (event) {
+                if (!event.errors) {
+                    Members.query({
+                        activistId: $scope.global.activist._id,
+                        organizationId: event.organization.id,
+                        isLeader: true
+                    }, function (members) {
+                        if (!members.errors) {
+                            $scope.isHead = members.length === 1;
+                        }
+                    });
+                }
+            });
+        }
+
+        $scope.participants = [];
 
         $scope.find = function () {
             Participants.query({
@@ -34,6 +53,8 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
                 $scope.participants = participants;
             });
         };
+
+        $scope.participant = null;
 
         $scope.findOne = function () {
             Participants.get({
@@ -83,19 +104,19 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             }
         };
 
-        $scope.confirmParticipation = function (participant) {
+        $scope.toggleConfirmed = function (participant) {
             if (participant) {
-                participant.confirmed = true;
+                participant.confirmed = !participant.confirmed;
                 participant.$update().then(function () {
                     $scope.find();
                 });
             }
         };
 
-        $scope.cancelParticipation = function (participant) {
+        $scope.toggleCoordinator = function (participant) {
             if (participant) {
-                participant.confirmed = false;
-                participant.$update().then(function () {
+                participant.coordinator = !participant.coordinator;
+                participant.$update().finally(function () {
                     $scope.find();
                 });
             }

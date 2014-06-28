@@ -46,5 +46,7 @@ Activists.register(function(app, auth, database) {
     });
     */
 
+    Activists.aggregateAsset('css', 'activists.css');
+
     return Activists;
 });

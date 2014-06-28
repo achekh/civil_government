@@ -1,0 +1,7 @@
+.participants > .row {
+    margin-bottom: 2em;
+}
+
+.participants-list-small > .row {
+    margin-bottom: 0;
+}

@@ -38,17 +38,25 @@ angular.module('mean.events').config(['$stateProvider',
                     loggedin: checkLoggedin
                 }
             })
+            .state('events-view', {
+                url: '/events/:eventId',
+                templateUrl: 'events/views/view.html'
+            })
             .state('events-edit', {
-                url: '/events/edit/:eventId',
+                url: '/events/:eventId/edit',
                 templateUrl: 'events/views/edit.html',
                 resolve: {
                     loggedin: checkLoggedin
                 }
             })
-            .state('events-view', {
-                url: '/events/view/:eventId',
-                templateUrl: 'events/views/view.html'
+            .state('events-participants', {
+                url: '/events/:eventId/participants',
+                templateUrl: 'events/views/participants.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
             })
+
         ;
     }
 ]);
