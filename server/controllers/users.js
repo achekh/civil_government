@@ -4,13 +4,44 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+    Activist = mongoose.model('Activist'),
     User = mongoose.model('User');
+
+var profile2Activist = {
+    facebook: function(req, profile) {
+        function getEmails(source) {
+            var emails = [];
+            if (source && source.length) {
+                for (var i = 0; i < source.length; i++) {
+                    emails[i] = source[i].value;
+                }
+            }
+            return emails;
+        }
+        var activist = new Activist({
+            user: req.user,
+            name: profile.displayName,
+            lastName: profile.name.familyName,
+            emails: getEmails(profile.emails)
+        });
+        return activist;
+    }
+};
 
 /**
  * Auth callback
  */
-exports.authCallback = function(req, res) {
-    res.redirect('/');
+exports.authCallback = function(req, res, next) {
+    if (req.authInfo && req.authInfo.profile) {
+        var profile = req.authInfo.profile;
+        var activist = profile2Activist[profile.provider].call(this, req, profile);
+        activist.save(function(err) {
+            if (err) return next(err);
+            res.redirect('/');
+        });
+    } else {
+        res.redirect('/');
+    }
 };
 
 /**
