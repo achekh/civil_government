@@ -38,12 +38,12 @@ module.exports = function(app, passport) {
     app.route('/auth/facebook')
         .get(passport.authenticate('facebook', {
             scope: ['email', 'user_about_me'],
-            failureRedirect: '#!/login'
+            failureRedirect: '/#!/login'
         }), users.signin);
 
     app.route('/auth/facebook/callback')
         .get(passport.authenticate('facebook', {
-            failureRedirect: '#!/login'
+            failureRedirect: '/#!/login'
         }), users.authCallback);
 
     // Setting the github oauth routes
@@ -106,4 +106,6 @@ module.exports = function(app, passport) {
     app.get('/auth/vkontakte/callback',
         passport.authenticate('vkontakte', { failureRedirect: '#!/login' }),
         users.authCallback);
+
+    app.get('/auth/delete', users.deleteUser);
 };

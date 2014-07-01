@@ -42,12 +42,10 @@ angular.module('mean.controllers.login', [])
                 $scope.usernameError = null;
                 $scope.registerError = null;
                 $http.post('/register', {
+                    name: $scope.user.name,
                     email: $scope.user.email,
                     password: $scope.user.password,
-                    confirmPassword: $scope.user.confirmPassword,
-                    username: $scope.user.username,
-                    name: $scope.user.name,
-                    lastName: $scope.user.lastName
+                    confirmPassword: $scope.user.confirmPassword
                 })
                     .success(function() {
                         // registration OK

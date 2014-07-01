@@ -6,9 +6,9 @@ module.exports = {
         name: 'Mean Civil Government - Production'
     },
     facebook: {
-        clientID: 'APP_ID',
-        clientSecret: 'APP_SECRET',
-        callbackURL: 'http://localhost:3000/auth/facebook/callback'
+        clientID: '293563647490831',
+        clientSecret: 'c17655c17fb2417db794c123267aaa60',
+        callbackURL: 'http://77.91.132.7:3000/auth/facebook/callback'
     },
     twitter: {
         clientID: 'CONSUMER_KEY',

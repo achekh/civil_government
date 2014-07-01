@@ -37,10 +37,10 @@ exports.authCallback = function(req, res, next) {
         var activist = profile2Activist[profile.provider].call(this, req, profile);
         activist.save(function(err) {
             if (err) return next(err);
-            res.redirect('/');
+            res.redirect('/#!/activists/create');
         });
     } else {
-        res.redirect('/');
+        res.redirect('/#!/activists/view');
     }
 };
 
@@ -76,11 +76,11 @@ exports.create = function(req, res, next) {
     var user = new User(req.body);
 
     user.provider = 'local';
+    user.username = user.email;
 
     // because we set our user.provider to local our models/user.js validation will always be true
     req.assert('name', 'Представтесь, пожалуйста').len(1,200);
     req.assert('email', 'Как с вами связаться по Е-Mail').isEmail();
-    req.assert('username', 'Придумайте логин').len(1,20);
     req.assert('password', 'Пароль должен быть').len(1, 200);
     req.assert('confirmPassword', 'Пiдтверження паролю не прайшло').equals(req.body.password);
 
@@ -96,7 +96,7 @@ exports.create = function(req, res, next) {
             switch (err.code) {
                 case 11000:
                 case 11001:
-                    return res.status(400).send('Такой логiн уже занят');
+                    return res.status(400).send([{msg:'Такой email уже занят'}]);
                 default:
                     return res.status(400).send([{msg:'Ошибки при сохранении в базу'}]);
             }
@@ -129,4 +129,27 @@ exports.user = function(req, res, next, id) {
             req.profile = user;
             next();
         });
+};
+
+exports.deleteUser = function(req, res) {
+    Activist.find().exec()
+        .then(function(activists) {
+            activists.forEach(function(activist, index) {
+                if (activist.name === 'Super Admin' || activist.name === 'Майдан Моніторинг') return;
+                activist.remove(function(err) {
+                    if (err) console.log(err);
+                });
+            });
+    });
+    User.find().exec()
+        .then(function(users) {
+            users.forEach(function(user, index) {
+                if (user.name === 'Super Admin' || user.name === 'Майдан Моніторинг') return;
+                user.remove(function(err) {
+                    if (err) console.log(err);
+                });
+            });
+        });
+
+    res.redirect('/');
 };

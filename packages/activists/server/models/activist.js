@@ -24,11 +24,6 @@ var ActivistSchema = new Schema({
         default: '',
         trim: true
     },
-    lastName: {
-        type: String,
-        default: '',
-        trim: true
-    },
     country: {
         type: String,
         default: 'Невядомая краiна',
@@ -103,9 +98,9 @@ ActivistSchema.statics.loadByUserId = function(userId, cb) {
 };
 
 ActivistSchema.virtual('displayName').get(function () {
-    if (this.lastName && this.lastName.length) {
-        return this.name + ' ' + this.lastName.substr(0, 1) + '.';
-    }
+//    if (this.lastName && this.lastName.length) {
+//        return this.name + ' ' + this.lastName.substr(0, 1) + '.';
+//    }
     return this.name;
 });
 

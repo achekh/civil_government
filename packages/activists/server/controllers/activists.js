@@ -94,7 +94,16 @@ exports.update = function(req, res) {
         if (err) {
             res.render('error', {status: 500});
         } else {
-            res.jsonp(activist);
+            activist.model('User').findById(activist.user, function(err, user) {
+                if (err) console.log(err);
+                if (user) {
+                    user.name = activist.name;
+                    user.save(function (err, user) {
+                        if (err) console.log(err);
+                        res.jsonp(activist);
+                    });
+                }
+            });
         }
     });
 };
