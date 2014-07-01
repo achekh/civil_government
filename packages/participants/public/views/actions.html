@@ -1,0 +1,10 @@
+<div class="clearfix">
+    <div data-ng-if="actor.isHead">
+        <div data-ng-if="!participant.coordinator"><a data-ng-click="toggleCoordinator(participant)"><span class="glyphicon glyphicon-ok-sign"></span></a> Зробити координатором</div>
+        <div data-ng-if="participant.coordinator"><a data-ng-click="toggleCoordinator(participant)"><span class="glyphicon glyphicon-remove-sign"></span></a> Зняти координаторство</div>
+    </div>
+    <div data-ng-if="actor.isCoordinator">
+        <div data-ng-if="!participant.confirmed"><a data-ng-click="toggleConfirmed(participant)"><span class="glyphicon glyphicon-ok-sign"></span></a> Підтвердити участь</div>
+        <div data-ng-if="participant.confirmed"><a data-ng-click="toggleConfirmed(participant)"><span class="glyphicon glyphicon-remove-sign"></span></a> Відмінити участь</div>
+    </div>
+</div>

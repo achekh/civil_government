@@ -7,11 +7,25 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             name: 'participants'
         };
 
+        function toBoolean(value) {
+            var result;
+            if (typeof(value) === 'boolean') {
+                result = value;
+            } else if (typeof(value) === 'string') {
+                if (value.toLowerCase() === 'true') {
+                    result = true;
+                } else if (value.toLowerCase() === 'false') {
+                    result = false;
+                }
+            }
+            return result;
+        }
+
         $scope.eventId = $stateParams.eventId;
         $scope.activistId = $stateParams.activistId;
-        $scope.coordinator = $stateParams.coordinator;
-        $scope.appeared = $stateParams.appeared;
-        $scope.confirmed = $stateParams.confirmed;
+        $scope.coordinator = toBoolean($stateParams.coordinator);
+        $scope.appeared = toBoolean($stateParams.appeared);
+        $scope.confirmed = toBoolean($stateParams.confirmed);
 
         $scope.participantStatuses = ParticipantStatuses;
         $scope.participantStatus = $scope.participantStatuses.getStatus($scope.appeared, $scope.confirmed);
@@ -23,22 +37,52 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             $scope.find();
         };
 
-        $scope.isHead = false;
-        if ($stateParams.eventId) {
-            Events.get({eventId: $stateParams.eventId}, function (event) {
-                if (!event.errors) {
-                    Members.query({
-                        activistId: $scope.global.activist._id,
-                        organizationId: event.organization.id,
-                        isLeader: true
-                    }, function (members) {
-                        if (!members.errors) {
-                            $scope.isHead = members.length === 1;
-                        }
-                    });
+        // get current actor
+        $scope.actor = null;
+
+        if ($scope.global.activist && $stateParams.eventId) {
+
+            var actor = {
+                participant: null,
+                isParticipant: false,
+                isCoordinator: false,
+                member: null,
+                canParticipate: false,
+                isHead: false
+            };
+
+            Participants.query({
+                activistId: $scope.global.activist._id,
+                eventId: $stateParams.eventId
+            }, function (participants) {
+                if (!participants.errors) {
+                    if (participants.length === 1) {
+
+                        actor.participant = participants[0];
+                        actor.isParticipant = participants.length === 1;
+                        actor.isCoordinator = actor.participant && participants[0].coordinator;
+
+                        Members.query({
+                            activistId: $scope.global.activist._id,
+                            organizationId: actor.participant.event.organization
+                        }, function (members) {
+                            if (!members.errors) {
+                                if (members.length === 1) {
+                                    actor.member = members[0];
+                                    actor.canParticipate = true;
+                                    actor.isHead = actor.member.isLeader;
+                                }
+                            }
+                            $scope.actor = actor;
+                        });
+
+                    }
                 }
             });
+
         }
+
+        // get participants
 
         $scope.participants = [];
 
@@ -54,6 +98,8 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             });
         };
 
+        // get participant
+
         $scope.participant = null;
 
         $scope.findOne = function () {
@@ -62,21 +108,6 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             }, function (participant) {
                 $scope.participant = participant;
             });
-        };
-
-        $scope.findAuthenticated = function () {
-            if ($scope.isAuthenticated()) {
-                Participants.query({
-                    activistId: $scope.global.activist._id,
-                    eventId: $stateParams.eventId
-                }, function (participants) {
-                    if (!participants.errors) {
-                        if (participants.length === 1) {
-                            $scope.participant = participants[0];
-                        }
-                    }
-                });
-            }
         };
 
         $scope.join = function () {
@@ -90,34 +121,16 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         $scope.leave = function () {
-            $scope.participant.$remove(function() {
+            $scope.actor.participant.$remove(function() {
                 $state.go('events-view', {}, {reload: true});
             });
         };
 
         $scope.appear = function () {
-            if ($scope.participant) {
-                $scope.participant.appeared = true;
-                $scope.participant.$update(function () {
+            if ($scope.actor.participant) {
+                $scope.actor.participant.appeared = true;
+                $scope.actor.participant.$update(function () {
                     $state.go('events-view', {}, {reload: true});
-                });
-            }
-        };
-
-        $scope.toggleConfirmed = function (participant) {
-            if (participant) {
-                participant.confirmed = !participant.confirmed;
-                participant.$update().then(function () {
-                    $scope.find();
-                });
-            }
-        };
-
-        $scope.toggleCoordinator = function (participant) {
-            if (participant) {
-                participant.coordinator = !participant.coordinator;
-                participant.$update().finally(function () {
-                    $scope.find();
                 });
             }
         };
@@ -134,6 +147,10 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             }
             $scope.find();
         };
+
+        $scope.$on('participants-update', function () {
+            $scope.find();
+        });
 
     }
 ]);
