@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+    config = require('../config/config'),
     nodemailer = require('nodemailer'),
     Activist = mongoose.model('Activist'),
     User = mongoose.model('User');
@@ -161,43 +162,49 @@ exports.restore = function(req, res, next) {
             .then(function(users){
                 var text, ref;
                 if (users.length) {
-                    ref = 'http://77.91.132.7:3000/#!/restore/' + encodeURIComponent(users[0].hashed_password);
+                    ref = config.app.publicUrl + '/#!/restore/' + encodeURIComponent(users[0].hashed_password);
                     text = 'Ваш пароль от системы гражданского самоуправления можно восстановить, пройдя по ссылке ' + ref;
                 } else {
-                    ref = 'http://77.91.132.7:3000/#!/register';
-                    text = 'Ваш email не зарегистрирован в системе гражданского самоуправления. Можете зарегистрироваться, пройдя по ссылке ' + ref;
+                    ref = config.app.publicUrl + '/#!/register';
+                    text = 'Ваш email не зарегистрирован в системе гражданского самоуправления. Вы можете зарегистрироваться, пройдя по ссылке ' + ref;
                 }
                 //civil.government.ua@gmail.com
-                var transport = nodemailer.createTransport('direct', {debug: true});
+                var transport = nodemailer.createTransport('SMTP', {
+                    debug: config.app.env === 'development',
+                    auth: {
+                        user: 'civil.government.ua.service@gmail.com',
+                        pass: 'service_password'
+                    }
+                });
                 transport.sendMail({
-                    from: 'civil.government.ua@gmail.com', // sender address
+                    from: 'civil.government.ua.service@gmail.com', // sender address
                     to: req.body.email, // list of receivers
                     subject: 'Восстановление пароля к системе гражданского самоуправления', // Subject line
                     text: text // plaintext body
 //                html: '<b>Hello world ✔</b>' // html body
                 }, function(err,response) {
-                    if (err) {
+                if (err) {
                         console.log(err);
                         return res.status(500).send([{msg:'not ok',err:err}]);
                     }
-
+                    res.status(200).send([{msg:'ok',response:response}]);
                     // response.statusHandler only applies to 'direct' transport
-                    response.statusHandler.once('failed', function(data){
-                        console.log(
-                            'Permanently failed delivering message to %s with the following response: %s',
-                            data.domain, data.response);
-                        res.status(500).send([{msg:'not ok',data:data}]);
-                    });
-
-                    response.statusHandler.once('requeue', function(data){
-                        console.log('Temporarily failed delivering message to %s', data.domain);
-                        res.status(500).send([{msg:'not ok',data:data}]);
-                    });
-
-                    response.statusHandler.once('sent', function(data){
-                        console.log('Message was accepted by %s', data.domain);
-                        res.status(200).send([{msg:'ok',data:data}]);
-                    });
+//                    response.statusHandler.once('failed', function(data){
+//                        console.log(
+//                            'Permanently failed delivering message to %s with the following response: %s',
+//                            data.domain, data.response);
+//                        res.status(500).send([{msg:'not ok',data:data}]);
+//                    });
+//
+//                    response.statusHandler.once('requeue', function(data){
+//                        console.log('Temporarily failed delivering message to %s', data.domain);
+//                        res.status(500).send([{msg:'not ok',data:data}]);
+//                    });
+//
+//                    response.statusHandler.once('sent', function(data){
+//                        console.log('Message was accepted by %s', data.domain);
+//                        res.status(200).send([{msg:'ok',data:data}]);
+//                    });
                 });
             }
             ,function(err){

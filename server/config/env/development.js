@@ -3,7 +3,9 @@
 module.exports = {
     db: 'mongodb://localhost/mean-dev',
     app: {
-        name: 'Civil government'
+        name: 'Civil government',
+        env: 'development',
+        publicUrl: 'http://127.0.0.1:3000'
     },
     facebook: {
         clientID: '293563647490831',

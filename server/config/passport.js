@@ -104,6 +104,7 @@ module.exports = function(passport) {
                         name: profile.displayName,
                         email: profile.emails[0].value,
                         username: profile.username || profile.emails[0].value.split('@')[0],
+                        password: 'password_to_be_changed_for_' + (profile.emails[0].value || profile.displayName),
                         provider: 'facebook',
                         facebook: profile._json
                     });
