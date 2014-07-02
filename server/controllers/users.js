@@ -9,26 +9,15 @@ var mongoose = require('mongoose'),
     Activist = mongoose.model('Activist'),
     User = mongoose.model('User');
 
-var profile2Activist = {
-    facebook: function(req, profile) {
-        function getEmails(source) {
-            var emails = [];
-            if (source && source.length) {
-                for (var i = 0; i < source.length; i++) {
-                    emails[i] = source[i].value;
-                }
-            }
-            return emails;
+function getEmails(source) {
+    var emails = [];
+    if (source && source.length) {
+        for (var i = 0; i < source.length; i++) {
+            emails[i] = source[i].value;
         }
-        var activist = new Activist({
-            user: req.user,
-            name: profile.displayName,
-            lastName: profile.name.familyName,
-            emails: getEmails(profile.emails)
-        });
-        return activist;
     }
-};
+    return emails;
+}
 
 /**
  * Auth callback
@@ -36,7 +25,16 @@ var profile2Activist = {
 exports.authCallback = function(req, res, next) {
     if (req.authInfo && req.authInfo.profile) {
         var profile = req.authInfo.profile;
-        var activist = profile2Activist[profile.provider].call(this, req, profile);
+
+        var activist = new Activist({
+            user: req.user,
+            name: profile.displayName,
+            emails: getEmails(profile.emails)
+        });
+        if (profile._json.profile_image_url) {
+            activist.img = profile._json.profile_image_url;
+        }
+
         activist.save(function(err) {
             if (err) return next(err);
             res.redirect('/#!/activists/create');
@@ -134,25 +132,26 @@ exports.user = function(req, res, next, id) {
 };
 
 exports.deleteUser = function(req, res) {
-    Activist.find().exec()
-        .then(function(activists) {
-            activists.forEach(function(activist, index) {
-                if (activist.name === 'Super Admin' || activist.name === 'Майдан Моніторинг') return;
-                activist.remove(function(err) {
-                    if (err) console.log(err);
+    if (config.app.env === 'development') {
+        Activist.find().exec()
+            .then(function(activists) {
+                activists.forEach(function(activist, index) {
+                    if (activist.name === 'Super Admin' || activist.name === 'Майдан Моніторинг') return;
+                    activist.remove(function(err) {
+                        if (err) console.log(err);
+                    });
                 });
             });
-    });
-    User.find().exec()
-        .then(function(users) {
-            users.forEach(function(user, index) {
-                if (user.name === 'Super Admin' || user.name === 'Майдан Моніторинг') return;
-                user.remove(function(err) {
-                    if (err) console.log(err);
+        User.find().exec()
+            .then(function(users) {
+                users.forEach(function(user, index) {
+                    if (user.name === 'Super Admin' || user.name === 'Майдан Моніторинг') return;
+                    user.remove(function(err) {
+                        if (err) console.log(err);
+                    });
                 });
             });
-        });
-
+    }
     res.redirect('/');
 };
 

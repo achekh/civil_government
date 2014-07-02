@@ -13,9 +13,9 @@ module.exports = {
         callbackURL: 'http://127.0.0.1.xip.io:3000/auth/facebook/callback'
     },
     twitter: {
-        clientID: 'CONSUMER_KEY',
-        clientSecret: 'CONSUMER_SECRET',
-        callbackURL: 'http://localhost:3000/auth/twitter/callback'
+        clientID: '8zZJ9Q2IWUiQNEcXYjV9mvxsn',
+        clientSecret: 'DKsmEXU7zQxsjPT5zKmLlaY0pqjUI7CiQ3vfovV1JXhXvyvJGa',
+        callbackURL: 'http://127.0.0.1.xip.io:3000/auth/twitter/callback'
     },
     github: {
         clientID: 'APP_ID',

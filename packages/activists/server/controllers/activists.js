@@ -70,7 +70,6 @@ exports.create = function(req, res) {
                 var activist = new Activist();
                 activist.user = req.user;
                 activist.name = req.user.name;
-                activist.lastName = req.user.lastName;
                 activist.emails = [req.user.email];
                 activist.save(function(err) {
                     if (err) {
@@ -90,20 +89,37 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
     var activist = req.activist;
     activist = _.extend(activist, req.body);
-    activist.save(function(err) {
+    activist.model('User').findOne({email:activist.emails[0]}, function(err, user) {
         if (err) {
+            console.log(err);
             res.render('error', {status: 500});
         } else {
-            activist.model('User').findById(activist.user, function(err, user) {
-                if (err) console.log(err);
-                if (user) {
-                    user.name = activist.name;
-                    user.save(function (err, user) {
-                        if (err) console.log(err);
-                        res.jsonp(activist);
-                    });
-                }
-            });
+            if (user && !user._id.equals(activist.user)) {
+                res.jsonp({
+                    activist: activist,
+                    errors: [{
+                        message: 'Email ' + activist.emails[0] + ' является основным емайлом у другого пользователя. Используйте другой емайл.'
+                    }]
+                });
+            } else {
+                activist.save(function(err) {
+                    if (err) {
+                        res.render('error', {status: 500});
+                    } else {
+                        activist.model('User').findById(activist.user, function(err, user) {
+                            if (err) console.log(err);
+                            if (user) {
+                                user.name = activist.name;
+                                user.email = activist.emails[0];
+                                user.save(function (err, user) {
+                                    if (err) console.log(err);
+                                    res.jsonp(activist);
+                                });
+                            }
+                        });
+                    }
+                });
+            }
         }
     });
 };

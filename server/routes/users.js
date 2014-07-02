@@ -68,12 +68,12 @@ module.exports = function(app, passport) {
     // Setting the twitter oauth routes
     app.route('/auth/twitter')
         .get(passport.authenticate('twitter', {
-            failureRedirect: '#!/login'
+            failureRedirect: '/#!/login'
         }), users.signin);
 
     app.route('/auth/twitter/callback')
         .get(passport.authenticate('twitter', {
-            failureRedirect: '#!/login'
+            failureRedirect: '/#!/login'
         }), users.authCallback);
 
     // Setting the google oauth routes

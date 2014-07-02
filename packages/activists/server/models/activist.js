@@ -107,11 +107,11 @@ ActivistSchema.virtual('displayName').get(function () {
 ActivistSchema.set('toJSON', {
     virtuals: true
     ,getters: true
-    , transform: function (doc, ret, options) {
-        if (!options.lastName) {
-            delete ret.lastName;
-        }
-    }
+//    , transform: function (doc, ret, options) {
+//        if (!options.lastName) {
+//            delete ret.lastName;
+//        }
+//    }
 });
 
 mongoose.model('Activist', ActivistSchema);

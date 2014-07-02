@@ -69,15 +69,22 @@ module.exports = function(passport) {
                     return done(err);
                 }
                 if (!user) {
+                    profile.emails = profile.emails || [{value:profile.username + '@twitter.com'}];
                     user = new User({
                         name: profile.displayName,
                         username: profile.username,
+                        email: profile.emails[0].value,
+                        password: 'password_to_be_changed_for_' + (profile.username || profile.displayName),
                         provider: 'twitter',
                         twitter: profile._json
                     });
                     user.save(function(err) {
-                        if (err) console.log(err);
-                        return done(err, user);
+                        if (err) {
+                            console.log(err);
+                            return done(err, user);
+                        } else {
+                            return done(err, user, {profile: profile});
+                        }
                     });
                 } else {
                     return done(err, user);
@@ -109,8 +116,12 @@ module.exports = function(passport) {
                         facebook: profile._json
                     });
                     user.save(function(err) {
-                        if (err) console.log(err);
-                        return done(err, user, {profile: profile});
+                        if (err) {
+                            console.log(err);
+                            return done(err, user);
+                        } else {
+                            return done(err, user, {profile: profile});
+                        }
                     });
                 } else {
                     return done(err, user);
