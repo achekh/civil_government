@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+    nodemailer = require('nodemailer'),
     Activist = mongoose.model('Activist'),
     User = mongoose.model('User');
 
@@ -152,4 +153,88 @@ exports.deleteUser = function(req, res) {
         });
 
     res.redirect('/');
+};
+
+exports.restore = function(req, res, next) {
+    if (req.method === 'POST') {
+        return User.find({email:req.body.email}).exec()
+            .then(function(users){
+                var text, ref;
+                if (users.length) {
+                    ref = 'http://77.91.132.7:3000/#!/restore/' + encodeURIComponent(users[0].hashed_password);
+                    text = 'Ваш пароль от системы гражданского самоуправления можно восстановить, пройдя по ссылке ' + ref;
+                } else {
+                    ref = 'http://77.91.132.7:3000/#!/register';
+                    text = 'Ваш email не зарегистрирован в системе гражданского самоуправления. Можете зарегистрироваться, пройдя по ссылке ' + ref;
+                }
+                //civil.government.ua@gmail.com
+                var transport = nodemailer.createTransport('direct', {debug: true});
+                transport.sendMail({
+                    from: 'civil.government.ua@gmail.com', // sender address
+                    to: req.body.email, // list of receivers
+                    subject: 'Восстановление пароля к системе гражданского самоуправления', // Subject line
+                    text: text // plaintext body
+//                html: '<b>Hello world ✔</b>' // html body
+                }, function(err,response) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).send([{msg:'not ok',err:err}]);
+                    }
+
+                    // response.statusHandler only applies to 'direct' transport
+                    response.statusHandler.once('failed', function(data){
+                        console.log(
+                            'Permanently failed delivering message to %s with the following response: %s',
+                            data.domain, data.response);
+                        res.status(500).send([{msg:'not ok',data:data}]);
+                    });
+
+                    response.statusHandler.once('requeue', function(data){
+                        console.log('Temporarily failed delivering message to %s', data.domain);
+                        res.status(500).send([{msg:'not ok',data:data}]);
+                    });
+
+                    response.statusHandler.once('sent', function(data){
+                        console.log('Message was accepted by %s', data.domain);
+                        res.status(200).send([{msg:'ok',data:data}]);
+                    });
+                });
+            }
+            ,function(err){
+                return res.status(500).send([{msg:'not ok'}]);
+            });
+    } else if (req.method === 'GET') {
+        if (req.restoreUser) {
+            return res.status(200).send(req.restoreUser);
+        } else {
+            return res.status(400).send();
+        }
+    } else if (req.method === 'PUT') {
+        if (req.restoreUser) {
+            req.restoreUser.password = req.body.password;
+            req.restoreUser.save(function(err,user){
+                if (err) {
+                    console.log(err);
+                    res.status(500).send([{msg:'not ok',err:err}]);
+                } else {
+                    res.status(200).send(user);
+                }
+            });
+        } else {
+            return res.status(400).send();
+        }
+    }
+    return res.status(404);
+};
+
+exports.restoreUser = function(req, res, next, id) {
+    User
+        .findOne({
+            hashed_password: decodeURIComponent(id)
+        })
+        .exec(function(err, user) {
+            if (err) console.log(err);
+            req.restoreUser = user;
+            next();
+        });
 };

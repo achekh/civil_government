@@ -66,4 +66,53 @@ angular.module('mean.controllers.login', [])
                     });
             };
         }
-    ]);
+    ])
+    .controller('RestoreCtrl', ['$scope', '$rootScope', '$http', '$state', '$stateParams',
+        function($scope, $rootScope, $http, $state, $stateParams) {
+            $scope.user = {};
+            $scope.restoreSuccess = $scope.restoreError = $scope.hashError = undefined;
+
+            $scope.restore = function() {
+                $http.post('/restore', {
+                    email: $scope.user.email
+                })
+                    .success(function(response) {
+                        console.log(response);
+                        $scope.restoreSuccess = true;
+                    })
+                    .error(function(error){
+                        console.log(error);
+                        $scope.restoreError = error;
+                    })
+                ;
+            };
+
+            $scope.initHash = function() {
+
+                $http.get('/restore/' + encodeURIComponent($stateParams.hashId))
+                    .success(function(user){
+                        $scope.user = user;
+                    })
+                    .error(function(error){
+                        $scope.hashError = true;
+                    })
+                ;
+            };
+
+            $scope.update = function() {
+                $http.put('/restore/' + encodeURIComponent($stateParams.hashId), {
+                    password: $scope.user.password
+                })
+                    .success(function(response) {
+                        console.log(response);
+                        $scope.restoreSuccess = true;
+                    })
+                    .error(function(error){
+                        console.log(error);
+                        $scope.restoreError = error;
+                    })
+                ;
+            };
+        }
+    ])
+;

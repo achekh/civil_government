@@ -14,8 +14,16 @@ module.exports = function(app, passport) {
     app.route('/register')
         .post(users.create);
 
+    app.route('/restore')
+        .post(users.restore);
+    app.route('/restore/:hash')
+        .get(users.restore)
+        .put(users.restore)
+    ;
+
     // Setting up the userId param
     app.param('userId', users.user);
+    app.param('hash', users.restoreUser);
 
     // AngularJS route to check for authentication
     app.route('/loggedin')
