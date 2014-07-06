@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Members',
-    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Members) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Members', 'Actor',
+    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Members, Actor) {
 
         $scope.isNew = $state.is('events-create');
         $scope.statuses = EventStatuses;
 
         $scope.event = null;
+        $scope.isParticipant = false;
 
         $scope.init = function () {
             if ($scope.isNew && $scope.isAuthenticated()) {
@@ -36,6 +37,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 eventId: $stateParams.eventId
             }, function (event) {
                 $scope.event = event;
+                $scope.isParticipant = Actor.isParticipant();
             });
         };
 
