@@ -26,21 +26,24 @@ var ActivistSchema = new Schema({
     },
     country: {
         type: String,
-        default: 'Невядомая краiна',
+        default: '',
         trim: true
     },
     city: {
         type: String,
-        default: 'Невядомае мicто',
+        default: '',
         trim: true
     },
     emails: {
-        type: [String],
+        type: [{
+            type: String,
+            match: [/.+\@.+\..+/, 'Please enter a valid email']
+        }],
         default: []
     },
     phones: {
         type: [String],
-        default: ['Невядомы телефон']
+        default: []
     },
     aboutMe: {
         type: String,

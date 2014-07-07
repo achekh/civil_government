@@ -76,7 +76,6 @@ exports.create = function(req, res, next) {
     var user = new User(req.body);
 
     user.provider = 'local';
-    user.username = user.email;
 
     // because we set our user.provider to local our models/user.js validation will always be true
     req.assert('name', 'Представтесь, пожалуйста').len(1,200);
@@ -89,23 +88,28 @@ exports.create = function(req, res, next) {
         return res.status(400).send(errors);
     }
 
-    // Hard coded for now. Will address this with the user permissions system in v0.3.5
-    user.roles = ['authenticated'];
-    user.save(function(err) {
+    User.find({email: user.email, provider: 'local'}, function(err, users) {
         if (err) {
-            switch (err.code) {
-                case 11000:
-                case 11001:
-                    return res.status(400).send([{msg:'Такой email уже занят'}]);
-                default:
-                    return res.status(400).send([{msg:'Ошибки при сохранении в базу'}]);
+            console.log(err);
+            res.status(400).send([{msg:'Ошибка при чтении из базы'}]);
+        } else {
+            if (users.length) {
+                res.status(400).send([{msg:'Пользователь с таким Email уже существует'}]);
+            } else {
+                // Hard coded for now. Will address this with the user permissions system in v0.3.5
+                user.roles = ['authenticated'];
+                user.save(function(err) {
+                    if (err) {
+                        return res.status(400).send([{msg:'Ошибка при сохранении в базу'}]);
+                    }
+                    req.logIn(user, function(err) {
+                        if (err) return next(err);
+                        return res.redirect('/');
+                    });
+                    res.status(200);
+                });
             }
         }
-        req.logIn(user, function(err) {
-            if (err) return next(err);
-            return res.redirect('/');
-        });
-        res.status(200);
     });
 };
 /**
@@ -157,7 +161,7 @@ exports.deleteUser = function(req, res) {
 
 exports.restore = function(req, res, next) {
     if (req.method === 'POST') {
-        return User.find({email:req.body.email}).exec()
+        return User.find({email:req.body.email, provider: 'local'}).exec()
             .then(function(users){
                 var text, ref;
                 if (users.length) {

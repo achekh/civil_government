@@ -39,14 +39,12 @@ module.exports = function (done) {
             {
                 name: 'Super Admin',
                 email: 'admin@example.com',
-                username: 'admin',
                 roles: ['admin', 'authenticated'],
                 password: 'admin'
             },
             {
                 name: 'Майдан Моніторинг',
                 email: 'maidanmonitoring@gmail.com',
-                username: 'maidanmonitoring',
                 roles: ['authenticated'],
                 password: 'maidan'
             }
@@ -56,7 +54,7 @@ module.exports = function (done) {
         return seed(User, users)
             .then(function () {
                 console.log('Find user "admin"');
-                return User.findOne({username: 'admin'}).exec();
+                return User.findOne({name: 'Super Admin'}).exec();
             })
             .then(function(user) {
                 var activists = [{
@@ -135,7 +133,7 @@ module.exports = function (done) {
             })
             .then(function () {
                 console.log('Find user "maidanmonitoring"');
-                return User.findOne({username: 'maidanmonitoring'}).exec();
+                return User.findOne({name: 'Майдан Моніторинг'}).exec();
             })
             .then(function(user) {
                 var activists = [{

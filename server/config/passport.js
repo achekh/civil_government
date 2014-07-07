@@ -35,7 +35,8 @@ module.exports = function(passport) {
         },
         function(email, password, done) {
             User.findOne({
-                email: email
+                email: email,
+                provider: 'local'
             }, function(err, user) {
                 if (err) {
                     return done(err);
@@ -69,12 +70,8 @@ module.exports = function(passport) {
                     return done(err);
                 }
                 if (!user) {
-                    profile.emails = profile.emails || [{value:profile.username + '@twitter.com'}];
                     user = new User({
                         name: profile.displayName,
-                        username: profile.username,
-                        email: profile.emails[0].value,
-                        password: 'password_to_be_changed_for_' + (profile.username || profile.displayName),
                         provider: 'twitter',
                         twitter: profile._json
                     });
@@ -110,8 +107,6 @@ module.exports = function(passport) {
                     user = new User({
                         name: profile.displayName,
                         email: profile.emails[0].value,
-                        username: profile.username || profile.emails[0].value.split('@')[0],
-                        password: 'password_to_be_changed_for_' + (profile.emails[0].value || profile.displayName),
                         provider: 'facebook',
                         facebook: profile._json
                     });

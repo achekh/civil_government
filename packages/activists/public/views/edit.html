@@ -2,11 +2,11 @@
 
     <div class="row row-header">
         <div class="col-md-8">
-            <h2>{{isNew ? 'Регистрация активиста' : 'Редактирование активиста'}}</h2>
+            <h2>{{isNew ? 'Введите данные профиля активиста' : 'Редактирование профиля активиста'}}</h2>
         </div>
     </div>
 
-    <form class="form-horizontal col-md-6" role="form">
+    <form class="form-horizontal col-md-6" role="form" data-ng-submit="update()">
         <div class="form-group">
             <label for="name" class="col-md-3 control-label">Iм’я</label>
             <div class="col-md-9">
@@ -16,7 +16,7 @@
         <div class="form-group">
             <label for="country" class="col-md-3 control-label">Краiна</label>
             <div class="col-md-9">
-                <input data-ng-model="activist.country" id="country" placeholder="Краiна" class="form-control" required>
+                <input type="text" data-ng-model="activist.country" id="country" placeholder="Краiна" class="form-control" required="">
             </div>
         </div>
         <div class="form-group">
@@ -28,7 +28,7 @@
         <div class="form-group">
             <label for="email" class="col-md-3 control-label">E-Mail</label>
             <div class="col-md-9">
-                <input data-ng-model="activist.emails[0]" id="email" placeholder="E-Mail" class="form-control" required>
+                <input pattern=".+\@.+\..+" type="email" data-ng-model="activist.emails[0]" id="email" placeholder="E-Mail" class="form-control" required>
             </div>
         </div>
         <div class="form-group">
@@ -40,12 +40,12 @@
         <div class="form-group">
             <label for="aboutMe" class="col-md-3 control-label">О себе</label>
             <div class="col-md-9">
-                <textarea data-ng-model="activist.aboutMe" id="aboutMe" cols="30" rows="10" placeholder="О себе" class="form-control"></textarea>
+                <textarea data-ng-model="activist.aboutMe" id="aboutMe" cols="30" rows="10" placeholder="О себе" class="form-control" required></textarea>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-3 col-md-9">
-                <button type="button" class="btn btn-primary" data-ng-click="update()">Отправить</button>
+                <button type="submit" class="btn btn-primary">Отправить</button>
                 <button type="button" class="btn btn-default" data-ng-click="cancel()">Отменить</button>
             </div>
         </div>

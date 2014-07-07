@@ -4,22 +4,23 @@
 
         <div class="col-md-3 col_top_row" data-ng-if="!isAuthenticated()" data-ng-controller="LoginCtrl">
             <form data-ng-submit="login()">
-                <p align="center"><br>
+                <p align="center">
                     <input class="form-inline" type="text" name="email" placeholder="e-mail" data-ng-model="user.email" required=""><br/><br/>
                     <input class="form-inline" type="password" name="password" placeholder="пароль" data-ng-model="user.password" required=""><br/><br/>
                     <button type="submit" class="btn btn-primary">Увійти</button>
                     <button type="button" class="btn btn-default" data-ui-sref="auth.register">Реєстрація</button><br/>
                 </p>
+                <p align="center"><a data-ui-sref="auth_restore">Забули пароль?</a></p>
+                <p class="alert-danger animated fadeIn" data-ng-show="loginerror">{{loginerror}}</p>
+                <p class="" data-ng-hide="loginerror">&nbsp;</p>
+                <p class="bg-primary" style="margin-bottom: 5px;">Увайсцi пры дапамозе</p>
+                <a href="/auth/facebook">
+                    <img src="/public/auth/assets/img/icons/facebook.png" width="40"/>
+                </a>
+                <a href="/auth/twitter">
+                    <img src="/public/auth/assets/img/icons/twitter.png" width="40"/>
+                </a>
             </form>
-            <p align="center"><a data-ui-sref="auth_restore">Забули пароль?</a></p>
-            <p>Увайсцi пры дапамозе</p>
-            <a href="/auth/facebook">
-                <img src="/public/auth/assets/img/icons/facebook.png" width="40"/>
-            </a>
-            <a href="/auth/twitter">
-                <img src="/public/auth/assets/img/icons/twitter.png" width="40"/>
-            </a>
-
             <!--<a href="/auth/delete">delete</a>-->
         </div>
 
