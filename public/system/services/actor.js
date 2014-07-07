@@ -4,28 +4,191 @@ angular.module('mean.system')
     .service('Actor', ['$rootScope', '$stateParams', '$q', 'Activists', 'Events', 'Participants', 'Organizations', 'Members',
         function ($rootScope, $stateParams, $q, Activists, Events, Participants, Organizations, Members) {
 
-            this.isParticipant = function () {
+            var cache = {};
 
-                var deferred = $q.defer();
+            this.clearCache = function () {
+                cache = {};
+            };
 
-                if ($stateParams.eventId) {
+            function getActivist () {
+
+                if (!cache.getActivist) {
+
+                    var deferred = $q.defer();
+
                     Activists.query({
                         userId: $rootScope.global.user._id
                     }, function (activists) {
                         if (activists.length === 1) {
-                            Participants.query({
-                                activistId: activists[0]._id,
-                                eventId: $stateParams.eventId
-                            }, function (participants) {
-                                deferred.resolve(participants.length === 1);
-                            });
+                            deferred.resolve(activists[0]);
                         } else {
-                            deferred.resolve(false);
+                            deferred.resolve(null);
                         }
                     });
-                } else {
-                    deferred.resolve(false);
+
+                    cache.getActivist = deferred.promise;
+
                 }
+
+                return cache.getActivist;
+
+            }
+
+            function getEvent () {
+
+                if (!cache.getEvent) {
+
+                    var deferred = $q.defer();
+
+                    if ($stateParams.eventId) {
+                        Events.get({
+                            eventId: $stateParams.eventId
+                        }, function (event) {
+                            if (event) {
+                                deferred.resolve(event);
+                            } else {
+                                deferred.resolve(null);
+                            }
+                        });
+                    } else {
+                        deferred.resolve(null);
+                    }
+
+                    cache.getEvent = deferred.promise;
+
+                }
+
+                return cache.getEvent;
+
+            }
+
+            function getParticipant () {
+
+                if (!cache.getParticipant) {
+
+                    var deferred = $q.defer();
+
+                    if ($stateParams.eventId) {
+                        $q.all({
+                            activist: getActivist(),
+                            event: getEvent()
+                        }).then(function (result) {
+                            if (result && result.activist && result.event) {
+                                Participants.query({
+                                    activistId: result.activist._id,
+                                    eventId: result.event._id
+                                }, function (participants) {
+                                    if (participants.length === 1) {
+                                        deferred.resolve(participants[0]);
+                                    } else {
+                                        deferred.resolve(null);
+                                    }
+                                });
+                            } else {
+                                deferred.resolve(null);
+                            }
+                        });
+                    } else {
+                        deferred.resolve(null);
+                    }
+
+                    cache.getParticipant = deferred.promise;
+
+                }
+
+                return cache.getParticipant;
+
+            }
+
+            function getOrganization () {
+
+                if (!cache.getOrganization) {
+
+                    var deferred = $q.defer();
+
+                    if ($stateParams.eventId) {
+                        getEvent().then(function (event) {
+                            if (event) {
+                                Organizations.get({
+                                    organizationId: event.organization._id
+                                }, function (organization) {
+                                    if (organization) {
+                                        deferred.resolve(organization);
+                                    } else {
+                                        deferred.resolve(null);
+                                    }
+                                });
+                            } else {
+                                deferred.resolve(null);
+                            }
+                        });
+                    } else {
+                        deferred.resolve(null);
+                    }
+
+                    cache.getOrganization = deferred.promise;
+
+                }
+
+                return cache.getOrganization;
+
+            }
+
+            function getMember () {
+
+                if (!cache.getMember) {
+
+                    var deferred = $q.defer();
+
+                    if ($stateParams.eventId) {
+                        $q.all({
+                            activist: getActivist(),
+                            organization: getOrganization()
+                        }).then(function (result) {
+                            if (result && result.activist && result.organization) {
+                                Members.query({
+                                    activistId: result.activist._id,
+                                    organizationId: result.organization._id
+                                }, function (members) {
+                                    if (members.length === 1) {
+                                        deferred.resolve(members[0]);
+                                    } else {
+                                        deferred.resolve(null);
+                                    }
+                                });
+                            } else {
+                                deferred.resolve(null);
+                            }
+                        });
+                    } else {
+                        deferred.resolve(null);
+                    }
+
+                    cache.getMember = deferred.promise;
+
+                }
+
+                return cache.getMember;
+
+            }
+
+            this.getActivist = getActivist;
+            this.getEvent = getEvent;
+            this.getParticipant = getParticipant;
+            this.getOrganization = getOrganization;
+            this.getMember = getMember;
+
+            this.isParticipant = function () {
+
+                var deferred = $q.defer();
+
+                getParticipant().then(function (participant) {
+                    if (participant) {
+                        deferred.resolve(true);
+                    } else {
+                        deferred.resolve(false);
+                    }
+                });
 
                 return deferred.promise;
 
@@ -35,63 +198,29 @@ angular.module('mean.system')
 
                 var deferred = $q.defer();
 
-                if ($stateParams.eventId) {
-                    Activists.query({
-                        userId: $rootScope.global.user._id
-                    }, function (activists) {
-                        if (activists.length === 1) {
-                            Participants.query({
-                                activistId: activists[0]._id,
-                                eventId: $stateParams.eventId
-                            }, function (participants) {
-                                if (participants.length === 1) {
-                                    deferred.resolve(participants[0].coordinator);
-                                } else {
-                                    deferred.resolve(false);
-                                }
-                            });
-                        } else {
-                            deferred.resolve(false);
-                        }
-                    });
-                } else {
-                    deferred.resolve(false);
-                }
+                getParticipant().then(function (participant) {
+                    if (participant) {
+                        deferred.resolve(participant.coordinator);
+                    } else {
+                        deferred.resolve(false);
+                    }
+                });
 
                 return deferred.promise;
 
             };
 
-            this.canParticipate = function () {
+            this.isMember = function () {
 
                 var deferred = $q.defer();
 
-                if ($stateParams.eventId) {
-                    Activists.query({
-                        userId: $rootScope.global.user._id
-                    }, function (activists) {
-                        if (activists.length === 1) {
-                            Events.query({
-                                eventId: $stateParams.eventId
-                            }, function (events) {
-                                if (events.length === 1) {
-                                    Members.query({
-                                        activistId: activists[0]._id,
-                                        organizationId: events[0].organization._id
-                                    }, function (members) {
-                                        deferred.resolve(members.length === 1);
-                                    });
-                                } else {
-                                    deferred.resolve(false);
-                                }
-                            });
-                        } else {
-                            deferred.resolve(false);
-                        }
-                    });
-                } else {
-                    deferred.resolve(false);
-                }
+                getMember().then(function (member) {
+                    if (member) {
+                        deferred.resolve(true);
+                    } else {
+                        deferred.resolve(false);
+                    }
+                });
 
                 return deferred.promise;
 
@@ -101,40 +230,64 @@ angular.module('mean.system')
 
                 var deferred = $q.defer();
 
-                if ($stateParams.eventId) {
-                    Activists.query({
-                        userId: $rootScope.global.user._id
-                    }, function (activists) {
-                        if (activists.length === 1) {
-                            Events.query({
-                                eventId: $stateParams.eventId
-                            }, function (events) {
-                                if (events.length === 1) {
-                                    Members.query({
-                                        activistId: activists[0]._id,
-                                        organizationId: events[0].organization._id
-                                    }, function (members) {
-                                        if (members.length === 1) {
-                                            deferred.resolve(members[0].isLeader);
-                                        } else {
-                                            deferred.resolve(false);
-                                        }
-                                    });
-                                } else {
-                                    deferred.resolve(false);
-                                }
-                            });
-                        } else {
-                            deferred.resolve(false);
-                        }
-                    });
-                } else {
-                    deferred.resolve(false);
-                }
+                getMember().then(function (member) {
+                    if (member) {
+                        deferred.resolve(member.isLeader);
+                    } else {
+                        deferred.resolve(false);
+                    }
+                });
 
                 return deferred.promise;
 
     };
+
+            this.canParticipate = function () {
+
+                var deferred = $q.defer();
+
+                getEvent().then(function (event) {
+                    if (event) {
+                        getMember().then(function (member) {
+                            if (event.organization === member.organization) {
+                                deferred.resolve(true);
+                            } else {
+                                deferred.resolve(false);
+                            }
+                        });
+                    } else {
+                        deferred.resolve(false);
+                    }
+                });
+
+                return deferred.promise;
+
+            };
+
+            this.getActor = function () {
+
+                this.clearCache();
+
+                var deferred = $q.defer();
+
+                $q.all({
+                    activist: this.getActivist(),
+                    event: this.getEvent(),
+                    participant: this.getParticipant(),
+                    organization: this.getOrganization(),
+                    member: this.getMember(),
+                    isParticipant: this.isParticipant(),
+                    isCoordinator: this.isCoordinator(),
+                    isMember: this.isMember(),
+                    isHead: this.isHead(),
+                    canParticipate: this.canParticipate()
+                }).then(function (actor) {
+                    deferred.resolve(actor);
+                });
+
+                return deferred.promise;
+
+            };
 
         }
     ])

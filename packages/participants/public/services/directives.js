@@ -24,7 +24,7 @@ angular.module('mean.participants')
                 $scope.toggleConfirmed = function (participant) {
                     if (participant) {
                         participant.confirmed = !participant.confirmed;
-                        participant.$update().then(function () {
+                        participant.$update().finally(function () {
                             $rootScope.$broadcast('participants-update');
                         });
                     }

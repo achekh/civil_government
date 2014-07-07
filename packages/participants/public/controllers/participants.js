@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$state', '$stateParams', 'Participants', 'ParticipantStatuses', 'Events', 'Members',
-    function($scope, $state, $stateParams, Participants, ParticipantStatuses, Events, Members) {
+angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$rootScope', '$stateParams', 'Participants', 'ParticipantStatuses', 'Actor',
+    function($scope, $rootScope, $stateParams, Participants, ParticipantStatuses, Actor) {
 
         $scope.package = {
             name: 'participants'
@@ -38,49 +38,14 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         // get current actor
-        $scope.actor = null;
-
-        if ($scope.global.activist && $stateParams.eventId) {
-
-            var actor = {
-                participant: null,
-                isParticipant: false,
-                isCoordinator: false,
-                member: null,
-                canParticipate: false,
-                isHead: false
-            };
-
-            Participants.query({
-                activistId: $scope.global.activist._id,
-                eventId: $stateParams.eventId
-            }, function (participants) {
-                if (!participants.errors) {
-                    if (participants.length === 1) {
-
-                        actor.participant = participants[0];
-                        actor.isParticipant = participants.length === 1;
-                        actor.isCoordinator = actor.participant && participants[0].coordinator;
-
-                        Members.query({
-                            activistId: $scope.global.activist._id,
-                            organizationId: actor.participant.event.organization
-                        }, function (members) {
-                            if (!members.errors) {
-                                if (members.length === 1) {
-                                    actor.member = members[0];
-                                    actor.canParticipate = true;
-                                    actor.isHead = actor.member.isLeader;
-                                }
-                            }
-                            $scope.actor = actor;
-                        });
-
-                    }
-                }
+        function getActor () {
+            Actor.getActor().then(function (actor) {
+                $scope.actor = actor;
             });
-
         }
+
+        $scope.actor = {};
+        getActor();
 
         // get participants
 
@@ -116,13 +81,13 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
                 event: $stateParams.eventId
             });
             participant.$save(function () {
-                $state.go('events-view', {}, {reload: true});
+                $rootScope.$broadcast('participants-update');
             });
         };
 
         $scope.leave = function () {
             $scope.actor.participant.$remove(function() {
-                $state.go('events-view', {}, {reload: true});
+                $rootScope.$broadcast('participants-update');
             });
         };
 
@@ -130,7 +95,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
             if ($scope.actor.participant) {
                 $scope.actor.participant.appeared = true;
                 $scope.actor.participant.$update(function () {
-                    $state.go('events-view', {}, {reload: true});
+                    $rootScope.$broadcast('participants-update');
                 });
             }
         };
@@ -149,6 +114,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         $scope.$on('participants-update', function () {
+            getActor();
             $scope.find();
         });
 
