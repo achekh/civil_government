@@ -74,14 +74,17 @@ angular.module('mean.system')
             restrict: 'E',
             templateUrl: 'public/system/views/datepicker.html',
             scope: {
-                value: '=ngModel'
+                value: '=ngModel',
+                disabled: '=ngDisabled'
             },
             controller: ['$scope', function ($scope) {
                 $scope.collapsed = true;
                 $scope.toggle = function ($event) {
                     $event.preventDefault();
                     $event.stopPropagation();
-                    $scope.collapsed = !$scope.collapsed;
+                    if (!$scope.disabled) {
+                        $scope.collapsed = !$scope.collapsed;
+                    }
                 };
             }],
             link: function (scope, element, attrs, ctrl) {

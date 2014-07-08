@@ -10,7 +10,7 @@ exports.create = function (req, res) {
 
     victory.save(function(err) {
         if (err) {
-            res.render('error', {status: 500});
+            res.status(500).send(err.errors || [err]);
         } else {
             res.jsonp(victory);
         }
@@ -56,7 +56,7 @@ exports.destroy = function (req, res) {
     res.jsonp(victory);
     victory.remove(function(err, victory){
         if (err) {
-            res.render('error', {status: 500});
+            res.status(500).send(err.errors || [err]);
         } else {
             res.jsonp(victory);
         }
@@ -66,11 +66,15 @@ exports.destroy = function (req, res) {
 exports.update = function update(req, res) {
     var victory = req.victory;
     victory = _.extend(victory, req.body);
-    victory.save(function(err, victory) {
-        if (err) {
-            res.render('error', {status: 500});
-        } else {
-            res.jsonp(victory);
-        }
-    });
+    if (req.user && victory && req.user.id === victory.user.id) {
+        victory.save(function(err, victory) {
+            if (err) {
+                res.status(500).send(err.errors || [err]);
+            } else {
+                res.jsonp(victory);
+            }
+        });
+    } else {
+        res.status(400).send([{message:'Not Authorized'}]);
+    }
 };

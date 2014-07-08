@@ -1,5 +1,5 @@
 <p class="input-group">
-    <button type="button" class="form-control btn btn-default" data-ng-click="toggle($event)">{{value | date: 'dd-MM-yyyy'}}</button>
+    <button type="button" ng-disabled="disabled" class="form-control btn btn-default" data-ng-click="toggle($event)">{{value | date: 'dd-MM-yyyy'}}</button>
     <span class="input-group-btn">
         <button type="button" class="btn btn-default" data-ng-click="toggle($event)">
             <i class="glyphicon glyphicon-calendar"></i>

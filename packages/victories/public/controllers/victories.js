@@ -77,7 +77,6 @@ angular
         $scope.save = function save() {
             if ($scope.victory._id) {
                 $scope.victory.$update(function(victory) {
-                    debugger;
                     window.history.back();
                 });
             } else {
