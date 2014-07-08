@@ -35,11 +35,16 @@ var ActivistSchema = new Schema({
         trim: true
     },
     emails: {
-        type: [{
-            type: String,
-            match: [/.+\@.+\..+/, 'Please enter a valid email']
-        }],
-        default: []
+        type: [String],
+        default: [],
+        validate: [function(v){
+            if (!v || !v.forEach) return false;
+            var isValid = true;
+            v.forEach(function(e) {
+                isValid = isValid && /.+\@.+\..+/.test(e);
+            });
+            return isValid;
+        }, 'Please enter a valid email']
     },
     phones: {
         type: [String],

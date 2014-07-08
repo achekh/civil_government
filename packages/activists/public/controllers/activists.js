@@ -98,10 +98,6 @@ app.controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$s
 
         $scope.update = function () {
             var activist = $scope.activist;
-            if (!activist.updated) {
-                activist.updated = [];
-            }
-            activist.updated.push(new Date().getTime());
             activist.$update(function (activist) {
                 $rootScope.$emit('activist-updated', activist);
                 $state.go('activists-view');
