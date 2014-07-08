@@ -1,7 +1,26 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', 'Events', 'EventStatuses', 'Activists', 'Participants', 'Members',
-    function ($scope, $stateParams, $location, $state, Events, EventStatuses, Activists, Participants, Members) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', '$http', 'Events', 'EventStatuses', 'Activists', 'Participants', 'Members',
+    function ($scope, $stateParams, $location, $state, $http, Events, EventStatuses, Activists, Participants, Members) {
+
+        (function initRegions(){
+            $scope.regions = [
+                {'value': '0.Вся Україна', 'label': 'Вся Україна'}
+            ];
+            $scope.region = $scope.regions[0];
+            $http({method: 'GET', url: '/regions'}).
+                success(function(data, status, headers, config) {
+                    $scope.regions = data;
+                    $scope.region = $scope.regions.filter(function (region) {
+                        return '' + region.value === '' + $stateParams.region;
+                    })[0] || $scope.regions[0];
+                });
+        })();
+
+        $scope.setRegion = function (region) {
+            $scope.region = region;
+            $scope.find();
+        };
 
         $scope.isNew = $state.is('events-create');
         $scope.statuses = EventStatuses;
@@ -41,7 +60,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.find = function () {
-            return Events.query(function (events) {
+            return Events.query({region: $scope.region.value === '0.Вся Україна' ? undefined : $scope.region._id}, function (events) {
                 $scope.events = events;
             });
         };

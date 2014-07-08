@@ -78,6 +78,17 @@
                 <div class="col-md-6">
                     <h2>Перемоги</h2>
                 </div>
+                <br>
+                <div class="col-md-6">
+                    <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                        <button type="button" class="btn btn-default dropdown-toggle">{{region.label}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li data-ng-repeat="region in regions">
+                                <a href="" data-ng-click="setRegion(region)">{{region.label}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <div class="row" data-ng-repeat="victory in victories | limitTo: 3">
@@ -109,14 +120,12 @@
                 </div>
                 <br>
                 <div class="col-md-6">
-                    <div class="btn-group">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                            Вся Україна <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>м.Київ</li>
-                            <li>Волинська обл.</li>
-                            <li>Вінницька обл.</li>
+                    <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                        <button type="button" class="btn btn-default dropdown-toggle">{{region.label}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li data-ng-repeat="region in regions">
+                                <a href="" data-ng-click="setRegion(region)">{{region.label}}</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -147,7 +156,7 @@
                     <div class="btn-group dropdown" data-cg-dropdown-autoclose>
                         <button type="button" class="btn btn-default dropdown-toggle">{{videoLiveStatus.label}} <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="" data-ng-click="setVideoLiveStatus(status)" data-ng-repeat="status in videoLiveStatuses">{{status.label}}</a>
+                            <li data-ng-repeat="status in videoLiveStatuses"><a href="" data-ng-click="setVideoLiveStatus(status)">{{status.label}}</a></li>
                         </ul>
                     </div>
                 </div>

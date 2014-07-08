@@ -35,13 +35,16 @@ exports.all = function (req, res) {
     if (req.query.userId) {
         query.user = req.query.userId;
     }
+    if (req.query.region) {
+        query.region = req.query.region;
+    }
     var find = Victory.find(query);
     if (req.query.participantId) {
         find = find.where('participants').in([req.query.participantId]);
     }
     find.sort('-created').populate('user', 'username').exec(function (err, victories) {
         if (err) {
-            res.render('error', {status: 500});
+            res.status(500).send(err.errors || [err]);
         } else {
             res.jsonp(victories);
         }

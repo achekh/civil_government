@@ -38,6 +38,10 @@ var VictorySchema = new Schema({
     datetime: {
         type: Date
         //  validate: [notEmpty, 'Необходимо выбрать "Дату"']
+    },
+    region: {
+        type: Schema.ObjectId,
+        ref: 'Region'
     }
 });
 

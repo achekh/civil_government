@@ -3,15 +3,34 @@
 angular
     .module('mean.victories')
     .controller('VictoriesController',
-    ['$scope', '$stateParams', 'Global', 'Victories',
-    function($scope, $stateParams, Global, Victories) {
+    ['$scope', '$stateParams', '$http', 'Global', 'Victories',
+    function($scope, $stateParams, $http, Global, Victories) {
         $scope.global = Global;
         $scope.package = {
             name: 'victories'
         };
 
+        (function initRegions(){
+            $scope.regions = [
+                {'value': '0.Вся Україна', 'label': 'Вся Україна'}
+            ];
+            $scope.region = $scope.regions[0];
+            $http({method: 'GET', url: '/regions'}).
+                success(function(data, status, headers, config) {
+                    $scope.regions = data;
+                    $scope.region = $scope.regions.filter(function (region) {
+                        return '' + region.value === '' + $stateParams.region;
+                    })[0] || $scope.regions[0];
+                });
+        })();
+
+        $scope.setRegion = function (region) {
+            $scope.region = region;
+            $scope.find();
+        };
+
         $scope.find = function find(){
-            Victories.query({}, function(victories) {
+            Victories.query({region: $scope.region.value === '0.Вся Україна' ? undefined : $scope.region._id}, function(victories) {
                 $scope.victories = victories;
             });
         };
@@ -35,11 +54,19 @@ angular
             }
         };
 
+        $scope.isView = function isView() {
+            return $scope.victory && $scope.victory.user && !$scope.isOwner($scope.victory);
+        };
+
         $scope.getCreateEditTitle = function getCreateEditTitle() {
-            if ($stateParams.victoryId) {
-               return 'Редактирование победы';
+            if ($scope.isView()) {
+                return 'Просмотр победы';
             } else {
-                return 'Создание победы';
+                if ($stateParams.victoryId) {
+                    return 'Редактирование победы';
+                } else {
+                    return 'Создание победы';
+                }
             }
         };
 

@@ -59,6 +59,10 @@ var EventSchema = new Schema({
         type: String,
         default: '',
         trim: true
+    },
+    region: {
+        type: Schema.ObjectId,
+        ref: 'Region'
     }
 });
 

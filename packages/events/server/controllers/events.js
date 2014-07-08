@@ -57,14 +57,15 @@ exports.all = function (req, res) {
     if (req.query.organizationId) {
         query.organization = req.query.organizationId;
     }
+    if (req.query.region) {
+        query.region = req.query.region;
+    }
     Event.find(query)
         .sort('-created')
         .populate('user', 'username')
         .exec(function (err, events) {
             if (err) {
-                res.render('error', {
-                    status: 500
-                });
+                res.status(500).send(err.errors || [err]);
             } else {
                 res.jsonp(events);
             }
