@@ -174,7 +174,7 @@ module.exports = function(passport) {
                     });
                     user.save(function(err) {
                         if (err) console.log(err);
-                        return done(err, user);
+                        return done(err, user, {profile: profile});
                     });
                 } else {
                     return done(err, user);
