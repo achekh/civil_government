@@ -34,6 +34,9 @@ exports.authCallback = function(req, res, next) {
         if (profile._json.profile_image_url) {
             activist.img = profile._json.profile_image_url;
         }
+        if (profile._json.picture) {
+            activist.img = profile._json.picture;
+        }
 
         activist.save(function(err) {
             if (err) return next(err);

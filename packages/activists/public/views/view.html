@@ -16,9 +16,9 @@
             </p>
 
             <p>
-                {{activist.country}}, {{activist.city}}
-                <br>{{activist.emails[0]}}
-                <br>{{activist.phones[0]}}
+                <span ng-show="activist.country || activist.city">{{activist.country}}<span ng-show="activist.country && activist.city">, </span>{{activist.city}}</span>
+                <br ng-show="activist.country || activist.city">{{activist.emails[0]}}
+                <br ng-show="activist.emails[0]">{{activist.phones[0]}}
             </p>
         </div>
 

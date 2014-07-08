@@ -23,9 +23,9 @@ module.exports = {
         callbackURL: 'http://localhost:3000/auth/github/callback'
     },
     google: {
-        clientID: 'APP_ID',
-        clientSecret: 'APP_SECRET',
-        callbackURL: 'http://localhost:3000/auth/google/callback'
+        clientID: '581322311417-0fijvlmtbb90cs613n4lap17idl95m1u.apps.googleusercontent.com',
+        clientSecret: 'R6iwvfpBkvin1837kll9tADe',
+        callbackURL: 'http://77.91.132.7.xip.io:3000/auth/google/callback'
     },
     linkedin: {
         clientID: 'API_KEY',
