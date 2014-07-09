@@ -6,6 +6,8 @@ angular.module('mean.controllers.login', [])
             // This object will be filled by the form
             $scope.user = {};
 
+            $.getScript('//ulogin.ru/js/ulogin.js');
+
             // Register the login() function
             $scope.login = function() {
                 $http.post('/login', {

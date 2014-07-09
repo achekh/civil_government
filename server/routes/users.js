@@ -1,7 +1,8 @@
 'use strict';
 
 // User routes use users controller
-var users = require('../controllers/users');
+var users = require('../controllers/users'),
+    http= require('http');
 
 module.exports = function(app, passport) {
 
@@ -116,4 +117,21 @@ module.exports = function(app, passport) {
         users.authCallback);
 
     app.get('/auth/delete', users.deleteUser);
+
+    app.post('/auth/ulogin/callback', function(req, res, next) {
+        var rq = http.request('http://ulogin.ru/token.php?token=' + req.body.token + '&host=' + req.headers.host, function(rs) {
+            rs.setEncoding('utf8');
+            rs.on('data', function (chunk) {
+                debugger;
+                var profile = JSON.parse(chunk);
+                profile.toString(); //maybe todo: make user
+                users.authCallback(req, res, next);
+            });
+        });
+        rq.on('error', function(e) {
+            debugger;
+            res.redirect('/#!/login');
+        });
+        rq.end();
+    });
 };
