@@ -29,7 +29,7 @@ angular.module('mean.controllers.login', [])
                         }
                     })
                     .error(function() {
-                        $scope.loginerror = 'Authentication failed.';
+                        $scope.loginerror = 'Авторизация отклонена.';
                     });
             };
         }

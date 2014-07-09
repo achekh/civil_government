@@ -75,6 +75,9 @@ module.exports = function(passport) {
                         provider: 'twitter',
                         twitter: profile._json
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) {
                             console.log(err);
@@ -106,10 +109,12 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
                         provider: 'facebook',
                         facebook: profile._json
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) {
                             console.log(err);
@@ -138,14 +143,15 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
-                        username: profile.username,
                         provider: 'github',
                         github: profile._json
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) console.log(err);
-                        return done(err, user);
+                        return done(err, user, {profile: profile});
                     });
                 } else {
                     return done(err, user);
@@ -167,11 +173,12 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
-                        username: profile.emails[0].value,
                         provider: 'google',
                         google: profile._json
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) console.log(err);
                         return done(err, user, {profile: profile});
@@ -197,13 +204,14 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
-                        username: profile.emails[0].value,
                         provider: 'linkedin'
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) console.log(err);
-                        return done(err, user);
+                        return done(err, user, {profile: profile});
                     });
                 } else {
                     return done(err, user);
@@ -225,13 +233,14 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
-                        username: profile.emails[0].value,
                         provider: 'vkontakte'
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) console.log(err);
-                        return done(err, user);
+                        return done(err, user, {profile: profile});
                     });
                 } else {
                     return done(err, user);

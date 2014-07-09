@@ -57,12 +57,12 @@ module.exports = function(app, passport) {
     // Setting the github oauth routes
     app.route('/auth/github')
         .get(passport.authenticate('github', {
-            failureRedirect: '#!/login'
+            failureRedirect: '/#!/login'
         }), users.signin);
 
     app.route('/auth/github/callback')
         .get(passport.authenticate('github', {
-            failureRedirect: '#!/login'
+            failureRedirect: '/#!/login'
         }), users.authCallback);
 
     // Setting the twitter oauth routes
@@ -79,7 +79,7 @@ module.exports = function(app, passport) {
     // Setting the google oauth routes
     app.route('/auth/google')
         .get(passport.authenticate('google', {
-            failureRedirect: '#!/login',
+            failureRedirect: '/#!/login',
             scope: [
                 'https://www.googleapis.com/auth/userinfo.profile',
                 'https://www.googleapis.com/auth/userinfo.email'
@@ -88,19 +88,19 @@ module.exports = function(app, passport) {
 
     app.route('/auth/google/callback')
         .get(passport.authenticate('google', {
-            failureRedirect: '#!/login'
+            failureRedirect: '/#!/login'
         }), users.authCallback);
 
     // Setting the linkedin oauth routes
     app.route('/auth/linkedin')
         .get(passport.authenticate('linkedin', {
-            failureRedirect: '#!/login',
+            failureRedirect: '/#!/login',
             scope: ['r_emailaddress']
         }), users.signin);
 
     app.route('/auth/linkedin/callback')
         .get(passport.authenticate('linkedin', {
-            failureRedirect: '#!/login'
+            failureRedirect: '/#!/login'
         }), users.authCallback);
 
     // Setting the vkontakte oauth routes
@@ -112,7 +112,7 @@ module.exports = function(app, passport) {
         });
 
     app.get('/auth/vkontakte/callback',
-        passport.authenticate('vkontakte', { failureRedirect: '#!/login' }),
+        passport.authenticate('vkontakte', { failureRedirect: '/#!/login' }),
         users.authCallback);
 
     app.get('/auth/delete', users.deleteUser);
