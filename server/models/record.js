@@ -39,14 +39,18 @@ var RecordSchema = new Schema({
 RecordSchema.statics.updateCount = function(model, field) {
     debugger; //TODO cities
     mongoose.model(model).count({}, function(err, c) {
-        mongoose.model('Record').findOneAndUpdate({},{dummy:0},{upsert:true}).exec(function(err, record) {
-            if (err) {
-                console.log(err);
-            } else {
-                record[field] = Math.max(record[field], c);
-                record.save();
-            }
-        });
+        if (err) {
+            console.log(err);
+        } else {
+            mongoose.model('Record').findOneAndUpdate({},{dummy:0},{upsert:true}).exec(function(err, record) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    record[field] = Math.max(record[field], c);
+                    record.save();
+                }
+            });
+        }
     });
 };
 
