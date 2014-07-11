@@ -3,6 +3,7 @@
 //require(process.cwd() + '/server');
 require(process.cwd() + '/server/models/user');
 require(process.cwd() + '/server/models/region');
+require(process.cwd() + '/server/models/record');
 require(process.cwd() + '/packages/events/server/models/event');
 require(process.cwd() + '/packages/videos/server/models/video');
 require(process.cwd() + '/packages/activists/server/models/activist');

@@ -122,4 +122,8 @@ ActivistSchema.set('toJSON', {
 //    }
 });
 
+ActivistSchema.post('save', function updateRecordsCount(activist) {
+    activist.model('Record').updateCount('Activist','activists');
+});
+
 mongoose.model('Activist', ActivistSchema);

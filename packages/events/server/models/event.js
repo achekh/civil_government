@@ -87,4 +87,8 @@ EventSchema.post('save', function updateEventOrganizationEventCount(event) {
     });
 });
 
+EventSchema.post('save', function updateRecordsCount(event) {
+    event.model('Record').updateCount('Event','events');
+});
+
 mongoose.model('Event', EventSchema);

@@ -37,7 +37,7 @@
         <div class="col-md-6 col_top_row">
         </div>
 
-        <div class="col-md-3 col_top_row">
+        <div class="col-md-3 col_top_row" data-ng-controller="RecordsController">
 
             <div class="row">
                 <div class="col-md-8">
@@ -48,23 +48,23 @@
             <div class="row">
                 <table class="table">
                     <tr>
-                        <td align="right"><b>42342</b></td>
+                        <td align="right"><b>{{records.activists}}</b></td>
                         <td>активістів</td>
                     </tr>
                     <tr>
-                        <td align="right"><b>324</b></td>
+                        <td align="right"><b>{{records.organizations}}</b></td>
                         <td>організацій</td>
                     </tr>
                     <tr>
-                        <td align="right"><b>59</b></td>
+                        <td align="right"><b>{{records.cities}}</b></td>
                         <td>населених пунктів</td>
                     </tr>
                     <tr>
-                        <td align="right"><b>12333</b></td>
+                        <td align="right"><b>{{records.events}}</b></td>
                         <td>подій відбулося</td>
                     </tr>
                     <tr>
-                        <td align="right"><b>876</b></td>
+                        <td align="right"><b>{{records.victories}}</b></td>
                         <td>перемог здобуто</td>
                     </tr>
                 </table>

@@ -62,4 +62,8 @@ VictorySchema.post('save', function updateVictoryOrganizationVictoryCount(victor
     });
 });
 
+VictorySchema.post('save', function updateRecordsCount(victory) {
+    victory.model('Record').updateCount('Victory','victories');
+});
+
 mongoose.model('Victory', VictorySchema);
