@@ -2,8 +2,8 @@
 
 var app = angular.module('mean.activists', ['ui.bootstrap']);
 
-app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state', '$stateParams', 'Activists', 'Events', 'Participants', 'Organizations', 'Members',
-    function ($scope, $modal, $rootScope, $state, $stateParams, Activists, Events, Participants, Organizations, Members) {
+app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state', '$stateParams', '$http', 'Activists', 'Events', 'Participants', 'Organizations', 'Members',
+    function ($scope, $modal, $rootScope, $state, $stateParams, $http, Activists, Events, Participants, Organizations, Members) {
 
         var handleGetActivistSuccess = function (activist) {
             $scope.activist = activist;
@@ -71,7 +71,10 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
         };
 
         $scope.findLeaders = function() {
-            Activists.query({sortBy: '-eventsTotal', limitTo: 3}, function(leaders) {
+            Activists.query({
+                sortBy: '-eventsTotal',
+                region: $scope.region.value === '0.Вся Україна' ? undefined : $scope.region._id
+            }, function(leaders) {
                 $scope.leaders = leaders;
             });
         };
@@ -81,6 +84,25 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
         };
 
         $scope.nowDate = new Date();
+
+        (function initRegions(){
+            $scope.regions = [
+                {'value': '0.Вся Україна', 'label': 'Вся Україна'}
+            ];
+            $scope.region = $scope.regions[0];
+            $http({method: 'GET', url: '/regions'}).
+                success(function(data, status, headers, config) {
+                    $scope.regions = data;
+                    $scope.region = $scope.regions.filter(function (region) {
+                        return '' + region.value === '' + $stateParams.region;
+                    })[0] || $scope.regions[0];
+                });
+        })();
+
+        $scope.setRegion = function (region) {
+            $scope.region = region;
+            $scope.findLeaders();
+        };
 
     }
 ]);
