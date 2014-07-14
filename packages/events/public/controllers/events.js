@@ -43,7 +43,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.init = function () {
-            if ($scope.isNew && $scope.isAuthenticated()) {
+            if ($scope.isAuthenticated()) {
                 $scope.datetime = new Date();
                 $scope.organizationOptions = [];
                 Members.query({activistId: $scope.global.activist._id}, function (members) {
@@ -54,6 +54,9 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                         });
                     });
                 });
+                if (!$scope.isNew) {
+                    $scope.findOne();
+                }
             } else {
                 $scope.findOne();
             }
@@ -74,6 +77,16 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             }, function (event) {
 
                 $scope.event = event;
+                $scope.description = event.description;
+                $scope.title = event.title;
+                $scope.organization = event.organization;
+                $scope.datetime = event.datetime;
+                $scope.status = event.status;
+                $scope.sites = event.sites;
+                $scope.min_part = event.min_part;
+                $scope.max_part = event.max_part;
+                $scope.gps = event.gps;
+                $scope.google_maps_api_address = event.google_maps_api_address;
 
                 if ($scope.isAuthenticated()) {
 
@@ -137,7 +150,8 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 sites: this.sites,
                 min_part: this.min_part,
                 max_part: this.max_part,
-                gps: this.gps
+                gps: this.gps,
+                google_maps_api_address: this.google_maps_api_address
             });
             return events.$save(function (response) {
                 if (response.errors) {
@@ -154,12 +168,13 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             event.description = this.description;
             event.title = this.title;
             event.organization = this.organization;
-            event.datetime = this.date + ' ' + this.time;
+            event.datetime = this.datetime;
             event.status = this.status;
             event.sites = this.sites;
             event.min_part = this.min_part;
             event.max_part = this.max_part;
             event.gps = this.gps;
+            event.google_maps_api_address = this.google_maps_api_address;
             if (!event.updated) {
                 event.updated = [];
             }
@@ -184,6 +199,79 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 });
             }
         };
+
+        (function loadGoogleMapsApiScript() {
+            window.initializeGoogleMapsApi = function () {
+                $scope.geocoder = new window.google.maps.Geocoder();
+                var mapOptions = {
+                    zoom: 12,
+                    center: new window.google.maps.LatLng(50.450805,30.523672)
+                };
+                $scope.map = new window.google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                function addMarker(location,apply) {
+                    $scope.marker = $scope.marker || new window.google.maps.Marker({
+                        position: location,
+                        map: $scope.map,
+                        title: 'Подiя адбудеца тут!'
+                    });
+                    $scope.marker.setPosition(location);
+                    $scope.gps = location.toUrlValue();
+                    if (apply) $scope.$apply();
+                }
+                window.google.maps.event.addListener($scope.map, 'click', function (event) {
+                    addMarker(event.latLng, true);
+                    $scope.geocoder.geocode( { 'location': event.latLng, region: 'ua' }, function(results, status) {
+                        if (status === window.google.maps.GeocoderStatus.OK) {
+                            $scope.selectSuggestion(results[0], true);
+                        }
+                    });
+                });
+                $scope.$watch('address', function() {
+                    if ($scope.address && $scope.address !== $scope.formatted_address) {
+                        $scope.geocoder.geocode( { 'address': $scope.address, region: 'ua', componentRestrictions: {country: 'ua'}  }, function(results, status) {
+                            if (status === window.google.maps.GeocoderStatus.OK) {
+                                $scope.suggestions = {};
+                                results.forEach(function(r,i) {
+                                    $scope.suggestions[i] = r;
+                                });
+                                $scope.$apply();
+                            }
+                        });
+                    }
+                });
+                $scope.suggestions = {};
+                $scope.selectSuggestion = function(r,apply) {
+                    $scope.formatted_address = r.formatted_address;
+                    $scope.address = r.formatted_address;
+                    $scope.google_maps_api_address = r;
+                    $scope.suggestions = {};
+                    $scope.map.setCenter(r.geometry.location);
+                    addMarker(r.geometry.location, apply);
+                };
+                function setEventLocationMarker() {
+                    if ($scope.event && $scope.event.google_maps_api_address && ($state.is('events-create') || $state.is('events-edit'))) {
+                        $scope.event.google_maps_api_address.geometry.location = new window.google.maps.LatLng($scope.event.google_maps_api_address.geometry.location.k,$scope.event.google_maps_api_address.geometry.location.B);
+                        $scope.selectSuggestion($scope.event.google_maps_api_address);
+                    }
+                }
+                if ($scope.event) {
+                    setEventLocationMarker();
+                }
+                $scope.$watch('event', function() {
+                    setEventLocationMarker();
+                });
+            };
+            if ($state.is('events-create') || $state.is('events-edit')) {
+                if (!window.google) {
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.src = 'https://maps.googleapis.com/maps/api/js?language=ua&key=AIzaSyDSZPReGhVdinuojwY1kctnXqy0YSF1GYU' + '&callback=initializeGoogleMapsApi';
+                    window.document.body.appendChild(script);
+                } else {
+                    window.initializeGoogleMapsApi();
+                }
+            }
+        })();
 
     }
 ]);

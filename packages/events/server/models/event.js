@@ -60,6 +60,9 @@ var EventSchema = new Schema({
         default: '',
         trim: true
     },
+    google_maps_api_address: {
+        type: Schema.Types.Mixed
+    },
     region: {
         type: Schema.ObjectId,
         ref: 'Region'
