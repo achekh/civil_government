@@ -18,7 +18,11 @@
             });
 
             // Load the controllers module
-            beforeEach(module('mean'));
+            beforeEach(function () {
+                module('mean');
+                module('mean.system');
+                module('mean.articles');
+            });
 
             // Initialize the controller and a mock scope
             var ArticlesController,
@@ -44,10 +48,13 @@
 
                 $location = _$location_;
 
+                $httpBackend.when('GET', '/loggedin').respond({});
+                $httpBackend.when('GET', 'public/system/views/index.html').respond('');
+                $httpBackend.when('GET', 'articles/views/view.html').respond('');
+
             }));
 
-            it('$scope.find() should create an array with at least one article object ' +
-                'fetched from XHR', function() {
+            it('$scope.find() should create an array with at least one article object fetched from XHR', function() {
 
                     // test expected GET request
                     $httpBackend.expectGET('articles').respond([{
@@ -67,8 +74,7 @@
 
                 });
 
-            it('$scope.findOne() should create an array with one article object fetched ' +
-                'from XHR using a articleId URL parameter', function() {
+            it('$scope.findOne() should create an array with one article object fetched from XHR using a articleId URL parameter', function() {
                     // fixture URL parament
                     $stateParams.articleId = '525a8422f6d0f87f0e407a33';
 
@@ -92,9 +98,7 @@
 
                 });
 
-            it('$scope.create() with valid form data should send a POST request ' +
-                'with the form input values and then ' +
-                'locate to new object URL', function() {
+            it('$scope.create() with valid form data should send a POST request with the form input values and then locate to new object URL', function() {
 
                     // fixture expected POST data
                     var postArticleData = function() {
@@ -169,8 +173,7 @@
 
             }));
 
-            it('$scope.remove() should send a DELETE request with a valid articleId ' +
-                'and remove the article from the scope', inject(function(Articles) {
+            it('$scope.remove() should send a DELETE request with a valid articleId and remove the article from the scope', inject(function(Articles) {
 
                     // fixture rideshare
                     var article = new Articles({

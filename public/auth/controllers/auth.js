@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.controllers.login', [])
+angular.module('mean.auth')
     .controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state',
         function($scope, $rootScope, $http, $state) {
             // This object will be filled by the form

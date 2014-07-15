@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.system', ['mean.controllers.login', 'mean-factory-interceptor'])
+angular.module('mean.system', ['mean-factory-interceptor', 'mean.activists'])
     .run(['$rootScope', '$state', 'Global', function ($rootScope, $state, Global) {
 
         $rootScope.global = Global.getGlobals(window);

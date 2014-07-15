@@ -1,9 +1,8 @@
 'use strict';
 
-var app = angular.module('mean.activists', ['ui.bootstrap']);
-
-app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state', '$stateParams', '$http', 'Activists', 'Events', 'Participants', 'Organizations', 'Members',
-    function ($scope, $modal, $rootScope, $state, $stateParams, $http, Activists, Events, Participants, Organizations, Members) {
+angular.module('mean.activists')
+    .controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state', '$stateParams', '$http', 'Activists', 'Events', 'Participants', 'Members',
+    function ($scope, $modal, $rootScope, $state, $stateParams, $http, Activists, Events, Participants, Members) {
 
         var handleGetActivistSuccess = function (activist) {
             $scope.activist = activist;
@@ -104,10 +103,8 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
             $scope.findLeaders();
         };
 
-    }
-]);
-
-app.controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$stateParams', '$location', 'Activists',
+    }])
+    .controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$stateParams', '$location', 'Activists',
     function ($scope, $rootScope, $state, $stateParams, $location, Activists) {
 
         $scope.isNew = $state.is('activists-create');
