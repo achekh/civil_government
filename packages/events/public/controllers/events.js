@@ -232,10 +232,19 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 function setGps(location) {
                     $scope.gps = $scope.gps_ = location.toUrlValue();
                 }
+                function getRegionFromSuggestion(suggestion) {
+                    for (var i in suggestion.address_components) {
+                        var address_component = suggestion.address_components[i];
+                        if (address_component.types.indexOf('administrative_area_level_1') > -1) {
+                            return address_component.long_name;
+                        }
+                    }
+                }
                 function setAddress(suggestion) {
                     $scope.address = $scope.address_ = suggestion.formatted_address;
                     $scope.google_maps_api_address = suggestion;
                     $scope.suggestions = {};
+                    console.log(getRegionFromSuggestion(suggestion));
                 }
                 function seekAddress(location) {
                     $scope.geocoder.geocode({
