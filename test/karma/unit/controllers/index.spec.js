@@ -4,7 +4,10 @@
     describe('MEAN controllers', function() {
         describe('IndexController', function() {
             // Load the controllers module
-            beforeEach(module('mean'));
+            beforeEach(function () {
+                module('mean');
+                module('mean.system');
+            });
 
             var scope, IndexController;
 

@@ -1,39 +1,47 @@
 <div class="row" data-ng-controller="VictoriesController" data-ng-init="init()">
     <h4>{{getCreateEditTitle()}}</h4>
-    <form class="form-horizontal col-md-6" role="form">
+    <form class="form-horizontal col-md-6" role="form" data-ng-disabled="isView()">
         <div class="form-group">
             <label for="title" class="col-md-2 control-label">Название</label>
             <div class="col-md-10">
-                <input id="title" type="text" class="form-control" data-ng-model="victory.title">
+                <input id="title" type="text" class="form-control" data-ng-model="victory.title" data-ng-disabled="isView()">
             </div>
         </div>
         <div class="form-group">
             <label for="description" class="col-md-2 control-label">Описание</label>
             <div class="col-md-10">
-                <textarea id="description" class="form-control" data-ng-model="victory.description"></textarea>
+                <textarea id="description" class="form-control" data-ng-model="victory.description" data-ng-disabled="isView()"></textarea>
             </div>
         </div>
         <div class="form-group">
             <label for="city" class="col-md-2 control-label">Мiсто</label>
             <div class="col-md-10">
-                <input id="city" type="text" class="form-control" data-ng-model="victory.city">
+                <input id="city" type="text" class="form-control" data-ng-model="victory.city" data-ng-disabled="isView()">
             </div>
         </div>
+
         <div class="form-group">
-            <label for="datetime" class="col-md-2 control-label">Дата</label>
-            <div class="col-md-10">
-                <input id="datetime" type="date" class="form-control" data-ng-model="victory.datetime">
+            <label class="col-md-2 control-label">Дата</label>
+            <!--<div class="col-md-10">-->
+                <!--<input id="datetime" type="date" class="form-control" data-ng-model="victory.datetime" data-ng-disabled="isView()">-->
+            <!--</div>-->
+            <div class="col-md-8">
+                <cg-datepicker data-ng-model="victory.datetime" required="true" ng-disabled="isView()"></cg-datepicker>
             </div>
         </div>
+
         <div class="form-group">
             <label for="img" class="col-md-2 control-label">Картинка</label>
             <div class="col-md-10">
-                <input id="img" type="text" class="form-control" data-ng-model="victory.img">
+                <input id="img" type="text" class="form-control" data-ng-model="victory.img" data-ng-disabled="isView()">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group"  data-ng-hide="isView()">
             <button class="btn btn-primary" data-ng-click="save()">Сохранить</button>
             <button class="btn" data-ng-click="cancel()">Отменить</button>
+        </div>
+        <div class="form-group"  data-ng-show="isView()">
+            <button class="btn" data-ng-click="cancel()">Назад</button>
         </div>
     </form>
 </div>

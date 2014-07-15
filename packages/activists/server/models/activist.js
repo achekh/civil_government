@@ -24,28 +24,31 @@ var ActivistSchema = new Schema({
         default: '',
         trim: true
     },
-    lastName: {
+    country: {
         type: String,
         default: '',
         trim: true
     },
-    country: {
-        type: String,
-        default: 'Невядомая краiна',
-        trim: true
-    },
     city: {
         type: String,
-        default: 'Невядомае мicто',
+        default: '',
         trim: true
     },
     emails: {
         type: [String],
-        default: []
+        default: [],
+        validate: [function(v){
+            if (!v || !v.forEach) return false;
+            var isValid = true;
+            v.forEach(function(e) {
+                isValid = isValid && /.+\@.+\..+/.test(e);
+            });
+            return isValid;
+        }, 'Please enter a valid email']
     },
     phones: {
         type: [String],
-        default: ['Невядомы телефон']
+        default: []
     },
     aboutMe: {
         type: String,
@@ -58,7 +61,7 @@ var ActivistSchema = new Schema({
         trim: true
         ,get: function(img) {
             if (!img) return img;
-            return img.indexOf('http://') === 0 ? img : 'http://dummyimage.com/100x100/858585/' + img;
+            return img.indexOf('http://') === 0 || img.indexOf('https://') === 0 ? img : 'http://dummyimage.com/100x100/858585/' + img;
         }
     },
     eventsTotal: {
@@ -103,20 +106,24 @@ ActivistSchema.statics.loadByUserId = function(userId, cb) {
 };
 
 ActivistSchema.virtual('displayName').get(function () {
-    if (this.lastName && this.lastName.length) {
-        return this.name + ' ' + this.lastName.substr(0, 1) + '.';
-    }
+//    if (this.lastName && this.lastName.length) {
+//        return this.name + ' ' + this.lastName.substr(0, 1) + '.';
+//    }
     return this.name;
 });
 
 ActivistSchema.set('toJSON', {
     virtuals: true
     ,getters: true
-    , transform: function (doc, ret, options) {
-        if (!options.lastName) {
-            delete ret.lastName;
-        }
-    }
+//    , transform: function (doc, ret, options) {
+//        if (!options.lastName) {
+//            delete ret.lastName;
+//        }
+//    }
+});
+
+ActivistSchema.post('save', function updateRecordsCount(activist) {
+    activist.model('Record').updateCount('Activist','activists');
 });
 
 mongoose.model('Activist', ActivistSchema);

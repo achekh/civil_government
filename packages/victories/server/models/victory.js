@@ -38,6 +38,10 @@ var VictorySchema = new Schema({
     datetime: {
         type: Date
         //  validate: [notEmpty, 'Необходимо выбрать "Дату"']
+    },
+    region: {
+        type: Schema.ObjectId,
+        ref: 'Region'
     }
 });
 
@@ -56,6 +60,10 @@ VictorySchema.post('save', function updateVictoryOrganizationVictoryCount(victor
                 return organization.updateVictoryCount();
         }
     });
+});
+
+VictorySchema.post('save', function updateRecordsCount(victory) {
+    victory.model('Record').updateCount('Victory','victories');
 });
 
 mongoose.model('Victory', VictorySchema);

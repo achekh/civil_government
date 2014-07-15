@@ -45,6 +45,7 @@ Victories.register(function(app, auth, database) {
         //you now have the settings object
     });
     */
+    Victories.aggregateAsset('css', 'victories.css');
 
     return Victories;
 });

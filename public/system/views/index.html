@@ -4,14 +4,31 @@
 
         <div class="col-md-3 col_top_row" data-ng-if="!isAuthenticated()" data-ng-controller="LoginCtrl">
             <form data-ng-submit="login()">
-                <p align="center"><br/><br/>
-                    <input class="form-inline" type="text" name="email" placeholder="e-mail" data-ng-model="user.email"><br/><br/>
-                    <input class="form-inline" type="password" name="password" placeholder="пароль" data-ng-model="user.password"><br/><br/>
+                <p align="center">
+                    <input class="form-inline" type="text" name="email" placeholder="e-mail" data-ng-model="user.email" required=""><br/><br/>
+                    <input class="form-inline" type="password" name="password" placeholder="пароль" data-ng-model="user.password" required=""><br/><br/>
                     <button type="submit" class="btn btn-primary">Увійти</button>
                     <button type="button" class="btn btn-default" data-ui-sref="auth.register">Реєстрація</button><br/>
                 </p>
+                <p align="center"><a data-ui-sref="auth_restore">Забули пароль?</a></p>
+                <p class="alert-danger animated fadeIn" data-ng-show="loginerror">{{loginerror}}</p>
+                <p class="" data-ng-hide="loginerror">&nbsp;</p>
+                <p class="bg-primary" style="margin-bottom: 5px;">Увайсцi пры дапамозе</p>
+                <a href="/auth/facebook">
+                    <img class="social-auth-img" src="/public/auth/assets/img/icons/facebook.png" width="40"/>
+                </a>
+                <a href="/auth/twitter">
+                    <img class="social-auth-img" src="/public/auth/assets/img/icons/twitter.png" width="40"/>
+                </a>
+                <a href="/auth/google">
+                    <img class="social-auth-img" src="/public/auth/assets/img/icons/google.png" width="40"/>
+                </a>
+                <a href="/auth/vkontakte">
+                    <img class="social-auth-img" src="/public/auth/assets/img/icons/vkontakte.png" width="40"/>
+                </a>
+                <!--<div id="uLogin" data-ulogin="display=panel;fields=first_name,last_name,nickname,email,photo;optional=city,country;providers=google,twitter,facebook,openid,vkontakte;hidden=yandex,odnoklassniki,livejournal,mailru,lastfm,linkedin,liveid,soundcloud,steam,flickr,uid,youtube,webmoney,foursquare,tumblr,googleplus,dudu,vimeo,instagram;redirect_uri=http%3A%2F%2F127.0.0.1.xip.io%3A3000%2Fauth%2Fulogin%2Fcallback"></div>-->
             </form>
-            <p align="center"><a href="#!">Забули пароль?</a></p>
+            <!--<a href="/auth/delete">delete</a>-->
         </div>
 
         <div class="col-md-3 col_top_row" data-ng-if="isAuthenticated()">
@@ -20,7 +37,7 @@
         <div class="col-md-6 col_top_row">
         </div>
 
-        <div class="col-md-3 col_top_row">
+        <div class="col-md-3 col_top_row" data-ng-controller="RecordsController">
 
             <div class="row">
                 <div class="col-md-8">
@@ -31,23 +48,23 @@
             <div class="row">
                 <table class="table">
                     <tr>
-                        <td align="right"><b>42342</b></td>
+                        <td align="right"><b>{{records.activists}}</b></td>
                         <td>активістів</td>
                     </tr>
                     <tr>
-                        <td align="right"><b>324</b></td>
+                        <td align="right"><b>{{records.organizations}}</b></td>
                         <td>організацій</td>
                     </tr>
                     <tr>
-                        <td align="right"><b>59</b></td>
+                        <td align="right"><b>{{records.cities}}</b></td>
                         <td>населених пунктів</td>
                     </tr>
                     <tr>
-                        <td align="right"><b>12333</b></td>
+                        <td align="right"><b>{{records.events}}</b></td>
                         <td>подій відбулося</td>
                     </tr>
                     <tr>
-                        <td align="right"><b>876</b></td>
+                        <td align="right"><b>{{records.victories}}</b></td>
                         <td>перемог здобуто</td>
                     </tr>
                 </table>
@@ -64,6 +81,17 @@
             <div class="row row-header">
                 <div class="col-md-6">
                     <h2>Перемоги</h2>
+                </div>
+                <br>
+                <div class="col-md-6">
+                    <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                        <button type="button" class="btn btn-default dropdown-toggle">{{region.label}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li data-ng-repeat="region in regions">
+                                <a href="" data-ng-click="setRegion(region)">{{region.label}}</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -96,14 +124,12 @@
                 </div>
                 <br>
                 <div class="col-md-6">
-                    <div class="btn-group">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                            Вся Україна <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>м.Київ</li>
-                            <li>Волинська обл.</li>
-                            <li>Вінницька обл.</li>
+                    <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                        <button type="button" class="btn btn-default dropdown-toggle">{{region.label}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li data-ng-repeat="region in regions">
+                                <a href="" data-ng-click="setRegion(region)">{{region.label}}</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -134,7 +160,7 @@
                     <div class="btn-group dropdown" data-cg-dropdown-autoclose>
                         <button type="button" class="btn btn-default dropdown-toggle">{{videoLiveStatus.label}} <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="" data-ng-click="setVideoLiveStatus(status)" data-ng-repeat="status in videoLiveStatuses">{{status.label}}</a>
+                            <li data-ng-repeat="status in videoLiveStatuses"><a href="" data-ng-click="setVideoLiveStatus(status)">{{status.label}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -180,7 +206,7 @@
 
             <div class="row row-footer">
                 <div class="col-md-12">
-                    <a class="btn btn-default">Всі лідери</a>
+                    <a class="btn btn-default" data-ui-sref="activists">Всі лідери</a>
                 </div>
             </div>
 

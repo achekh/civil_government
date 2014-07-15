@@ -73,14 +73,28 @@
 
             <div class="form-group">
                 <div class="col-md-12">
-                    <input type="text" class="form-control" id="gps" placeholder="GPS-координати" data-ng-model="gps">
-                    <span><a>вказати на карті</a></span>
+                    <input type="text" class="form-control" id="address" placeholder="Адрес" data-ng-model="address">
+                    <div class="suggestions" data-ng-repeat="suggestion in suggestions" data-ng-click="selectSuggestion(suggestion)">
+                        <span class="suggest-icon-img suggest-location"></span>
+                        <span class="suggestion-text">{{suggestion.formatted_address}}</span>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="gps" placeholder="GPS-координати" data-ng-model="gps">
+                    <!--<span><a>вказати на карті</a></span>-->
+                </div>
+                <!--<div class="col-md-6">-->
+                    <!--<input type="text" class="form-control" id="region" placeholder="Регион" data-ng-model="region">-->
+                <!--</div>-->
+            </div>
+
+            <div class="form-group">
                 <div class="col-md-12">
-                    MAP
+                    <div id="map-canvas" class="map-canvas">MAP</div>
+                    <div id="pano-canvas" class="pano-canvas"></div>
                 </div>
             </div>
 

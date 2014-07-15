@@ -59,6 +59,13 @@ var EventSchema = new Schema({
         type: String,
         default: '',
         trim: true
+    },
+    google_maps_api_address: {
+        type: Schema.Types.Mixed
+    },
+    region: {
+        type: Schema.ObjectId,
+        ref: 'Region'
     }
 });
 
@@ -81,6 +88,10 @@ EventSchema.post('save', function updateEventOrganizationEventCount(event) {
                 return organization.updateEventCount();
         }
     });
+});
+
+EventSchema.post('save', function updateRecordsCount(event) {
+    event.model('Record').updateCount('Event','events');
 });
 
 mongoose.model('Event', EventSchema);

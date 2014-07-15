@@ -1,10 +1,12 @@
 'use strict';
 
-angular.module('mean.controllers.login', [])
+angular.module('mean.auth')
     .controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state',
         function($scope, $rootScope, $http, $state) {
             // This object will be filled by the form
             $scope.user = {};
+
+            $.getScript('//ulogin.ru/js/ulogin.js');
 
             // Register the login() function
             $scope.login = function() {
@@ -29,7 +31,7 @@ angular.module('mean.controllers.login', [])
                         }
                     })
                     .error(function() {
-                        $scope.loginerror = 'Authentication failed.';
+                        $scope.loginerror = 'Авторизация отклонена.';
                     });
             };
         }
@@ -42,12 +44,10 @@ angular.module('mean.controllers.login', [])
                 $scope.usernameError = null;
                 $scope.registerError = null;
                 $http.post('/register', {
+                    name: $scope.user.name,
                     email: $scope.user.email,
                     password: $scope.user.password,
-                    confirmPassword: $scope.user.confirmPassword,
-                    username: $scope.user.username,
-                    name: $scope.user.name,
-                    lastName: $scope.user.lastName
+                    confirmPassword: $scope.user.confirmPassword
                 })
                     .success(function() {
                         // registration OK
@@ -68,4 +68,53 @@ angular.module('mean.controllers.login', [])
                     });
             };
         }
-    ]);
+    ])
+    .controller('RestoreCtrl', ['$scope', '$rootScope', '$http', '$state', '$stateParams',
+        function($scope, $rootScope, $http, $state, $stateParams) {
+            $scope.user = {};
+            $scope.restoreSuccess = $scope.restoreError = $scope.hashError = undefined;
+
+            $scope.restore = function() {
+                $http.post('/restore', {
+                    email: $scope.user.email
+                })
+                    .success(function(response) {
+                        console.log(response);
+                        $scope.restoreSuccess = true;
+                    })
+                    .error(function(error){
+                        console.log(error);
+                        $scope.restoreError = error;
+                    })
+                ;
+            };
+
+            $scope.initHash = function() {
+
+                $http.get('/restore/' + encodeURIComponent($stateParams.hashId))
+                    .success(function(user){
+                        $scope.user = user;
+                    })
+                    .error(function(error){
+                        $scope.hashError = true;
+                    })
+                ;
+            };
+
+            $scope.update = function() {
+                $http.put('/restore/' + encodeURIComponent($stateParams.hashId), {
+                    password: $scope.user.password
+                })
+                    .success(function(response) {
+                        console.log(response);
+                        $scope.restoreSuccess = true;
+                    })
+                    .error(function(error){
+                        console.log(error);
+                        $scope.restoreError = error;
+                    })
+                ;
+            };
+        }
+    ])
+;

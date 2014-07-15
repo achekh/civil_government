@@ -1,0 +1,19 @@
+<div data-ng-controller="RestoreCtrl">
+    <h1>Восстановление пароля</h1>
+    <form  data-ng-submit="restore()" class="form-horizontal">
+        <div class="form-group">
+            <label for="email" class="col-md-4 control-label">Укажыця Email, на яки можна адыслать ссылку для змены пароля</label>
+            <div class="col-md-8">
+                <input required id="email" type="email" name="email" placeholder="email" class="form-control" data-ng-model="user.email"/>
+            </div>
+        </div>
+        <div class="alert alert-success animated fadeIn" data-ng-show="restoreSuccess">Ссылка для змены пароля успешна адослана на указаны емайл. Праверьте пошту.</div>
+        <div class="alert alert-warning animated fadeIn" data-ng-show="restoreError">Ссылку для змены пароля не удалось адыслать на указаны емайл.</div>
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-8">
+                <button type="submit" class="btn btn-primary">Надыслать ссылку для змены пароля</button>&nbsp;
+                або&nbsp;<a data-ui-sref='auth.register' class="show-signup">Зареєструватися</a>
+            </div>
+        </div>
+    </form>
+</div>

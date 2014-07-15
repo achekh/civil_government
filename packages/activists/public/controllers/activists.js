@@ -1,9 +1,8 @@
 'use strict';
 
-var app = angular.module('mean.activists', ['ui.bootstrap']);
-
-app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state', '$stateParams', 'Activists', 'Events', 'Participants', 'Organizations', 'Members',
-    function ($scope, $modal, $rootScope, $state, $stateParams, Activists, Events, Participants, Organizations, Members) {
+angular.module('mean.activists')
+    .controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state', '$stateParams', '$http', 'Activists', 'Events', 'Participants', 'Members',
+    function ($scope, $modal, $rootScope, $state, $stateParams, $http, Activists, Events, Participants, Members) {
 
         var handleGetActivistSuccess = function (activist) {
             $scope.activist = activist;
@@ -71,7 +70,10 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
         };
 
         $scope.findLeaders = function() {
-            Activists.query({sortBy: '-eventsTotal', limitTo: 3}, function(leaders) {
+            Activists.query({
+                sortBy: '-eventsTotal',
+                region: $scope.region.value === '0.Вся Україна' ? undefined : $scope.region._id
+            }, function(leaders) {
                 $scope.leaders = leaders;
             });
         };
@@ -82,10 +84,27 @@ app.controller('ActivistsController', ['$scope', '$modal', '$rootScope', '$state
 
         $scope.nowDate = new Date();
 
-    }
-]);
+        (function initRegions(){
+            $scope.regions = [
+                {'value': '0.Вся Україна', 'label': 'Вся Україна'}
+            ];
+            $scope.region = $scope.regions[0];
+            $http({method: 'GET', url: '/regions'}).
+                success(function(data, status, headers, config) {
+                    $scope.regions = data;
+                    $scope.region = $scope.regions.filter(function (region) {
+                        return '' + region.value === '' + $stateParams.region;
+                    })[0] || $scope.regions[0];
+                });
+        })();
 
-app.controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$stateParams', '$location', 'Activists',
+        $scope.setRegion = function (region) {
+            $scope.region = region;
+            $scope.findLeaders();
+        };
+
+    }])
+    .controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$stateParams', '$location', 'Activists',
     function ($scope, $rootScope, $state, $stateParams, $location, Activists) {
 
         $scope.isNew = $state.is('activists-create');
@@ -98,13 +117,11 @@ app.controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$s
 
         $scope.update = function () {
             var activist = $scope.activist;
-            if (!activist.updated) {
-                activist.updated = [];
-            }
-            activist.updated.push(new Date().getTime());
-            activist.$update(function (response) {
-                $rootScope.$emit('activist-updated', response);
+            activist.$update(function (activist) {
+                $rootScope.$emit('activist-updated', activist);
                 $state.go('activists-view');
+            }, function(err){
+                $scope.errors = err.data;
             });
         };
 

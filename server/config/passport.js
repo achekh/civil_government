@@ -35,7 +35,8 @@ module.exports = function(passport) {
         },
         function(email, password, done) {
             User.findOne({
-                email: email
+                email: email,
+                provider: 'local'
             }, function(err, user) {
                 if (err) {
                     return done(err);
@@ -71,13 +72,19 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        username: profile.username,
                         provider: 'twitter',
                         twitter: profile._json
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
-                        if (err) console.log(err);
-                        return done(err, user);
+                        if (err) {
+                            console.log(err);
+                            return done(err, user);
+                        } else {
+                            return done(err, user, {profile: profile});
+                        }
                     });
                 } else {
                     return done(err, user);
@@ -102,14 +109,19 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
-                        username: profile.username || profile.emails[0].value.split('@')[0],
                         provider: 'facebook',
                         facebook: profile._json
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
-                        if (err) console.log(err);
-                        return done(err, user);
+                        if (err) {
+                            console.log(err);
+                            return done(err, user);
+                        } else {
+                            return done(err, user, {profile: profile});
+                        }
                     });
                 } else {
                     return done(err, user);
@@ -131,14 +143,15 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
-                        username: profile.username,
                         provider: 'github',
                         github: profile._json
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) console.log(err);
-                        return done(err, user);
+                        return done(err, user, {profile: profile});
                     });
                 } else {
                     return done(err, user);
@@ -160,14 +173,15 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
-                        username: profile.emails[0].value,
                         provider: 'google',
                         google: profile._json
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) console.log(err);
-                        return done(err, user);
+                        return done(err, user, {profile: profile});
                     });
                 } else {
                     return done(err, user);
@@ -190,13 +204,14 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
-                        username: profile.emails[0].value,
                         provider: 'linkedin'
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) console.log(err);
-                        return done(err, user);
+                        return done(err, user, {profile: profile});
                     });
                 } else {
                     return done(err, user);
@@ -218,13 +233,14 @@ module.exports = function(passport) {
                 if (!user) {
                     user = new User({
                         name: profile.displayName,
-                        email: profile.emails[0].value,
-                        username: profile.emails[0].value,
                         provider: 'vkontakte'
                     });
+                    if (profile.emails && profile.emails[0]) {
+                        user.email = profile.emails[0].value;
+                    }
                     user.save(function(err) {
                         if (err) console.log(err);
-                        return done(err, user);
+                        return done(err, user, {profile: profile});
                     });
                 } else {
                     return done(err, user);

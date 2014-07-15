@@ -24,19 +24,10 @@ var UserSchema = new Schema({
         required: true,
         validate: [validatePresenceOf, 'Name cannot be blank']
     },
-    lastName: {
-        type: String
-    },
     email: {
         type: String,
-        required: true,
         match: [/.+\@.+\..+/, 'Please enter a valid email'],
         validate: [validatePresenceOf, 'Email cannot be blank']
-    },
-    username: {
-        type: String,
-        unique: true,
-        validate: [validatePresenceOf, 'Username cannot be blank']
     },
     roles: {
         type: Array,
@@ -68,13 +59,6 @@ UserSchema.virtual('password').set(function(password) {
     this.hashed_password = this.hashPassword(password);
 }).get(function() {
     return this._password;
-});
-
-UserSchema.virtual('displayName').get(function () {
-    if (this.lastName && this.lastName.length) {
-        return this.name + ' ' + this.lastName.substr(0, 1) + '.';
-    }
-    return this.name;
 });
 
 UserSchema.set('toJSON', {

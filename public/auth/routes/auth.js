@@ -38,6 +38,15 @@ angular.module('mean.auth').config(['$stateProvider',
                 resolve: {
                     loggedin: checkLoggedOut
                 }
-            });
+            })
+            .state('auth_restore', {
+                url: '/restore',
+                templateUrl: 'public/auth/views/restore.html'
+            })
+            .state('auth_restoreHash', {
+                url: '/restore/{hashId:.+}',
+                templateUrl: 'public/auth/views/restore_hash.html'
+            })
+        ;
     }
 ]);

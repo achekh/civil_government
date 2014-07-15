@@ -43,7 +43,7 @@ angular.module('mean.events').config(['$stateProvider',
                 templateUrl: 'events/views/view.html'
             })
             .state('events-edit', {
-                url: '/events/:eventId/edit',
+                url: '/events/edit/:eventId',
                 templateUrl: 'events/views/edit.html',
                 resolve: {
                     loggedin: checkLoggedin

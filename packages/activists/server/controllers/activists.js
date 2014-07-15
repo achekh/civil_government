@@ -62,7 +62,8 @@ exports.create = function(req, res) {
     })
     .exec(function(err, activists) {
         if (err) {
-            res.render('error', {status: 500});
+            console.log(err);
+            res.status(500).send([{message: 'Ошибка в базе данных'}]);
         } else {
             if (activists[0]) {
                 res.jsonp(activists[0].toJSON({lastName:true}));
@@ -70,11 +71,11 @@ exports.create = function(req, res) {
                 var activist = new Activist();
                 activist.user = req.user;
                 activist.name = req.user.name;
-                activist.lastName = req.user.lastName;
                 activist.emails = [req.user.email];
                 activist.save(function(err) {
                     if (err) {
-                        res.render('error', {status: 500});
+                        console.log(err);
+                        res.status(500).send([{message: 'Ошибка в базе данных'}]);
                     } else {
                         res.jsonp(activist.toJSON({lastName:true}));
                     }
@@ -90,11 +91,52 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
     var activist = req.activist;
     activist = _.extend(activist, req.body);
-    activist.save(function(err) {
+
+    if (!(activist.emails && activist.emails.length && activist.emails[0])) {
+        return res.status(400).send([{message: 'Email должен быть'}]);
+    }
+
+    activist.model('User').findById(activist.user, function(err, user) {
         if (err) {
-            res.render('error', {status: 500});
+            console.log(err);
+            res.status(500).send([{message: 'Ошибка в базе данных'}]);
         } else {
-            res.jsonp(activist);
+            if (user) {
+                var updateUser = function() {
+                    activist.save(function(err, activist) {
+                        if (err) {
+                            res.status(500).send(err.errors || [err]);
+                        } else {
+                            user.name = activist.name;
+                            user.email = activist.emails[0];
+                            user.save(function (err, user) {
+                                if (err) {
+                                    res.status(500).send(err.errors || [err]);
+                                } else {
+                                    res.jsonp(activist);
+                                }
+                            });
+                        }
+                    });
+                };
+                if (user.provider === 'local' && user.email !== activist.emails[0]) {
+                    activist.model('User').find({email: activist.emails[0], provider: 'local'}, function(err, users) {
+                        if (err) {
+                            res.status(500).send(err.errors || [err]);
+                        } else {
+                            if (users.length) {
+                                res.status(400).send([{message:'Пользователь с таким Email уже существует'}]);
+                            } else {
+                                updateUser();
+                            }
+                        }
+                    });
+                } else {
+                    updateUser();
+                }
+            } else {
+                res.status(500).send([{message: 'Ошибка в базе данных'}]);
+            }
         }
     });
 };

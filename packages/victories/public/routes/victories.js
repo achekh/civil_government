@@ -4,7 +4,7 @@ angular.module('mean.victories').config(['$stateProvider',
     function($stateProvider) {
         $stateProvider.state('victories', {
             url: '/victories',
-            templateUrl: 'victories/views/index.html'
+            templateUrl: 'victories/views/list.html'
         });
         $stateProvider.state('victory-create', {
             url: '/victories/create',
@@ -12,8 +12,7 @@ angular.module('mean.victories').config(['$stateProvider',
         });
         $stateProvider.state('victory-update', {
             url: '/victories/:victoryId',
-            templateUrl: 'victories/views/edit.html',
-            authenticate: true
+            templateUrl: 'victories/views/edit.html'
         });
     }
 ]);

@@ -130,4 +130,8 @@ OrganizationSchema.set('toJSON', {
     getters: true
 });
 
+OrganizationSchema.post('save', function updateRecordsCount(organization) {
+    organization.model('Record').updateCount('Organization','organizations');
+});
+
 mongoose.model('Organization', OrganizationSchema);
