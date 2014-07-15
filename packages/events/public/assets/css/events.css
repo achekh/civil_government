@@ -2,9 +2,10 @@
     margin-bottom: 2em;
 }
 
-.map-canvas {
-    width: 640px;
-    height: 480px;
+.map-canvas, .pano-canvas {
+    width: 480px;
+    height: 320px;
+    display: inline-block;
 }
 
 .suggestions {
