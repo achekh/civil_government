@@ -130,4 +130,27 @@ ActivistSchema.post('save', function updateRecordsCount(activist) {
     activist.model('Record').updateCount('Activist','activists');
 });
 
+
+ActivistSchema.methods = {
+    updateRecordsCount: function () {
+        var activist = this;
+        mongoose.model('Participant').count({activist: activist}, function(err, c) {
+            if (err) {
+                console.log(err);
+            } else {
+                activist.eventsTotal = Math.max(activist.eventsTotal, c);
+                activist.save();
+            }
+        });
+        mongoose.model('Participant').count({activist: activist, coordinator: true}, function(err, c) {
+            if (err) {
+                console.log(err);
+            } else {
+                activist.eventsOwn = Math.max(activist.eventsOwn, c);
+                activist.save();
+            }
+        });
+    }
+};
+
 mongoose.model('Activist', ActivistSchema);

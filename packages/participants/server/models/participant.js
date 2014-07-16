@@ -63,4 +63,16 @@ ParticipantSchema.statics.load = function (id, cb) {
         .exec(cb);
 };
 
+ParticipantSchema.post('save', function updateActivistRecordsCount(participant) {
+    if (participant.activist) {
+        participant.model('Activist').findById(participant.activist, function(err, activist) {
+            if (err) {
+                console.log(err);
+            } else if (activist) {
+                activist.updateRecordsCount();
+            }
+        })
+    }
+});
+
 mongoose.model('Participant', ParticipantSchema);

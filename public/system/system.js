@@ -52,14 +52,14 @@ angular.module('mean.system', ['mean-factory-interceptor', 'mean.activists'])
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             toState.previous = fromState;
             toState.previousParams = fromParams;
-            if (!toState.previous || !toState.previous.name) {
-                toState.previous = toState;
-                toState.previousParams = {};
-            }
         });
 
         $state.goBack = function goBack() {
-            $state.go($state.current.previous, $state.current.previousParams);
+            if (!$state.current.previous || !$state.current.previous.name) {
+                $state.go('home');
+            } else {
+                $state.go($state.current.previous, $state.current.previousParams);
+            }
         };
 
         $rootScope.fileServerUrl = 'http://77.91.132.7:3001/';
