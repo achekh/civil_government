@@ -63,7 +63,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.find = function () {
-            return Events.query({region: $scope.region.value === '0.Вся Україна' ? undefined : $scope.region._id}, function (events) {
+            return Events.query({region: $scope.region.value.indexOf('0.') === 0 ? undefined : $scope.region._id}, function (events) {
                 $scope.events = events;
             });
         };
@@ -85,7 +85,9 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 $scope.sites = event.sites;
                 $scope.min_part = event.min_part;
                 $scope.max_part = event.max_part;
+                $scope.address = event.address;
                 $scope.gps = event.gps;
+                $scope.region = event.region;
                 $scope.google_maps_api_address = event.google_maps_api_address;
 
                 if ($scope.isAuthenticated()) {
@@ -150,14 +152,17 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 sites: this.sites,
                 min_part: this.min_part,
                 max_part: this.max_part,
+                address: this.address,
                 gps: this.gps,
+                region: this.region ? this.region._id : undefined,
                 google_maps_api_address: this.google_maps_api_address
             });
             return events.$save(function (response) {
                 if (response.errors) {
                     $scope.errors = response.errors;
                 } else {
-                    $state.go('events-view', {eventId: response._id});
+//                    $state.go('events-view', {eventId: response._id});
+                    $state.goBack();
                 }
 
             });
@@ -173,14 +178,21 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             event.sites = this.sites;
             event.min_part = this.min_part;
             event.max_part = this.max_part;
+            event.address = this.address;
             event.gps = this.gps;
+            event.region = this.region ? this.region._id : undefined;
             event.google_maps_api_address = this.google_maps_api_address;
-            if (!event.updated) {
-                event.updated = [];
-            }
-            event.updated.push(new Date().getTime());
-            return event.$update(function() {
-                $state.go('events-view', {eventId: event._id});
+//            if (!event.updated) {
+//                event.updated = [];
+//            }
+//            event.updated.push(new Date().getTime());
+            return event.$update(function(response) {
+                if (response.errors) {
+                    $scope.errors = response.errors;
+                } else {
+                    $state.goBack();
+                }
+//                $state.go('events-view', {eventId: event._id});
             });
         };
 
@@ -218,6 +230,10 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 };
                 $scope.panorama = new window.google.maps.StreetViewPanorama(document.getElementById('pano-canvas'), panoramaOptions);
                 $scope.map.setStreetView($scope.panorama);
+                window.google.maps.event.addListener($scope.panorama, 'visible_changed', function() {
+                    $scope.panoramaVisible = $scope.panorama.getVisible();
+                    window.setTimeout(function(){$scope.$apply();});
+                });
                 function setMarker(location) {
                     $scope.marker = $scope.marker || new window.google.maps.Marker({
                         position: location,
@@ -232,6 +248,23 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 function setGps(location) {
                     $scope.gps = $scope.gps_ = location.toUrlValue();
                 }
+                function setAddress(suggestion) {
+                    $scope.address = $scope.address_ = suggestion.formatted_address;
+                    $scope.google_maps_api_address = suggestion;
+                    $scope.suggestions = {};
+                }
+                function seekAddress(location) {
+                    $scope.geocoder.geocode({
+                        'location': location,
+                        region: 'UA'
+                    }, function(results, status) {
+                        if (status === window.google.maps.GeocoderStatus.OK) {
+                            setAddress(results[0]);
+                            setRegionFromSuggestion(results[0]);
+                            $scope.$apply();
+                        }
+                    });
+                }
                 function getRegionFromSuggestion(suggestion) {
                     for (var i in suggestion.address_components) {
                         var address_component = suggestion.address_components[i];
@@ -240,22 +273,35 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                         }
                     }
                 }
-                function setAddress(suggestion) {
-                    $scope.address = $scope.address_ = suggestion.formatted_address;
-                    $scope.google_maps_api_address = suggestion;
-                    $scope.suggestions = {};
-                    console.log(getRegionFromSuggestion(suggestion));
-                }
-                function seekAddress(location) {
-                    $scope.geocoder.geocode({
-                        'location': location,
-                        region: 'RU'
-                    }, function(results, status) {
-                        if (status === window.google.maps.GeocoderStatus.OK) {
-                            setAddress(results[0]);
-                            $scope.$apply();
+                function getRegionByRegionLabel(regionLabel) {
+                    if (regionLabel) {
+                        for(var i in $scope.regions) {
+                            if ($scope.regions[i].label === regionLabel) {
+                                return $scope.regions[i];
+                            }
                         }
-                    });
+                        var region = {value: regionLabel, label: regionLabel};
+                        var promise = $http({method: 'PUT', url: '/regions', data: region})
+                            .success(function(region){
+                                if (region) {
+                                    $scope.regions.push(region);
+                                }
+                            });
+                        return promise;
+                    }
+                }
+                function setRegionFromSuggestion(suggestion) {
+                    function setResolvedRegion(region) {
+                        region = (region && region.data) ? region.data : region;
+                        $scope.region = region;
+                    }
+                    var regionLabel = getRegionFromSuggestion(suggestion);
+                    var region = getRegionByRegionLabel(regionLabel);
+                    if (region && region.then) {
+                        region.then(setResolvedRegion);
+                    } else {
+                        setResolvedRegion(region);
+                    }
                 }
                 window.google.maps.event.addListener($scope.map, 'click', function (event) {
                     setMarker(event.latLng);
@@ -264,10 +310,10 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                     $scope.$apply();
                 });
                 $scope.$watch('address', function() {
-                    if ($scope.address && $scope.address !== $scope.address_) {
+                    if ($scope.address && $scope.address_ && $scope.address !== $scope.address_) {
                         $scope.geocoder.geocode({
                             'address': $scope.address,
-                            region: 'RU',
+                            region: 'UA',
                             componentRestrictions: {
                                 country: 'UA'
                             }
@@ -283,7 +329,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                     }
                 });
                 $scope.$watch('gps', function() {
-                    if ($scope.gps && $scope.gps !== $scope.gps_) {
+                    if ($scope.gps && $scope.gps_ && $scope.gps !== $scope.gps_) {
                         try {
                             var ps = $scope.gps.split(',');
                             if (ps.length === 2) {
@@ -301,11 +347,13 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                     setMarker(suggestion.geometry.location);
                     setGps(suggestion.geometry.location);
                     setAddress(suggestion);
+                    setRegionFromSuggestion(suggestion);
                 };
                 function setEventLocationMarker() {
                     if ($scope.event && $scope.event.google_maps_api_address && ($state.is('events-create') || $state.is('events-edit'))) {
-                        $scope.event.google_maps_api_address.geometry.location = new window.google.maps.LatLng($scope.event.google_maps_api_address.geometry.location.k,$scope.event.google_maps_api_address.geometry.location.B);
-                        $scope.selectSuggestion($scope.event.google_maps_api_address);
+                        var suggestion = $scope.event.google_maps_api_address;
+                        suggestion.geometry.location = new window.google.maps.LatLng(suggestion.geometry.location.k,suggestion.geometry.location.B);
+                        setMarker(suggestion.geometry.location);
                     }
                 }
                 if ($scope.event) {
@@ -319,7 +367,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 if (!window.google) {
                     var script = document.createElement('script');
                     script.type = 'text/javascript';
-                    script.src = 'https://maps.googleapis.com/maps/api/js?language=RU&key=AIzaSyDSZPReGhVdinuojwY1kctnXqy0YSF1GYU' + '&callback=initializeGoogleMapsApi';
+                    script.src = '//maps.googleapis.com/maps/api/js?language=uk&region=UA' + '&callback=initializeGoogleMapsApi';
                     window.document.body.appendChild(script);
                 } else {
                     window.initializeGoogleMapsApi();

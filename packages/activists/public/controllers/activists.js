@@ -72,7 +72,7 @@ angular.module('mean.activists')
         $scope.findLeaders = function() {
             Activists.query({
                 sortBy: '-eventsTotal',
-                region: $scope.region.value === '0.Вся Україна' ? undefined : $scope.region._id
+                region: $scope.region.value.indexOf('0.') === 0 ? undefined : $scope.region._id
             }, function(leaders) {
                 $scope.leaders = leaders;
             });

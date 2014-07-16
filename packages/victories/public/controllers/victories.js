@@ -29,7 +29,7 @@ angular.module('mean.victories')
             };
 
             $scope.find = function find(){
-                Victories.query({region: $scope.region.value === '0.Вся Україна' ? undefined : $scope.region._id}, function(victories) {
+                Victories.query({region: $scope.region.value.indexOf('0.') === 0 ? undefined : $scope.region._id}, function(victories) {
                     $scope.victories = victories;
                 });
             };

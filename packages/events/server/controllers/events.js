@@ -63,6 +63,7 @@ exports.all = function (req, res) {
     Event.find(query)
         .sort('-created')
         .populate('user', 'username')
+        .populate('region')
         .exec(function (err, events) {
             if (err) {
                 res.status(500).send(err.errors || [err]);
@@ -88,7 +89,7 @@ exports.update = function update(req, res) {
     event.save(function(err) {
         if (err) {
             console.log(err);
-            res.jsonp({errors: err.errors || [err]});
+            res.status(400).jsonp({errors: err.errors || [err]});
         } else {
             res.jsonp(event);
         }

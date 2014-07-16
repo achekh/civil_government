@@ -55,6 +55,11 @@ var EventSchema = new Schema({
         type: Number,
         default: 0
     },
+    address: {
+        type: String,
+        default: '',
+        trim: true
+    },
     gps: {
         type: String,
         default: '',
@@ -73,6 +78,7 @@ EventSchema.statics.load = function (id, cb) {
     this.findOne({_id: id})
         .populate('user', 'username')
         .populate('organization')
+        .populate('region')
         .exec(cb)
     ;
 };
