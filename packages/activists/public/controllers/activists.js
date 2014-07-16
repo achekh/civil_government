@@ -104,8 +104,8 @@ angular.module('mean.activists')
         };
 
     }])
-    .controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$stateParams', '$location', 'Activists',
-    function ($scope, $rootScope, $state, $stateParams, $location, Activists) {
+    .controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$stateParams', '$location', '$http', 'Activists',
+    function ($scope, $rootScope, $state, $stateParams, $location, $http, Activists) {
 
         $scope.isNew = $state.is('activists-create');
 
@@ -129,6 +129,117 @@ angular.module('mean.activists')
             $rootScope.$emit('activist-canceled');
             $state.go('activists-view');
         };
+
+        (function loadGoogleMapsApiScript() {
+            window.initializeGoogleMapsApi4Activist = function () {
+                $scope.geocoder = new window.google.maps.Geocoder();
+                $http({method: 'GET', url: '/regions'}).success(function(regions) {$scope.regions = regions;});
+                function getCountryFromSuggestion(suggestion) {
+                    for (var i in suggestion.address_components) {
+                        var address_component = suggestion.address_components[i];
+                        if (address_component.types.indexOf('country') > -1) {
+                            return address_component.long_name;
+                        }
+                    }
+                }
+                function getCityFromSuggestion(suggestion) {
+                    for (var i in suggestion.address_components) {
+                        var address_component = suggestion.address_components[i];
+                        if (address_component.types.indexOf('locality') > -1) {
+                            return address_component.long_name;
+                        }
+                    }
+                }
+                function setCityFromSuggestion(suggestion) {
+                    var city = getCityFromSuggestion(suggestion);
+                    $scope.activist.city = city;
+                    var country = getCountryFromSuggestion(suggestion);
+                    $scope.activist.country = country;
+                    $scope.suggestions = {};
+                }
+                function getRegionFromSuggestion(suggestion) {
+                    for (var i in suggestion.address_components) {
+                        var address_component = suggestion.address_components[i];
+                        if (address_component.types.indexOf('administrative_area_level_1') > -1) {
+                            return address_component.long_name;
+                        }
+                    }
+                }
+                function getRegionByRegionLabel(regionLabel) {
+                    if (regionLabel) {
+                        for(var i in $scope.regions) {
+                            if ($scope.regions[i].label === regionLabel) {
+                                return $scope.regions[i];
+                            }
+                        }
+                        var region = {value: regionLabel, label: regionLabel};
+                        var promise = $http({method: 'PUT', url: '/regions', data: region})
+                            .success(function(region){
+                                if (region) {
+                                    $scope.regions.push(region);
+                                }
+                            });
+                        return promise;
+                    }
+                }
+                function setRegionFromSuggestion(suggestion) {
+                    function setResolvedRegion(region) {
+                        region = (region && region.data) ? region.data : region;
+                        $scope.activist.region = (region && region._id) ? region._id : null;
+                    }
+                    var regionLabel = getRegionFromSuggestion(suggestion);
+                    var region = getRegionByRegionLabel(regionLabel);
+                    if (region && region.then) {
+                        region.then(setResolvedRegion);
+                    } else {
+                        setResolvedRegion(region);
+                    }
+                }
+
+                $scope.$watch('activist.city', function(v,p,s) {
+                    if (v && p && v !== p) {
+                        $scope.geocoder.geocode({
+                            'address': $scope.activist.city,
+                            region: 'UA',
+                            componentRestrictions: {
+                                country: 'UA'
+                            }
+                        }, function(results, status) {
+                            if (status === window.google.maps.GeocoderStatus.OK) {
+                                $scope.suggestions = {};
+                                var firstSuggestion;
+                                results.forEach(function(suggestion) {
+                                    suggestion.city = getCityFromSuggestion(suggestion);
+                                    if (!firstSuggestion) firstSuggestion = suggestion;
+                                    if (suggestion.city && suggestion.city !== v) {
+                                        $scope.suggestions[suggestion.city] = suggestion;
+                                    }
+                                });
+                                if (firstSuggestion && firstSuggestion.city) {
+                                    setRegionFromSuggestion(firstSuggestion);
+                                } else {
+                                    $scope.activist.region = null;
+                                }
+                                $scope.$apply();
+                            }
+                        });
+                    }
+                });
+                $scope.suggestions = {};
+                $scope.selectSuggestion = function(suggestion) {
+                    setCityFromSuggestion(suggestion);
+                    setRegionFromSuggestion(suggestion);
+                };
+            };
+            if (!window.google) {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = '//maps.googleapis.com/maps/api/js?language=uk&region=UA' + '&callback=initializeGoogleMapsApi4Activist';
+                window.document.body.appendChild(script);
+            } else {
+                window.initializeGoogleMapsApi4Activist();
+            }
+        })();
 
     }
 ]);

@@ -31,6 +31,9 @@ exports.get = function(req, res) {
         if (req.query.userId !== undefined) {
             query.user = req.query.userId;
         }
+        if (req.query.region) {
+            query.region = req.query.region;
+        }
         var find = Activist.find(query);
         if (req.query.sortBy) {
             find = find.sort(req.query.sortBy);
@@ -42,6 +45,7 @@ exports.get = function(req, res) {
         }
         find
             .populate('user', 'name username')
+            .populate('region')
             .exec(function(err, activists) {
                 if (err) {
                     res.render('error', {status: 500});
@@ -91,6 +95,9 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
     var activist = req.activist;
     activist = _.extend(activist, req.body);
+    if (activist.region === null) {
+        activist.region = undefined;
+    }
 
     if (!(activist.emails && activist.emails.length && activist.emails[0])) {
         return res.status(400).send([{message: 'Email должен быть'}]);

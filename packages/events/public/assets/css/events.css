@@ -7,24 +7,3 @@
     height: 320px;
     display: inline-block;
 }
-
-.suggestions {
-    line-height: 2em;
-    border: lightgray solid 1px;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.suggestions:hover {
-    background-color: #fafafa;
-}
-
-.suggest-icon-img {
-    background-position: -1px -160px;
-    background-image: url(//maps.gstatic.com/tactile/omnibox/suggest-icons-1x-20140311.png);
-    width: 15px;
-    height: 20px;
-    display: inline-block;
-    vertical-align: middle;
-    margin: 6px;
-}

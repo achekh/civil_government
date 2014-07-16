@@ -80,6 +80,10 @@ var ActivistSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User',
         index: true
+    },
+    region: {
+        type: Schema.ObjectId,
+        ref: 'Region'
     }
 });
 
@@ -96,13 +100,13 @@ ActivistSchema.path('name').validate(function(name) {
 ActivistSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('user', 'name username').exec(cb);
+    }).populate('user', 'name username').populate('region').exec(cb);
 };
 
 ActivistSchema.statics.loadByUserId = function(userId, cb) {
     this.findOne({
         user: userId
-    }).populate('user', 'name username').exec(cb);
+    }).populate('user', 'name username').populate('region').exec(cb);
 };
 
 ActivistSchema.virtual('displayName').get(function () {

@@ -85,8 +85,8 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 $scope.sites = event.sites;
                 $scope.min_part = event.min_part;
                 $scope.max_part = event.max_part;
-                $scope.address = event.address;
-                $scope.gps = event.gps;
+                $scope.address = $scope.address_ = event.address;
+                $scope.gps = $scope.gps_ = event.gps;
                 $scope.region = event.region;
                 $scope.google_maps_api_address = event.google_maps_api_address;
 
@@ -310,7 +310,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                     $scope.$apply();
                 });
                 $scope.$watch('address', function() {
-                    if ($scope.address && $scope.address_ && $scope.address !== $scope.address_) {
+                    if ($scope.address && $scope.address !== $scope.address_) {
                         $scope.geocoder.geocode({
                             'address': $scope.address,
                             region: 'UA',
@@ -329,7 +329,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                     }
                 });
                 $scope.$watch('gps', function() {
-                    if ($scope.gps && $scope.gps_ && $scope.gps !== $scope.gps_) {
+                    if ($scope.gps && $scope.gps !== $scope.gps_) {
                         try {
                             var ps = $scope.gps.split(',');
                             if (ps.length === 2) {

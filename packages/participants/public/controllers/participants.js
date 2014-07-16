@@ -24,7 +24,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         $scope.isHead = false;
-        if ($stateParams.eventId) {
+        if ($stateParams.eventId && $scope.global.activist) {
             Events.get({eventId: $stateParams.eventId}, function (event) {
                 if (!event.errors) {
                     Members.query({

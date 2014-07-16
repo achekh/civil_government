@@ -44,10 +44,7 @@ module.exports = function (done) {
 
         var regions = [
             {'value': '0.Вся Україна', 'label': 'Вся Україна'},
-            {'value': '1.місто Київ', 'label': 'місто Київ'},
-            {'value': 'Івано-Франківська область', 'label': 'Івано-Франківська область'},
-            {'value': 'Хмельницька область', 'label': 'Хмельницька область'},
-            {'value': 'Харківська область', 'label': 'Харківська область'}
+            {'value': '1.місто Київ', 'label': 'місто Київ'}
         ];
 
         console.log('Seed regions');
@@ -81,7 +78,8 @@ module.exports = function (done) {
                             emails:[user.email],
                             country:'Украiна',
                             city:'Кieв',
-                            phones:['+380']
+                            phones:['+380'],
+                            region:regions[1]
                         }];
                         console.log('Seed activist for user admin');
                         return seed(Activist, activists)
@@ -120,8 +118,8 @@ module.exports = function (done) {
                                                         organization: organizations[0],
                                                         status: 'FOR_APPROVAL',
                                                         datetime: new Date(),
-                                                        sites: 'Харків',
-                                                        region: regions[4]
+                                                        sites: 'Киев',
+                                                        region: regions[1]
                                                     }
                                                 ];
                                                 console.log('Seed events for admin');
@@ -161,7 +159,8 @@ module.exports = function (done) {
                             emails:[user.email],
                             country:'Украiна',
                             city:'Кieв',
-                            phones:['+380']
+                            phones:['+380'],
+                            region:regions[0]
                         }];
                         console.log('Seed activist for user maidan');
                         return seed(Activist, activists)
@@ -201,7 +200,7 @@ module.exports = function (done) {
                                                         status: 'FOR_APPROVAL',
                                                         datetime: new Date(),
                                                         sites: 'Україна',
-                                                        region: regions[1]
+                                                        region: regions[0]
                                                     },
                                                     {
                                                         title: 'Пісні UA',
@@ -211,7 +210,7 @@ module.exports = function (done) {
                                                         status: 'FOR_APPROVAL',
                                                         datetime: new Date(),
                                                         sites: 'Україна',
-                                                        region: regions[2]
+                                                        region: regions[0]
                                                     }
                                                 ];
                                                 console.log('Seed events for maidan');
