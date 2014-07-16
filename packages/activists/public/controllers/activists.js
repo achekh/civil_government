@@ -103,6 +103,18 @@ angular.module('mean.activists')
             $scope.findLeaders();
         };
 
+        $scope.beforeImageUpdate = function() {
+            var el = window.document.getElementById('activist_image_id');
+            el.width = 100;
+            el.height = 100;
+        };
+
+        $scope.afterImageUpdate = function() {
+            var el = window.document.getElementById('activist_image_id');
+            el.width = 200;
+            el.height = 200;
+        };
+
     }])
     .controller('ActivistsEditController', ['$scope', '$rootScope', '$state', '$stateParams', '$location', '$http', 'Activists',
     function ($scope, $rootScope, $state, $stateParams, $location, $http, Activists) {

@@ -3,10 +3,10 @@
     <div class="row">
 
         <div class="col-md-3 col_top_row text-center">
-            <img data-ng-src="{{activist.img}}" alt="картинка" class="img-rounded" hspace="10px"
-                 vspace="10px" width="100" height="100">
+            <img id="activist_image_id" data-ng-src="{{activist.img}}" alt="картинка" class="img-rounded" hspace="10px"
+                 vspace="10px" width="200" height="200">
             <br>
-            <cg-img-update model="activist" data-ng-if="canEdit"></cg-img-update>
+            <cg-img-update model="activist" data-ng-if="canEdit" before="beforeImageUpdate" after="afterImageUpdate"></cg-img-update>
         </div>
 
         <div class="col-md-3 col_top_row text-center">

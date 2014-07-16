@@ -118,7 +118,9 @@ angular.module('mean.system')
                 model: '=',
                 property: '@',
                 showSaveButton: '@',
-                modelName: '@'
+                modelName: '@',
+                before: '=',
+                after: '='
             },
             controller: ['$scope', '$rootScope', '$upload', '$http', function ($scope, $rootScope, $upload, $http) {
 
@@ -129,6 +131,9 @@ angular.module('mean.system')
                 }
 
                 $scope.initImgUpdate = function initImgUpdate() {
+                    if ($scope.before && typeof $scope.before === 'function') {
+                        $scope.before();
+                    }
                     $scope.prevImgUrl = $scope.model[property];
                     $scope.newImgUrl = $scope.uploadedImgUrl = '';
                     $scope.showUpdateImgForm = true;
@@ -162,6 +167,9 @@ angular.module('mean.system')
                         $scope.model[property] = $scope.newImgUrl;
                     }
                     $scope.showUpdateImgForm = false;
+                    if ($scope.after && typeof $scope.after === 'function') {
+                        $scope.after();
+                    }
                     $scope.model.$update(function(response) {
                         if (!response.errors) {
                             if ($scope.prevImgUrl && $scope.prevImgUrl.indexOf($rootScope.fileServerUrl) === 0) {
@@ -177,6 +185,9 @@ angular.module('mean.system')
                     }
                     $scope.model[property] = $scope.prevImgUrl;
                     $scope.showUpdateImgForm = false;
+                    if ($scope.after && typeof $scope.after === 'function') {
+                        $scope.after();
+                    }
                 };
 
                 if ($scope.modelName) {
