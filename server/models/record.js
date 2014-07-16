@@ -37,7 +37,6 @@ var RecordSchema = new Schema({
 });
 
 RecordSchema.statics.updateCount = function(model, field) {
-    console.log(model, field);
     mongoose.model(model).count({}, function(err, c) {
         if (err) {
             console.log(err);
@@ -46,7 +45,6 @@ RecordSchema.statics.updateCount = function(model, field) {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(field, c);
                     record[field] = Math.max(record[field], c);
                     record.save();
                 }

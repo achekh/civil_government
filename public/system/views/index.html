@@ -32,6 +32,16 @@
         </div>
 
         <div class="col-md-3 col_top_row" data-ng-if="isAuthenticated()">
+            <a class="main-menu-link" data-ui-sref="victories">Перемоги</a><br>
+            <a class="main-menu-link" data-ui-sref="events">Подii</a><br>
+            <a class="main-menu-link" data-ui-sref="videos">Відео</a><br>
+            <a class="main-menu-link" data-ui-sref="activists">Актiвiсты</a><br>
+            <a class="main-menu-link" data-ui-sref="organizations">Організаціi</a><br>
+            <br>
+            <a class="btn btn-default" data-ui-sref="victory-create" data-ng-if="isAuthenticated()">Стварыць перемогу</a><br>
+            <a class="btn btn-default" data-ui-sref="organizations-create" data-ng-if="isAuthenticated()">Стварыць організацію</a><br>
+            <a class="btn btn-default" data-ui-sref="events-create" data-ng-if="isAuthenticated()">Стварыць подiю</a><br>
+            <a class="btn btn-default" data-ui-sref="videos-add" data-ng-if="isAuthenticated()">Дадаць видео</a><br>
         </div>
 
         <div class="col-md-6 col_top_row">
