@@ -18,6 +18,12 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Пошук па назве арганiзацыi" data-ng-model="organizationTitle2Seek">
+        </div>
+    </div>
+
     <div class="row" data-ng-repeat="organization in organizations">
         <div class="col-md-3">
             <a class="pull-right" data-ng-if="isOwner(organization)" data-ng-click="remove(organization)"><span class="glyphicon glyphicon-remove-sign"></span></a>

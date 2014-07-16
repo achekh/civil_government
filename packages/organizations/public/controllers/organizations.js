@@ -38,8 +38,12 @@ app.controller('OrganizationsController',
             }
         };
 
-        $scope.find = function () {
-            Organizations.query({region: $scope.region.value.indexOf('0.') === 0 ? undefined : $scope.region._id}, function (organizations) {
+        $scope.find = function (v) {
+            var q = {region: $scope.region.value.indexOf('0.') === 0 ? undefined : $scope.region._id};
+            if (v) {
+                q.title2seek = v;
+            }
+            Organizations.query(q, function (organizations) {
                 $scope.organizations = organizations;
             });
         };
@@ -271,6 +275,9 @@ app.controller('OrganizationsController',
             }
         })();
 
+        $scope.$watch('organizationTitle2Seek', function(v,p,s) {
+            $scope.find(v);
+        });
     }
 ]);
 

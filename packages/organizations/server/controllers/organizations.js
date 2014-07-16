@@ -91,7 +91,11 @@ exports.all = function (req, res) {
     if (req.query.region) {
         query.region = req.query.region;
     }
-    Organization.find(query).sort('-created').populate('user', 'username').populate('region').exec(function (err, organizations) {
+    if (req.query.title2seek) {
+        query.title = new RegExp(req.query.title2seek, 'i');
+    }
+    var q = Organization.find(query);
+    q.sort('-created').populate('user', 'username').populate('region').exec(function (err, organizations) {
         if (err) {
             console.log(err);
         } else {
