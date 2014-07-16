@@ -19,7 +19,7 @@
         </div>
 
         <div class="col-md-3 col_top_row text-center">
-            <h4>{{event.datetime | date:'dd.MM.yyyy hh:mm'}}</h4>
+            <h4>{{event.datetime | date:'dd-MMM-yyyy hh:mm'}}</h4>
             <h4>{{event.address}}</h4>
             <h4>{{event.gps}}</h4>
             <h4>Стан: {{statuses.getLabel(event.status)}}</h4>

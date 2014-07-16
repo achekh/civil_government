@@ -19,7 +19,7 @@
             <p data-ng-if="video.live"><span class="glyphicon glyphicon-fire"></span> Наживо</p>
             <p data-ng-if="!video.live"><span class="glyphicon glyphicon-film"></span> Архів</p>
             <p>
-                Додано: {{video.created | date:'dd.MM.yyyy hh:mm'}}<br/>
+                Додано: {{video.created | date:'dd-MMM-yyyy hh:mm'}}<br/>
                 Активіст: {{video.user.username}}<br/>
                 Назва: {{video.title}}
             </p>
