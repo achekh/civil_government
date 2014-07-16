@@ -19,7 +19,9 @@
     </div>
 
     <div class="row" data-ng-repeat="victory in victories">
-        <div class="victory-info">
+        <div class="victory-info col-md-4">
+            <a class="pull-right" data-ng-if="isOwner(victory)" data-ng-click="remove(victory)"><span class="glyphicon glyphicon-remove-sign"></span></a>
+
             <a data-ui-sref="victory-update({victoryId:victory._id})">
                 <img data-ng-src="{{getVictoryImageUrl(victory)}}"
                  alt="картинка" class="img-rounded" align="left" hspace="10px"

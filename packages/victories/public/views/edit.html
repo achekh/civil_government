@@ -1,22 +1,26 @@
 <div class="row" data-ng-controller="VictoriesController" data-ng-init="init()">
     <h4>{{getCreateEditTitle()}}</h4>
-    <form class="form-horizontal col-md-6" role="form" data-ng-disabled="isView()">
+    <form class="form-horizontal col-md-6" role="form" data-ng-disabled="isView()" data-ng-submit="save()">
         <div class="form-group">
             <label for="title" class="col-md-2 control-label">Название</label>
             <div class="col-md-10">
-                <input id="title" type="text" class="form-control" data-ng-model="victory.title" data-ng-disabled="isView()">
+                <input id="title" type="text" class="form-control" data-ng-model="victory.title" data-ng-disabled="isView()" data-ng-required="true">
             </div>
         </div>
         <div class="form-group">
             <label for="description" class="col-md-2 control-label">Описание</label>
             <div class="col-md-10">
-                <textarea id="description" class="form-control" data-ng-model="victory.description" data-ng-disabled="isView()"></textarea>
+                <textarea id="description" class="form-control" data-ng-model="victory.description" data-ng-disabled="isView()" data-ng-required="true"></textarea>
             </div>
         </div>
         <div class="form-group">
             <label for="city" class="col-md-2 control-label">Мiсто</label>
             <div class="col-md-10">
-                <input id="city" type="text" class="form-control" data-ng-model="victory.city" data-ng-disabled="isView()">
+                <input id="city" type="text" class="form-control" data-ng-model="victory.city" data-ng-disabled="isView()" data-ng-required="true">
+                <div class="suggestions" data-ng-repeat="suggestion in suggestions" data-ng-click="selectSuggestion(suggestion)">
+                    <span class="suggest-icon-img suggest-location"></span>
+                    <span class="suggestion-text">{{suggestion.city}}</span>
+                </div>
             </div>
         </div>
 
@@ -37,7 +41,7 @@
             </div>
         </div>
         <div class="form-group"  data-ng-hide="isView()">
-            <button class="btn btn-primary" data-ng-click="save()">Сохранить</button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
             <button class="btn" data-ng-click="cancel()">Отменить</button>
         </div>
         <div class="form-group"  data-ng-show="isView()">

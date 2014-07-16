@@ -7,6 +7,9 @@ var mongoose = require('mongoose'),
 exports.create = function (req, res) {
     var victory = new Victory(req.body);
     victory.user = req.user;
+    if (victory.region === null) {
+        victory.region = undefined;
+    }
 
     victory.save(function(err) {
         if (err) {
@@ -42,7 +45,10 @@ exports.all = function (req, res) {
     if (req.query.participantId) {
         find = find.where('participants').in([req.query.participantId]);
     }
-    find.sort('-created').populate('user', 'username').exec(function (err, victories) {
+    find.sort('-created')
+        .populate('user', 'username')
+        .populate('region')
+        .exec(function (err, victories) {
         if (err) {
             res.status(500).send(err.errors || [err]);
         } else {
@@ -53,7 +59,6 @@ exports.all = function (req, res) {
 
 exports.destroy = function (req, res) {
     var victory = req.victory;
-    res.jsonp(victory);
     victory.remove(function(err, victory){
         if (err) {
             res.status(500).send(err.errors || [err]);
@@ -66,6 +71,9 @@ exports.destroy = function (req, res) {
 exports.update = function update(req, res) {
     var victory = req.victory;
     victory = _.extend(victory, req.body);
+    if (victory.region === null) {
+        victory.region = undefined;
+    }
     if (req.user && victory && req.user.id === victory.user.id) {
         victory.save(function(err, victory) {
             if (err) {
