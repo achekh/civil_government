@@ -6,13 +6,15 @@
         </div>
         <br/>
         <div class="col-md-8">
-            <!--<div class="btn-group dropdown" data-cg-dropdown-autoclose>-->
-                <!--<button type="button" class="btn btn-default dropdown-toggle">{{organizationSite.label}} <span class="caret"></span></button>-->
-                <!--<ul class="dropdown-menu" role="menu">-->
-                    <!--<li><a href="" data-ng-click="setOrganizationSite(site)" data-ng-repeat="site in organizationSites">{{site.label}}</a>-->
-                <!--</ul>-->
-            <!--</div>-->
-            <button type="button" class="btn btn-default" data-ui-sref="organizations-create" data-ng-if="isAuthenticated()">Додати ще <i class="glyphicon glyphicon-plus"></i></button>
+            <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                <button type="button" class="btn btn-default dropdown-toggle">{{region.label}} <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li data-ng-repeat="region in regions">
+                        <a href="" data-ng-click="setRegion(region)">{{region.label}}</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-default" data-ui-sref="organizations-create" data-ng-if="isAuthenticated()">Стварыць арганiзацыю <i class="glyphicon glyphicon-plus"></i></button>
         </div>
     </div>
 

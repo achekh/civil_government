@@ -71,7 +71,7 @@ ParticipantSchema.post('save', function updateActivistRecordsCount(participant) 
             } else if (activist) {
                 activist.updateRecordsCount();
             }
-        })
+        });
     }
 });
 

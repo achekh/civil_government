@@ -91,7 +91,8 @@ module.exports = function (done) {
                                 var organizations = [
                                     {
                                         title: 'На Варті',
-                                        user: user
+                                        user: user,
+                                        region: regions[1]
                                     }
                                 ];
                                 console.log('Seed organizations for user admin');

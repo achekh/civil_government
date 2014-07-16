@@ -9,6 +9,9 @@ var mongoose = require('mongoose'),
 exports.create = function (req, res) {
     var organization = new Organization(req.body);
     organization.user = req.user;
+    if (organization.region === null) {
+        organization.region = undefined;
+    }
     organization.save(function (err, organization) {
         if (err) {
             console.log(err);
@@ -85,7 +88,10 @@ exports.all = function (req, res) {
     if (req.query.userId) {
         query.user = req.query.userId;
     }
-    Organization.find(query).sort('-created').populate('user', 'username').exec(function (err, organizations) {
+    if (req.query.region) {
+        query.region = req.query.region;
+    }
+    Organization.find(query).sort('-created').populate('user', 'username').populate('region').exec(function (err, organizations) {
         if (err) {
             console.log(err);
         } else {
@@ -120,6 +126,9 @@ exports.remove = function (req, res) {
 exports.update = function update(req, res) {
     var organization = req.organization;
     organization = _.extend(organization, req.body);
+    if (organization.region === null) {
+        organization.region = undefined;
+    }
     organization.save(function(err) {
         if (err) {
             console.log(err);

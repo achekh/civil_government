@@ -40,6 +40,16 @@
             </div>
 
             <div class="form-group">
+                <div class="col-md-4">
+                    <input id="city" type="text" class="form-control" placeholder="Мiсто" data-ng-model="organization.city" data-ng-required="true">
+                    <div class="suggestions" data-ng-repeat="suggestion in suggestions" data-ng-click="selectSuggestion(suggestion)">
+                        <span class="suggest-icon-img suggest-location"></span>
+                        <span class="suggestion-text">{{suggestion.city}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <div class="col-md-12">
                     <textarea class="form-control" id="sites" placeholder="сайти (кожен з нового рядка, через Enter)" data-ng-model="organization.sites"></textarea>
                     <!--<input type="text" class="form-control" id="sites" placeholder="сайти (кожен з нового рядка, через Enter)" data-ng-model="sites">-->

@@ -24,6 +24,9 @@ var OrganizationSchema = new Schema({
     description: {
         type: String
     },
+    city: {
+        type: String
+    },
     img: {
         type: String,
         default: 'image_default_organization.png',
@@ -37,6 +40,10 @@ var OrganizationSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User'
     },
+    region: {
+        type: Schema.ObjectId,
+        ref: 'Region'
+    },
     eventCount: Number,
     supportedEventCount: Number,
     victoryCount: Number,
@@ -46,7 +53,7 @@ var OrganizationSchema = new Schema({
 OrganizationSchema.statics.load = function (id, cb) {
     return this.findOne({
         _id: id
-    }).exec(cb);
+    }).populate('region').exec(cb);
 };
 
 OrganizationSchema.method('updateEventCount', function updateEventCount() {
