@@ -240,7 +240,7 @@ angular.module('mean.system')
 
                 return deferred.promise;
 
-    };
+            };
 
             this.canParticipate = function () {
 
@@ -249,7 +249,9 @@ angular.module('mean.system')
                 getEvent().then(function (event) {
                     if (event) {
                         getMember().then(function (member) {
-                            if (event.organization === member.organization) {
+                            var first = (event && event.organization) ? ((typeof event.organization === 'object') ? event.organization._id : event.organization) : undefined;
+                            var second = (member && member.organization) ? ((typeof member.organization === 'object') ? member.organization._id : member.organization) : undefined;
+                            if (first !== undefined && second !== undefined && first === second) {
                                 deferred.resolve(true);
                             } else {
                                 deferred.resolve(false);

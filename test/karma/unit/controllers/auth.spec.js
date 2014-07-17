@@ -38,6 +38,8 @@
 
                 $location = _$location_;
 
+                $httpBackend.when('GET','public/system/views/index.html').respond(200, '');
+
             }));
 
             afterEach(function() {
@@ -106,6 +108,8 @@
                 $httpBackend = _$httpBackend_;
 
                 $location = _$location_;
+
+                $httpBackend.when('GET','public/system/views/index.html').respond(200, '');
 
             }));
 

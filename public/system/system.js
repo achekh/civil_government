@@ -1,16 +1,12 @@
 'use strict';
 
-angular.module('mean.system', ['mean-factory-interceptor', 'mean.activists'])
+angular.module('mean.system', ['mean-factory-interceptor'])
     .run(['$rootScope', '$state', 'Global', function ($rootScope, $state, Global) {
 
         $rootScope.global = Global.getGlobals(window);
 
         $rootScope.$on('loggedin', function() {
             $rootScope.global = Global.getGlobals($rootScope);
-        });
-
-        $rootScope.$on('activist-updated', function(event, activist) {
-            $rootScope.global.activist = activist;
         });
 
         function checkGlobalUser() {

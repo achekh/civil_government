@@ -77,7 +77,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
 
         $scope.join = function () {
             var participant = new Participants({
-                activist: $scope.global.activist._id,
+                activist: $scope.actor.activist._id,
                 event: $stateParams.eventId
             });
             participant.$save(function () {

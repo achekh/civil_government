@@ -32,13 +32,17 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             if ($scope.isNew && $scope.isAuthenticated()) {
                 $scope.datetime = new Date();
                 $scope.organizationOptions = [];
-                Members.query({activistId: $scope.global.activist._id}, function (members) {
-                    members.forEach(function (member) {
-                        $scope.organizationOptions.push({
-                            value: member.organization._id,
-                            label: member.organization.title
+                Actor.getActivist().then(function (activist) {
+                    if (activist) {
+                        Members.query({activistId: activist._id}, function (members) {
+                            members.forEach(function (member) {
+                                $scope.organizationOptions.push({
+                                    value: member.organization._id,
+                                    label: member.organization.title
+                                });
+                            });
                         });
-                    });
+                    }
                 });
             } else {
                 $scope.findOne();

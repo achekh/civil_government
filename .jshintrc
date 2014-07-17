@@ -20,7 +20,8 @@
     "smarttabs": false, // Suppresses warnings about mixed tabs and spaces
     "globals": { // Globals variables.
         "angular": true,
-        "$": true
+        "$": true,
+        "Event": true
     },
     "predef": [ // Extra globals.
         "define",
