@@ -60,6 +60,9 @@ exports.all = function (req, res) {
     if (req.query.region) {
         query.region = req.query.region;
     }
+    if (req.query.title2seek) {
+        query.title = new RegExp(req.query.title2seek, 'i');
+    }
     Event.find(query)
         .sort('-created')
         .populate('user', 'username')

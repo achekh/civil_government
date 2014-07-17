@@ -62,8 +62,12 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             }
         };
 
-        $scope.find = function () {
-            return Events.query({region: $scope.region.value.indexOf('0.') === 0 ? undefined : $scope.region._id}, function (events) {
+        $scope.find = function (v) {
+            var q = {region: $scope.region.value.indexOf('0.') === 0 ? undefined : $scope.region._id};
+            if (v) {
+                q.title2seek = v;
+            }
+            Events.query(q, function (events) {
                 $scope.events = events;
             });
         };
@@ -374,6 +378,10 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 }
             }
         })();
+
+        $scope.$watch('eventTitle2Seek', function(v,p,s) {
+            $scope.find(v);
+        });
 
     }
 ]);

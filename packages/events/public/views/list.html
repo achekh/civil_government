@@ -1,11 +1,12 @@
 <section class="events events-list" data-ng-controller="EventsController" data-ng-init="find()">
 
     <div class="row row-header">
-        <div class="col-md-4">
+        <div class="col-md-2">
             <h2><a data-ui-sref="events">Події</a></h2>
         </div>
         <br/>
-        <div class="col-md-8">
+        <div class="col-md-10">
+            <input type="text" class="list-text-search form-control" placeholder="Пошук па назве подii" data-ng-model="eventTitle2Seek">
             <div class="btn-group dropdown" data-cg-dropdown-autoclose>
                 <button type="button" class="btn btn-default dropdown-toggle">{{region.label}} <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu">

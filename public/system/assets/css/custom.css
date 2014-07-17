@@ -61,3 +61,8 @@ body {
     vertical-align: middle;
     margin: 6px;
 }
+
+.list-text-search {
+    display: inline-block;
+    width: 30%;
+}
