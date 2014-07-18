@@ -5,11 +5,8 @@ app.run(function(editableOptions) {
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
 app.controller('OrganizationsController',
-    ['$scope', '$rootScope', '$stateParams', '$location', '$state', '$http',
-        'Organizations', 'Activists', 'Members', 'Events', 'Supports',
-    function ($scope, $rootScope, $stateParams, $location, $state, $http, Organizations, Activists, Members, Events, Supports) {
-    ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Organizations', 'Actor', 'Activists', 'Members', 'Events', 'Supports',
-    function ($scope, $rootScope, $stateParams, $location, $state, Organizations, Actor, Activists, Members, Events, Supports) {
+    ['$scope', '$rootScope', '$stateParams', '$location', '$state', '$http', 'Organizations', 'Actor', 'Activists', 'Members', 'Events', 'Supports',
+    function ($scope, $rootScope, $stateParams, $location, $state, $http, Organizations, Actor, Activists, Members, Events, Supports) {
 
         (function initRegions(){
             $scope.regions = [

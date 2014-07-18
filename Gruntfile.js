@@ -53,6 +53,30 @@ module.exports = function(grunt) {
             },
             production: {
                 files: '<%= assets.js %>'
+//                files: [{
+//                    expand: true,
+//                    cwd: __dirname,
+//                    src: [
+//                        "public/system/lib/jquery/dist/jquery.min.js",
+//                        "public/system/lib/angular/angular.js",
+//                        "public/system/lib/angular-i18n/angular-locale_uk-ua.js",
+//                        "public/system/lib/angular-mocks/angular-mocks.js",
+//                        "public/system/lib/angular-cookies/angular-cookies.js",
+//                        "public/system/lib/angular-resource/angular-resource.js",
+//                        "public/system/lib/angular-ui-router/release/angular-ui-router.js",
+//                        "public/system/lib/angular-bootstrap/ui-bootstrap.js",
+//                        "public/system/lib/angular-bootstrap/ui-bootstrap-tpls.js",
+//                        "public/system/lib/angular-xeditable/dist/js/xeditable.js",
+//                        "public/system/lib/ng-file-upload/angular-file-upload.js",
+//                        "public/system/lib/ng-file-upload/angular-file-upload-shim.js",
+//                        "public/init.js",
+//                        "public/*/*.js",
+//                        "public/*/{controllers,routes,services}/*.js",
+//                        "packages/*/public/*.js",
+//                        "packages/*/public/*/*.js"
+//                    ],
+//                    dest: 'build/js'
+//                }]
             }
         },
         csslint: {
