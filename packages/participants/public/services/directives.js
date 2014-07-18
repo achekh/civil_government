@@ -11,4 +11,34 @@ angular.module('mean.participants')
             }]
         };
     })
+    .directive('cgParticipantActions', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                participant: '=',
+                actor: '='
+            },
+            templateUrl: 'participants/views/actions.html',
+            controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
+
+                $scope.toggleConfirmed = function (participant) {
+                    if (participant) {
+                        participant.confirmed = !participant.confirmed;
+                        participant.$update().finally(function () {
+                            $rootScope.$broadcast('participants-update');
+                        });
+                    }
+                };
+
+                $scope.toggleCoordinator = function (participant) {
+                    if (participant) {
+                        participant.coordinator = !participant.coordinator;
+                        participant.$update().finally(function () {
+                            $rootScope.$broadcast('participants-update');
+                        });
+                    }
+                };
+            }]
+        };
+    })
 ;

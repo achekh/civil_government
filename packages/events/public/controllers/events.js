@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', '$http', 'Events', 'EventStatuses', 'Activists', 'Participants', 'Members',
-    function ($scope, $stateParams, $location, $state, $http, Events, EventStatuses, Activists, Participants, Members) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', '$http', 'Events', 'EventStatuses', 'Members', 'Actor',
+    function ($scope, $stateParams, $location, $state, $http, Events, EventStatuses, Members, Actor) {
 
         (function initRegions(){
             $scope.regions = [
@@ -25,38 +25,25 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         $scope.isNew = $state.is('events-create');
         $scope.statuses = EventStatuses;
 
-        $scope.canParticipate = false;
-
         $scope.event = null;
-        $scope.participant = null;
-
-        $scope.isHead = function () {
-            return $scope.event && $scope.isOwner($scope.event.organization);
-        };
-
-        $scope.isParticipant = function () {
-            return $scope.participant && $scope.isOwner($scope.participant.activist);
-        };
-
-        $scope.isCoordinator = function () {
-            return $scope.isParticipant() && $scope.participant.coordinator;
-        };
+        $scope.isParticipant = false;
 
         $scope.init = function () {
-            if ($scope.isAuthenticated()) {
+            if ($scope.isNew && $scope.isAuthenticated()) {
                 $scope.datetime = new Date();
                 $scope.organizationOptions = [];
-                Members.query({activistId: $scope.global.activist._id}, function (members) {
-                    members.forEach(function (member) {
-                        $scope.organizationOptions.push({
-                            value: member.organization._id,
-                            label: member.organization.title
+                Actor.getActivist().then(function (activist) {
+                    if (activist) {
+                        Members.query({activistId: activist._id}, function (members) {
+                            members.forEach(function (member) {
+                                $scope.organizationOptions.push({
+                                    value: member.organization._id,
+                                    label: member.organization.title
+                                });
+                            });
                         });
-                    });
+                    }
                 });
-                if (!$scope.isNew) {
-                    $scope.findOne();
-                }
             } else {
                 $scope.findOne();
             }
@@ -73,64 +60,11 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.findOne = function () {
-
-            $scope.canParticipate = false;
-
             return Events.get({
                 eventId: $stateParams.eventId
             }, function (event) {
-
                 $scope.event = event;
-                $scope.description = event.description;
-                $scope.title = event.title;
-                $scope.organization = event.organization;
-                $scope.datetime = event.datetime;
-                $scope.status = event.status;
-                $scope.sites = event.sites;
-                $scope.min_part = event.min_part;
-                $scope.max_part = event.max_part;
-                $scope.address = $scope.address_ = event.address;
-                $scope.gps = $scope.gps_ = event.gps;
-                $scope.region = event.region;
-                $scope.google_maps_api_address = event.google_maps_api_address;
-
-                if ($scope.isAuthenticated()) {
-
-                    Participants.query({
-                        activistId: $scope.global.activist._id,
-                        eventId: event._id
-                    }, function (participants) {
-
-                        if (!participants.errors) {
-
-                            if (participants.length === 0) {
-
-                                Members.query({
-                                    activistId: $scope.global.activist._id,
-                                    organizationId: event.organization._id
-                                }, function (members) {
-
-                                    if (!members.errors) {
-                                        if (members.length === 1) {
-                                            $scope.canParticipate = true;
-                                        }
-                                    }
-
-                                });
-
-                            } else if (participants.length === 1) {
-
-                                $scope.canParticipate = true;
-                                $scope.participant = participants[0];
-
-                            }
-
-                        }
-
-                    });
-
-                }
-
+                $scope.isParticipant = Actor.isParticipant();
             });
         };
 

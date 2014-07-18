@@ -1,0 +1,29 @@
+<section class="participants participants-list" data-ng-controller="ParticipantsController" data-ng-init="find()">
+
+    <div class="row row-header">
+        <div class="col-md-4">
+            <h2 data-ng-if="coordinator"><a data-ui-sref="events-view({eventId: eventId})">Подія</a> &gt; Координатори</h2>
+            <h2 data-ng-if="!coordinator"><a data-ui-sref="events-view({eventId: eventId})">Подія</a> &gt; Учасники</h2>
+        </div>
+        <br/>
+        <div class="col-md-8">
+            <div class="btn-group dropdown" data-cg-dropdown-autoclose>
+                <button type="button" class="btn btn-default dropdown-toggle">{{participantStatus.label}} <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="" data-ng-click="setParticipantStatus(status)" data-ng-repeat="status in participantStatuses">{{status.label}}</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" data-ng-repeat="participant in participants">
+        <div class="col-md-12">
+            <cg-participant-digest data="participant"></cg-participant-digest>
+            <cg-participant-actions actor="actor" participant="participant"></cg-participant-actions>
+        </div>
+    </div>
+
+    <div class="row row-footer">
+    </div>
+
+</section>

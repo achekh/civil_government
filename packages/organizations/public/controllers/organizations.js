@@ -8,6 +8,8 @@ app.controller('OrganizationsController',
     ['$scope', '$rootScope', '$stateParams', '$location', '$state', '$http',
         'Organizations', 'Activists', 'Members', 'Events', 'Supports',
     function ($scope, $rootScope, $stateParams, $location, $state, $http, Organizations, Activists, Members, Events, Supports) {
+    ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Organizations', 'Actor', 'Activists', 'Members', 'Events', 'Supports',
+    function ($scope, $rootScope, $stateParams, $location, $state, Organizations, Actor, Activists, Members, Events, Supports) {
 
         (function initRegions(){
             $scope.regions = [
@@ -59,22 +61,30 @@ app.controller('OrganizationsController',
 
         $scope.findAuthenticated = function () {
             if ($scope.global.authenticated) {
-                Members.query({
-                    activistId: $scope.global.activist._id,
-                    organizationId: $stateParams.organizationId
-                }, function (members) {
-                    $scope.member = members[0];
+                Actor.getActivist().then(function (activist) {
+                    if (activist) {
+                        Members.query({
+                            activistId: activist._id,
+                            organizationId: $stateParams.organizationId
+                        }, function (members) {
+                            $scope.member = members[0];
+                        });
+                    }
                 });
             }
         };
 
         $scope.join = function () {
-            var member = new Members({
-                activist: $scope.global.activist._id,
-                organization: $stateParams.organizationId
-            });
-            member.$save(function () {
-                $state.go('organizations-view', {}, {reload: true});
+            Actor.getActivist().then(function (activist) {
+                if (activist) {
+                    var member = new Members({
+                        activist: activist._id,
+                        organization: $stateParams.organizationId
+                    });
+                    member.$save(function () {
+                        $state.go('organizations-view', {}, {reload: true});
+                    });
+                }
             });
         };
 

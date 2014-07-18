@@ -1,7 +1,7 @@
 'use strict';
 
 //Global service for global variables
-angular.module('mean.system').service('Global', ['$rootScope', 'Activists', function ($rootScope, Activists) {
+angular.module('mean.system').service('Global', ['$rootScope', function ($rootScope) {
 
     function isAuthenticated(user) {
         return user && user.roles && user.roles.length > 0;
@@ -28,16 +28,6 @@ angular.module('mean.system').service('Global', ['$rootScope', 'Activists', func
         }
     }
 
-    function populateActivist(globals) {
-        if (globals.user && globals.user._id) {
-            Activists.query({userId: globals.user._id}, function (response) {
-                if (!response.errors) {
-                    globals.activist = response[0];
-                }
-            });
-        }
-    }
-
     this.getGlobals = function (scope) {
 
         scope = scope || $rootScope;
@@ -49,7 +39,6 @@ angular.module('mean.system').service('Global', ['$rootScope', 'Activists', func
         };
 
         populateUserGlobals(globals);
-        populateActivist(globals);
 
         return globals;
 

@@ -27,27 +27,21 @@ angular.module('mean').config(['$stateProvider',
 
         $stateProvider
             .state('participants', {
-                url: '/participants?coordinator&activistId&eventId',
+                url: '/participants?activistId&eventId',
                 templateUrl: 'participants/views/list.html'
             })
-//            .state('participants-add', {
-//                url: '/participants/add',
-//                templateUrl: 'participants/views/add.html',
-//                resolve: {
-//                    loggedin: checkLoggedin
-//                }
-//            })
 //            .state('participants-view', {
 //                url: '/participants/:participantId',
 //                templateUrl: 'participants/views/view.html'
 //            })
-//            .state('participants-edit', {
-//                url: '/participants/:participantId/edit',
-//                templateUrl: 'participants/views/edit.html',
-//                resolve: {
-//                    loggedin: checkLoggedin
-//                }
-//            })
+            .state('participants-event', {
+                url: '/participants/event/:eventId?coordinator',
+                templateUrl: 'participants/views/event.html'
+            })
+            .state('participants-activist', {
+                url: '/participants/activist/:activistId',
+                templateUrl: 'participants/views/activist.html'
+            })
         ;
     }
 ]);
