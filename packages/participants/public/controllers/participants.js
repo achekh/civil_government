@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$rootScope', '$stateParams', 'Participants', 'ParticipantStatuses', 'Actor',
-    function($scope, $rootScope, $stateParams, Participants, ParticipantStatuses, Actor) {
+angular.module('mean.participants').controller('ParticipantsController', ['$scope', '$rootScope', '$state', '$stateParams', 'Participants', 'ParticipantStatuses', 'Actor', 'Modal',
+    function($scope, $rootScope, $state, $stateParams, Participants, ParticipantStatuses, Actor, Modal) {
 
         $scope.package = {
             name: 'participants'
@@ -39,7 +39,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
 
         // get current actor
         function getActor () {
-            Actor.getActor().then(function (actor) {
+            return Actor.getActor().then(function (actor) {
                 $scope.actor = actor;
             });
         }
@@ -91,29 +91,62 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         $scope.join = function () {
-            var participant = new Participants({
-                activist: $scope.actor.activist._id,
-                event: $stateParams.eventId
-            });
-            participant.$save(function () {
-                $rootScope.$broadcast('participants-update');
-            });
+            if ($scope.actor && $scope.actor.activist) {
+                Modal.confirm('Ви підете на цю подію?').result.then(
+                    function (result) {
+                        var participant = new Participants({
+                            activist: $scope.actor.activist._id,
+                            event: $stateParams.eventId
+                        });
+                        participant.$save(function () {
+                            $rootScope.$broadcast('participants-update');
+                            getActor();
+                        });
+                    }
+                );
+            } else {
+                openLoginModalDialog($scope.join);
+            }
         };
 
         $scope.leave = function () {
-            $scope.actor.participant.$remove(function() {
-                $rootScope.$broadcast('participants-update');
-            });
+            if ($scope.actor && $scope.actor.participant) {
+                Modal.confirm('Ви відмовляєтесь від участі в цій події?').result.then(
+                    function (result) {
+                        $scope.actor.participant.$remove(function() {
+                            $rootScope.$broadcast('participants-update');
+                            getActor();
+                        });
+                    }
+                );
+            } else {
+                openLoginModalDialog();
+            }
         };
 
         $scope.appear = function () {
-            if ($scope.actor.participant) {
-                $scope.actor.participant.appeared = true;
-                $scope.actor.participant.$update(function () {
-                    $rootScope.$broadcast('participants-update');
-                });
+            if ($scope.actor && $scope.actor.participant) {
+                Modal.confirm('Ви вже на цій події?').result.then(
+                    function (result) {
+                        $scope.actor.participant.appeared = true;
+                        $scope.actor.participant.$update(function () {
+                            $rootScope.$broadcast('participants-update');
+                            getActor();
+                        });
+                    }
+                );
+            } else {
+                openLoginModalDialog();
             }
         };
+
+        function openLoginModalDialog (callback) {
+            Modal.login().result.then(
+                function (result) {
+                    getActor().then(callback);
+                }
+            );
+        }
 
         $scope.load = function (parameters) {
             if (parameters.coordinator === true || parameters.coordinator === false) {
@@ -129,7 +162,6 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         };
 
         $scope.$on('participants-update', function () {
-            getActor();
             $scope.find();
         });
 

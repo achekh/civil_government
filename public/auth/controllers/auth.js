@@ -3,37 +3,49 @@
 angular.module('mean.auth')
     .controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$state',
         function($scope, $rootScope, $http, $state) {
-            // This object will be filled by the form
+
             $scope.user = {};
 
             $.getScript('//ulogin.ru/js/ulogin.js');
 
-            // Register the login() function
-            $scope.login = function() {
+            $scope.doLogin = function () {
                 $http.post('/login', {
                     email: $scope.user.email,
                     password: $scope.user.password
                 })
-                    .success(function(response) {
-                        // authentication OK
-                        $scope.loginError = 0;
-                        $rootScope.user = response.user;
-                        $rootScope.$emit('loggedin');
-                        if (response.redirect) {
-                            if (window.location.href === response.redirect) {
-                                //This is so an admin user will get full admin page
-                                window.location.reload();
-                            } else {
-                                window.location = response.redirect;
-                            }
+                .success(function(response) {
+                    // authentication OK
+                    $scope.loginError = 0;
+                    $rootScope.user = response.user;
+                    $rootScope.$emit('loggedin');
+                    if (response.redirect) {
+                        if (window.location.href === response.redirect) {
+                            //This is so an admin user will get full admin page
+                            window.location.reload();
                         } else {
-                            $state.go('activists-view-self');
+                            window.location = response.redirect;
                         }
-                    })
-                    .error(function() {
-                        $scope.loginerror = 'Авторизация отклонена.';
-                    });
+//                    } else {
+//                        $scope.onLoginSuccess();
+                    }
+                })
+                .error(function() {
+                    $scope.loginerror = 'Авторизация отклонена.';
+                });
             };
+
+            $scope.onLoginSuccess = function () {
+                $state.go('activists-view-self');
+            };
+
+            $scope.goRegister = function () {
+                $state.go('auth.register');
+            };
+
+            $scope.goRestore = function () {
+                $state.go('auth_restore');
+            };
+
         }
     ])
     .controller('RegisterCtrl', ['$scope', '$rootScope', '$http', '$state',
