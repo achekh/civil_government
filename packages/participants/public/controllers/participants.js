@@ -93,7 +93,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         $scope.join = function () {
             if ($scope.actor && $scope.actor.activist) {
                 if ($scope.actor.member) {
-                    Modal.confirm('Ви підете на цю подію?').result.then(
+                    Modal.confirm({question: 'Ви підете на цю подію?'}).result.then(
                         function () {
                             var participant = new Participants({
                                 activist: $scope.actor.activist._id,
@@ -106,7 +106,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
                         }
                     );
                 } else if (!$scope.actor.member && $scope.actor.organization) {
-                    Modal.confirm('Вам потрібно вступити в організацію яка проводить подію. Перейти до сторінки організації?').result.then(
+                    Modal.confirm({question: 'Вам потрібно вступити в організацію яка проводить подію. Перейти до сторінки організації?'}).result.then(
                         function () {
                             var id = typeof $scope.actor.organization === 'object' ? $scope.actor.organization._id : $scope.actor.organization;
                             $state.go('organizations-view', {organizationId: id});
@@ -122,7 +122,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
 
         $scope.leave = function () {
             if ($scope.actor && $scope.actor.participant) {
-                Modal.confirm('Ви відмовляєтесь від участі в цій події?').result.then(
+                Modal.prompt({question: 'Ви відмовляєтесь від участі в цій події?'}).result.then(
                     function () {
                         $scope.actor.participant.$remove(function() {
                             $rootScope.$broadcast('participants-update');
@@ -137,7 +137,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
 
         $scope.appear = function () {
             if ($scope.actor && $scope.actor.participant) {
-                Modal.confirm('Ви вже на цій події?').result.then(
+                Modal.confirm({question: 'Ви вже на цій події?'}).result.then(
                     function () {
                         $scope.actor.participant.appeared = true;
                         $scope.actor.participant.$update(function () {
