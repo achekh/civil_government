@@ -92,18 +92,29 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
 
         $scope.join = function () {
             if ($scope.actor && $scope.actor.activist) {
-                Modal.confirm('Ви підете на цю подію?').result.then(
-                    function (result) {
-                        var participant = new Participants({
-                            activist: $scope.actor.activist._id,
-                            event: $stateParams.eventId
-                        });
-                        participant.$save(function () {
-                            $rootScope.$broadcast('participants-update');
-                            getActor();
-                        });
-                    }
-                );
+                if ($scope.actor.member) {
+                    Modal.confirm('Ви підете на цю подію?').result.then(
+                        function () {
+                            var participant = new Participants({
+                                activist: $scope.actor.activist._id,
+                                event: $stateParams.eventId
+                            });
+                            participant.$save(function () {
+                                $rootScope.$broadcast('participants-update');
+                                getActor();
+                            });
+                        }
+                    );
+                } else if (!$scope.actor.member && $scope.actor.organization) {
+                    Modal.confirm('Вам потрібно вступити в організацію яка проводить подію. Перейти до сторінки організації?').result.then(
+                        function () {
+                            var id = typeof $scope.actor.organization === 'object' ? $scope.actor.organization._id : $scope.actor.organization;
+                            $state.go('organizations-view', {organizationId: id});
+                        }
+                    );
+                } else {
+                    Modal.notify('Неможливо приєднатися.')
+                }
             } else {
                 openLoginModalDialog($scope.join);
             }
@@ -112,7 +123,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         $scope.leave = function () {
             if ($scope.actor && $scope.actor.participant) {
                 Modal.confirm('Ви відмовляєтесь від участі в цій події?').result.then(
-                    function (result) {
+                    function () {
                         $scope.actor.participant.$remove(function() {
                             $rootScope.$broadcast('participants-update');
                             getActor();
@@ -127,7 +138,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
         $scope.appear = function () {
             if ($scope.actor && $scope.actor.participant) {
                 Modal.confirm('Ви вже на цій події?').result.then(
-                    function (result) {
+                    function () {
                         $scope.actor.participant.appeared = true;
                         $scope.actor.participant.$update(function () {
                             $rootScope.$broadcast('participants-update');
@@ -142,7 +153,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
 
         function openLoginModalDialog (callback) {
             Modal.login().result.then(
-                function (result) {
+                function () {
                     getActor().then(callback);
                 }
             );
