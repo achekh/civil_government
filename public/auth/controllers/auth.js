@@ -25,17 +25,11 @@ angular.module('mean.auth')
                         } else {
                             window.location = response.redirect;
                         }
-//                    } else {
-//                        $scope.onLoginSuccess();
                     }
                 })
                 .error(function() {
                     $scope.loginerror = 'Авторизация отклонена.';
                 });
-            };
-
-            $scope.onLoginSuccess = function () {
-                $state.go('activists-view-self');
             };
 
             $scope.goRegister = function () {

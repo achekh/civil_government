@@ -113,7 +113,7 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
                         }
                     );
                 } else {
-                    Modal.notify('Неможливо приєднатися.')
+                    Modal.notify('Неможливо приєднатися.');
                 }
             } else {
                 openLoginModalDialog($scope.join);

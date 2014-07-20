@@ -3,7 +3,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var statuses = ['FOR_APPROVAL', 'APPROVED', 'AGREED', 'IN_PROGRESS', 'FINISHED', 'CANCELED', 'WIN'];
+var statuses = ['FOR_APPROVAL', 'APPROVED', 'AGREED', 'STARTED', 'FINISHED', 'CANCELED', 'WON'];
 
 var EventSchema = new Schema({
     created: {
