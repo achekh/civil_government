@@ -48,6 +48,8 @@ exports.create = function(req, res) {
                                 res.jsonp(participant);
                             }
                         });
+                    } else {
+                        res.jsonp({errors: [{message:'Мусите уступить у арганизацыю арганизатар падии па першае'}]});
                     }
                 // todo: else send message for user to become organization member first
                 }

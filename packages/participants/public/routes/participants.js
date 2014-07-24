@@ -26,10 +26,10 @@ angular.module('mean').config(['$stateProvider',
 //        };
 
         $stateProvider
-            .state('participants', {
-                url: '/participants?activistId&eventId',
-                templateUrl: 'participants/views/list.html'
-            })
+//            .state('participants', {
+//                url: '/participants?activistId&eventId',
+//                templateUrl: 'participants/views/list.html'
+//            })
 //            .state('participants-view', {
 //                url: '/participants/:participantId',
 //                templateUrl: 'participants/views/view.html'

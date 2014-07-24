@@ -8,6 +8,8 @@ app.controller('OrganizationsController',
     ['$scope', '$rootScope', '$stateParams', '$location', '$state', '$http', 'Organizations', 'Actor', 'Activists', 'Members', 'Events', 'Supports',
     function ($scope, $rootScope, $stateParams, $location, $state, $http, Organizations, Actor, Activists, Members, Events, Supports) {
 
+        $scope.organizationId = $stateParams.organizationId;
+
         (function initRegions(){
             $scope.regions = [
                 {'value': '0.Вся Україна', 'label': 'Вся Україна'}
@@ -126,7 +128,8 @@ app.controller('OrganizationsController',
                 if (response.errors) {
                     $scope.errors = response.errors;
                 } else {
-                    $state.goBack();
+//                    $state.goBack();
+                    $state.go('organizations-view', {organizationId:response._id});
                 }
             });
         };

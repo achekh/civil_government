@@ -30,6 +30,10 @@ angular.module('mean.organizations').config(['$stateProvider',
                 url: '/organizations/view/:organizationId',
                 templateUrl: 'organizations/views/view.html'
             })
+            .state('members-organization', {
+                url: '/members/organization/:organizationId',
+                templateUrl: 'organizations/views/members-organization.html'
+            })
         ;
 
     }

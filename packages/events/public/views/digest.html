@@ -3,6 +3,7 @@
 </a>
 <p>
     {{event.datetime | date:'dd-MMM-yyyy hh:mm'}}<br/>
+    {{event.address}}<br/>
     {{event.title}}<br/>
     <span class="glyphicon glyphicon-user"></span> 0<br/>
     <span class="glyphicon glyphicon-check"></span> {{statuses.getLabel(event.status)}}

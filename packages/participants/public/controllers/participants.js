@@ -95,8 +95,12 @@ angular.module('mean.participants').controller('ParticipantsController', ['$scop
                 activist: $scope.actor.activist._id,
                 event: $stateParams.eventId
             });
-            participant.$save(function () {
-                $rootScope.$broadcast('participants-update');
+            participant.$save(function (res) {
+                if (res.errors) {
+                    $scope.errors = res.errors;
+                } else {
+                    $rootScope.$broadcast('participants-update');
+                }
             });
         };
 

@@ -116,8 +116,8 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 if (response.errors) {
                     $scope.errors = response.errors;
                 } else {
-//                    $state.go('events-view', {eventId: response._id});
-                    $state.goBack();
+                    $state.go('events-view', {eventId: response._id});
+//                    $state.goBack();
                 }
 
             });
