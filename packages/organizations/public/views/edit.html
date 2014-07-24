@@ -25,8 +25,10 @@
             <div class="form-group">
                 <div class="col-md-4">
                     <cg-dropdown options="[
-                        {label:'TODO: Затвердзіць статусы организации', value:'TODO_ORG_STATUSES'}
-                    ]" data-ng-model="organization.status"></cg-dropdown>
+                        {label:'не легализована', value:'NOT_LEG'},
+                        {label:'легализована путем уведомления', value:'LEG_DEC'},
+                        {label:'легализована в форме юр.лица', value:'LEG_JUR'}
+                    ]" data-ng-model="organization.status" required="true"></cg-dropdown>
 
                 </div>
                 <div class="col-md-4">
@@ -34,8 +36,11 @@
                 </div>
                 <div class="col-md-4">
                     <cg-dropdown options="[
-                        {label:'TODO: Затвердзіць условия приема', value:'TODO_ORG_ENTER_CONDITIONS'}
-                    ]" data-ng-model="organization.enterCondition"></cg-dropdown>
+                        {label:'открытый вход/выход', value:'OPEN'},
+                        {label:'вход/выход по заявкам', value:'APPLY'},
+                        {label:'вход/выход по приглашениям', value:'INVITE'},
+                        {label:'вход/выход по заявкам и приглашениям', value:'APPLY_INVITE'}
+                    ]" data-ng-model="organization.enterCondition" required="true"></cg-dropdown>
                 </div>
             </div>
 
@@ -58,7 +63,7 @@
 
             <div class="form-group">
                 <div class="col-md-12">
-                    <textarea class="form-control" id="description" placeholder="інформація" data-ng-model="organization.description"></textarea>
+                    <textarea class="form-control" id="description" placeholder="інформація" data-ng-model="organization.description" required></textarea>
                 </div>
             </div>
 
