@@ -45,7 +45,6 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.init = function () {
-            debugger;
             if ($scope.isNew && $scope.isAuthenticated()) {
                 $scope.datetime = new Date();
                 $scope.initOrganizationOptions();
@@ -71,6 +70,18 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             }, function (event) {
                 $scope.event = event;
                 $scope.isParticipant = Actor.isParticipant();
+                $scope.description = event.description;
+                $scope.title = event.title;
+                $scope.organization = event.organization;
+                $scope.datetime = event.datetime;
+                $scope.status = event.status;
+                $scope.sites = event.sites;
+                $scope.min_part = event.min_part;
+                $scope.max_part = event.max_part;
+                $scope.address = $scope.address_ = event.address;
+                $scope.gps = $scope.gps_ = event.gps;
+                $scope.region = event.region ? event.region._id : undefined;
+                $scope.google_maps_api_address = event.google_maps_api_address;
             });
         };
 
