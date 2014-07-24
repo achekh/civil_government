@@ -28,24 +28,30 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         $scope.event = null;
         $scope.isParticipant = false;
 
-        $scope.init = function () {
-            if ($scope.isNew && $scope.isAuthenticated()) {
-                $scope.datetime = new Date();
-                $scope.organizationOptions = [];
-                Actor.getActivist().then(function (activist) {
-                    if (activist) {
-                        Members.query({activistId: activist._id}, function (members) {
-                            members.forEach(function (member) {
-                                $scope.organizationOptions.push({
-                                    value: member.organization._id,
-                                    label: member.organization.title
-                                });
+        $scope.initOrganizationOptions = function() {
+            $scope.organizationOptions = [];
+            Actor.getActivist().then(function (activist) {
+                if (activist) {
+                    Members.query({activistId: activist._id}, function (members) {
+                        members.forEach(function (member) {
+                            $scope.organizationOptions.push({
+                                value: member.organization._id,
+                                label: member.organization.title
                             });
                         });
-                    }
-                });
+                    });
+                }
+            });
+        };
+
+        $scope.init = function () {
+            debugger;
+            if ($scope.isNew && $scope.isAuthenticated()) {
+                $scope.datetime = new Date();
+                $scope.initOrganizationOptions();
             } else {
                 $scope.findOne();
+                $scope.initOrganizationOptions();
             }
         };
 
