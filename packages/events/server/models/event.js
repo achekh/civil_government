@@ -71,6 +71,15 @@ var EventSchema = new Schema({
     region: {
         type: Schema.ObjectId,
         ref: 'Region'
+    },
+    img: {
+        type: String,
+        default: 'image_default_event.png',
+        trim: true
+        ,get: function(img) {
+            if (!img) return img;
+            return img.indexOf('http://') === 0 || img.indexOf('https://') === 0 ? img : 'http://dummyimage.com/100x100/858585/' + img;
+        }
     }
 });
 
@@ -84,6 +93,11 @@ EventSchema.statics.load = function (id, cb) {
 };
 
 EventSchema.statics.statuses = statuses;
+
+EventSchema.set('toJSON', {
+    virtuals: true,
+    getters: true
+});
 
 EventSchema.post('save', function updateEventOrganizationEventCount(event) {
     event.model('Organization').findById(event.organization, function(err, organization) {

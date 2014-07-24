@@ -1,5 +1,5 @@
 <a data-ui-sref="events-view({eventId: event._id})">
-    <img class="preview-small videos-preview-small" src="http://dummyimage.com/100x100/858585/fff.png" alt="картинка" align="left" hspace="10px">
+    <img class="preview-small events-preview-small img-rounded" data-ng-src="{{event.img}}" alt="картинка" align="left" hspace="10px" width="100" height="100">
 </a>
 <p>
     {{event.datetime | date:'dd-MMM-yyyy hh:mm'}}<br/>

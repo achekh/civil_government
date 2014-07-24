@@ -33,7 +33,7 @@ var OrganizationSchema = new Schema({
         trim: true
         ,get: function(img) {
             if (!img) return img;
-            return img.indexOf('http://') === 0 ? img : 'http://dummyimage.com/100x100/858585/' + img;
+            return img.indexOf('http://') === 0 || img.indexOf('https://') === 0 ? img : 'http://dummyimage.com/100x100/858585/' + img;
         }
     },
     user: {

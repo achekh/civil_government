@@ -4,12 +4,17 @@
 
         <div class="col-md-3 col_top_row text-center">
             <div>
-                <a data-ui-sref="organizations-view({organizationId: event.organization._id})">
-                    <img data-ng-src="{{event.organization.img}}" alt="картинка" class="img-rounded" width="100" height="100" hspace="10px">
-                </a>
+                <!--<a data-ui-sref="organizations-view({organizationId: event.organization._id})">-->
+                    <!--<img data-ng-src="{{event.organization.img}}" alt="картинка" class="img-rounded" width="100" height="100" hspace="10px">-->
+                <!--</a>-->
+                <img id="event_image_id" data-ng-src="{{event.img}}" alt="картинка" class="img-rounded" hspace="10px"
+                     vspace="10px" width="100" height="100">
+                <br>
+                <cg-img-update model="event" data-ng-if="isOwner(event)"></cg-img-update>
+
             </div>
             <h4>Організатор</h4>
-            <h4>{{event.organization.title}}</h4>
+            <h4><a data-ui-sref="organizations-view({organizationId: event.organization._id})">{{event.organization.title}}</a></h4>
         </div>
 
         <div class="col-md-3 col_top_row">
