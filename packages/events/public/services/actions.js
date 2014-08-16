@@ -111,11 +111,11 @@ angular.module('mean.events')
             }
 
             function start () {
-                return checkAndUpdateStatus(canBeCanceled, EventStatuses.STARTED);
+                return checkAndUpdateStatus(canBeStarted, EventStatuses.STARTED);
             }
 
             function finish () {
-                return checkAndUpdateStatus(canBeCanceled, EventStatuses.STARTED);
+                return checkAndUpdateStatus(canBeFinished, EventStatuses.FINISHED);
             }
 
             this.approve = approve;
