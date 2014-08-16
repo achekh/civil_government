@@ -78,19 +78,37 @@ angular.module('mean.events')
                 return deferred.promise;
             }
 
+            function canBeDefeated () {
+                var deferred = $q.defer();
+                getEvent().then(function (event) {
+                    deferred.resolve(event && event.status === EventStatuses.FINISHED);
+                });
+                return deferred.promise;
+            }
+
+            function canBeWon () {
+                var deferred = $q.defer();
+                getEvent().then(function (event) {
+                    deferred.resolve(event && event.status === EventStatuses.FINISHED);
+                });
+                return deferred.promise;
+            }
+
             this.getEvent = getEvent;
             this.canBeApproved = canBeApproved;
             this.canBeCanceled = canBeCanceled;
             this.canBeStarted = canBeStarted;
             this.canBeFinished = canBeFinished;
+            this.canBeDefeated = canBeDefeated;
+            this.canBeWon = canBeWon;
 
-
-            function checkAndUpdateStatus(check, status) {
+            function checkAndUpdateEvent(check, properties) {
                 var deferred = $q.defer();
                 check().then(function (can) {
                     if (can) {
                         getEvent().then(function (event) {
-                            event.status = status;
+                            ('status' in properties) ? event.status = properties.status : undefined;
+//                            ('result' in properties) ? event.result = properties.result : undefined;
                             event.$update(function (response) {
                                 deferred.resolve(response);
                             });
@@ -103,25 +121,35 @@ angular.module('mean.events')
             }
 
             function approve () {
-                return checkAndUpdateStatus(canBeApproved, EventStatuses.APPROVED);
+                return checkAndUpdateEvent(canBeApproved, {status: EventStatuses.APPROVED});
             }
 
             function cancel () {
-                return checkAndUpdateStatus(canBeCanceled, EventStatuses.CANCELED);
+                return checkAndUpdateEvent(canBeCanceled, {status: EventStatuses.CANCELED});
             }
 
             function start () {
-                return checkAndUpdateStatus(canBeStarted, EventStatuses.STARTED);
+                return checkAndUpdateEvent(canBeStarted, {status: EventStatuses.STARTED});
             }
 
             function finish () {
-                return checkAndUpdateStatus(canBeFinished, EventStatuses.FINISHED);
+                return checkAndUpdateEvent(canBeFinished, {status: EventStatuses.FINISHED});
+            }
+
+            function defeat (result) {
+                return checkAndUpdateEvent(canBeDefeated, {status: EventStatuses.DEFEATED, result: result});
+            }
+
+            function win (result) {
+                return checkAndUpdateEvent(canBeWon, {status: EventStatuses.WON, result: result});
             }
 
             this.approve = approve;
             this.cancel = cancel;
             this.start = start;
             this.finish = finish;
+            this.defeat = defeat;
+            this.win = win;
 
             this.getActions = function () {
 
@@ -134,12 +162,16 @@ angular.module('mean.events')
                     canBeApproved: this.canBeApproved(),
                     canBeCanceled: this.canBeCanceled(),
                     canBeStarted: this.canBeStarted(),
-                    canBeFinished: this.canBeFinished()
+                    canBeFinished: this.canBeFinished(),
+                    canBeDefeated: this.canBeDefeated(),
+                    canBeWon: this.canBeWon()
                 }).then(function (actions) {
                     actions.approve = approve;
                     actions.cancel = cancel;
                     actions.start = start;
                     actions.finish = finish;
+                    actions.defeat = defeat;
+                    actions.win = win;
                     deferred.resolve(actions);
                 });
 

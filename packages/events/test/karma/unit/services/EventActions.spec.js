@@ -84,6 +84,14 @@
                     resolved.canBeFinished = result;
                 });
 
+                EventActions.canBeDefeated().then(function (result) {
+                    resolved.canBeDefeated = result;
+                });
+
+                EventActions.canBeWon().then(function (result) {
+                    resolved.canBeWon = result;
+                });
+
                 $httpBackend.flush();
 
                 return resolved;
@@ -92,49 +100,105 @@
 
             it('should get expected possibilities for event state FOR_APPROVAL', function () {
                 var event = {_id:'event1',status:'FOR_APPROVAL'};
-                var possibilities = {canBeApproved:true,canBeCanceled:true,canBeStarted:false,canBeFinished:false};
+                var possibilities = {
+                    canBeApproved:true,
+                    canBeCanceled:true,
+                    canBeStarted:false,
+                    canBeFinished:false,
+                    canBeDefeated:false,
+                    canBeWon:false
+                };
                 expect(resolveEventActions(event)).toEqualData(possibilities);
             });
 
             it('should get expected possibilities for event state APPROVED', function () {
                 var event = {_id:'event1',status:'APPROVED'};
-                var possibilities = {canBeApproved:false,canBeCanceled:true,canBeStarted:true,canBeFinished:false};
+                var possibilities = {
+                    canBeApproved:false,
+                    canBeCanceled:true,
+                    canBeStarted:true,
+                    canBeFinished:false,
+                    canBeDefeated:false,
+                    canBeWon:false
+                };
                 expect(resolveEventActions(event)).toEqualData(possibilities);
             });
 
             it('should get expected possibilities for event state AGREED', function () {
                 var event = {_id:'event1',status:'AGREED'};
-                var possibilities = {canBeApproved:false,canBeCanceled:true,canBeStarted:true,canBeFinished:false};
+                var possibilities = {
+                    canBeApproved:false,
+                    canBeCanceled:true,
+                    canBeStarted:true,
+                    canBeFinished:false,
+                    canBeDefeated:false,
+                    canBeWon:false
+                };
                 expect(resolveEventActions(event)).toEqualData(possibilities);
             });
 
             it('should get expected possibilities for event state STARTED', function () {
                 var event = {_id:'event1',status:'STARTED'};
-                var possibilities = {canBeApproved:false,canBeCanceled:true,canBeStarted:false,canBeFinished:true};
+                var possibilities = {
+                    canBeApproved:false,
+                    canBeCanceled:true,
+                    canBeStarted:false,
+                    canBeFinished:true,
+                    canBeDefeated:false,
+                    canBeWon:false
+                };
                 expect(resolveEventActions(event)).toEqualData(possibilities);
             });
 
             it('should get expected possibilities for event state FINISHED', function () {
                 var event = {_id:'event1',status:'FINISHED'};
-                var possibilities = {canBeApproved:false,canBeCanceled:false,canBeStarted:false,canBeFinished:false};
+                var possibilities = {
+                    canBeApproved:false,
+                    canBeCanceled:false,
+                    canBeStarted:false,
+                    canBeFinished:false,
+                    canBeDefeated:true,
+                    canBeWon:true
+                };
                 expect(resolveEventActions(event)).toEqualData(possibilities);
             });
 
             it('should get expected possibilities for event state CANCELED', function () {
                 var event = {_id:'event1',status:'CANCELED'};
-                var possibilities = {canBeApproved:false,canBeCanceled:false,canBeStarted:false,canBeFinished:false};
+                var possibilities = {
+                    canBeApproved:false,
+                    canBeCanceled:false,
+                    canBeStarted:false,
+                    canBeFinished:false,
+                    canBeDefeated:false,
+                    canBeWon:false
+                };
                 expect(resolveEventActions(event)).toEqualData(possibilities);
             });
 
             it('should get expected possibilities for event state DEFEATED', function () {
                 var event = {_id:'event1',status:'DEFEATED'};
-                var possibilities = {canBeApproved:false,canBeCanceled:false,canBeStarted:false,canBeFinished:false};
+                var possibilities = {
+                    canBeApproved:false,
+                    canBeCanceled:false,
+                    canBeStarted:false,
+                    canBeFinished:false,
+                    canBeDefeated:false,
+                    canBeWon:false
+                };
                 expect(resolveEventActions(event)).toEqualData(possibilities);
             });
 
             it('should get expected possibilities for event state WON', function () {
                 var event = {_id:'event1',status:'WON'};
-                var possibilities = {canBeApproved:false,canBeCanceled:false,canBeStarted:false,canBeFinished:false};
+                var possibilities = {
+                    canBeApproved:false,
+                    canBeCanceled:false,
+                    canBeStarted:false,
+                    canBeFinished:false,
+                    canBeDefeated:false,
+                    canBeWon:false
+                };
                 expect(resolveEventActions(event)).toEqualData(possibilities);
             });
 

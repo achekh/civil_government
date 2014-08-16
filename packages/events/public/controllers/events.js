@@ -185,36 +185,90 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
 
         $scope.approveEvent = function () {
             Modal.confirm({question: 'Затвердити подію?'}).result.then(
-                function () {
-                    $scope.eventActions.approve().then(eventActionSuccess);
+                function (obj) {
+                    if (obj.result === 'yes') {
+                        $scope.eventActions.approve().then(eventActionSuccess);
+                    }
                 }
             );
         };
 
         $scope.cancelEvent = function () {
             Modal.confirm({question: 'Відмінити подію?'}).result.then(
-                function () {
-                    $scope.eventActions.cancel().then(eventActionSuccess);
+                function (obj) {
+                    if (obj.result === 'yes') {
+                        $scope.eventActions.cancel().then(eventActionSuccess);
+                    }
                 }
             );
         };
 
         $scope.startEvent = function () {
             Modal.confirm({question: 'Розпочати подію?'}).result.then(
-                function () {
-                    $scope.eventActions.start().then(eventActionSuccess);
+                function (obj) {
+                    if (obj.result === 'yes') {
+                        $scope.eventActions.start().then(eventActionSuccess);
+                    }
                 }
             );
         };
 
         $scope.finishEvent = function () {
-            Modal.confirm({question: 'Завершити подію?'}).result.then(
-                function () {
-                    $scope.eventActions.finish().then(eventActionSuccess);
+            Modal.custom({
+                templateUrl: 'packages/events/public/views/modal/finish.html',
+                controller: function ($scope, $modalInstance) {
+                    $scope.win = function () {
+                        $modalInstance.close({result: 'win', input: $scope.data.inputText});
+                    };
+                    $scope.defeat = function () {
+                        $modalInstance.close({result: 'defeat', input: $scope.data.inputText});
+                    };
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss({result: 'cancel'});
+                    };
+                    $scope.data = {};
+                    $scope.data.inputText = '';
+                }
+            }).result.then(
+                function (obj) {
+                    if (obj.result === 'win') {
+                        $scope.eventActions.finish().then(function () {
+                            $scope.eventActions.win(obj.input).then(eventActionSuccess);
+                        });
+                    } else if (obj.result === 'defeat') {
+                        $scope.eventActions.finish().then(function () {
+                            $scope.eventActions.defeat(obj.input).then(eventActionSuccess);
+                        });
+                    }
                 }
             );
         };
 
+        $scope.defeatEvent = function () {
+            Modal.prompt({
+                message: 'Завершити подію поразкою?',
+                inputTextPlaceholder: 'Опишіть результат'
+            }).result.then(
+                function (obj) {
+                    if (obj.result === 'ok') {
+                        $scope.eventActions.defeat(obj.input).then(eventActionSuccess);
+                    }
+                }
+            );
+        };
+
+        $scope.winEvent = function () {
+            Modal.prompt({
+                message: 'Завершити подію перемогою?',
+                inputTextPlaceholder: 'Опишіть результат'
+            }).result.then(
+                function (obj) {
+                    if (obj.result === 'ok') {
+                        $scope.eventActions.win(obj.input).then(eventActionSuccess);
+                    }
+                }
+            );
+        };
 
         (function loadGoogleMapsApiScript() {
             window.initializeGoogleMapsApi = function () {

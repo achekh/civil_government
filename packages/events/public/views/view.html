@@ -54,6 +54,12 @@
                 <h4 data-ng-if="actor.isCoordinator && eventActions.canBeFinished">
                     <a class="btn btn-default" data-ng-click="finishEvent()"><span class="glyphicon glyphicon-stop"> Завершити</span></a>
                 </h4>
+                <h4 data-ng-if="actor.isCoordinator && eventActions.canBeDefeated">
+                    <a class="btn btn-default" data-ng-click="defeatEvent()"><span class="glyphicon glyphicon-thumbs-down"> Поразка</span></a>
+                </h4>
+                <h4 data-ng-if="actor.isCoordinator && eventActions.canBeWon">
+                    <a class="btn btn-default" data-ng-click="winEvent()"><span class="glyphicon glyphicon-thumbs-up"> Перемога</span></a>
+                </h4>
             </div>
             <div class="row bg-info" ng-repeat="error in errors">
                 <span class="label label-info"><span class="glyphicon glyphicon-info-sign"></span> {{error.message}}</span>

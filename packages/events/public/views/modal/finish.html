@@ -1,0 +1,18 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Запит</h3>
+    </div>
+    <div class="modal-body">
+        <div class="modal-body-text">
+            <p>Як завершилася подія? Перемога чи Поразка?</p>
+        </div>
+        <div class="modal-body-input-text">
+            <input type="text" class="form-control" data-ng-model="data.inputText" placeholder="Опишіть результат">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-ng-click="win()">Перемога</button>
+        <button class="btn btn-primary" data-ng-click="defeat()">Поразка</button>
+        <button class="btn btn-default" data-ng-click="cancel()">Відмінити</button>
+    </div>
+</div>
