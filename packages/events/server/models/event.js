@@ -3,7 +3,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var statuses = ['FOR_APPROVAL', 'APPROVED', 'AGREED', 'STARTED', 'FINISHED', 'CANCELED', 'WON'];
+var statuses = ['FOR_APPROVAL', 'APPROVED', 'AGREED', 'STARTED', 'FINISHED', 'CANCELED', 'DEFEATED', 'WON'];
 
 var EventSchema = new Schema({
     created: {
@@ -36,7 +36,8 @@ var EventSchema = new Schema({
     status: {
         type: String,
         enum: statuses,
-        required: true
+        required: true,
+        default: statuses[0]
     },
     sites: {
         type: String,
@@ -82,6 +83,18 @@ EventSchema.statics.load = function (id, cb) {
         .exec(cb)
     ;
 };
+
+EventSchema.path('status').set(function (value) {
+    var currentValue = this.status;
+    if (currentValue === value) return value;
+    if (currentValue === undefined && value === 'FOR_APPROVAL') return value;
+    if (currentValue === 'FOR_APPROVAL' && (value === 'APPROVED' || value === 'CANCELED')) return value;
+    if (currentValue === 'APPROVED' && (value === 'AGREED' || value === 'STARTED' || value === 'CANCELED')) return value;
+    if (currentValue === 'AGREED' && (value === 'STARTED' || value === 'CANCELED')) return value;
+    if (currentValue === 'STARTED' && (value === 'FINISHED' || value === 'CANCELED')) return value;
+    if (currentValue === 'FINISHED' && (value === 'DEFEATED' || value === 'WON' || value === 'CANCELED')) return value;
+    return currentValue;
+});
 
 EventSchema.statics.statuses = statuses;
 
