@@ -1,7 +1,6 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    should = require('should'),
     config = require(process.cwd() + '/server/config/config')();
 
 describe('<Unit Test>', function() {
