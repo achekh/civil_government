@@ -13,6 +13,8 @@ angular.module('mean.system')
                                 $modalInstance.close({result: 'ok'});
                             };
                             $scope.message = options.message;
+                            $scope.title = options.title || 'Повідомлення';
+                            $scope.okButtonLabel = options.okButtonLabel || 'Так';
                         }
                     });
                 },
@@ -21,13 +23,16 @@ angular.module('mean.system')
                         templateUrl: 'public/system/views/modal/confirm.html',
                         backdrop: 'static',
                         controller: function ($scope, $modalInstance) {
-                            $scope.ok = function () {
-                                $modalInstance.close({result: 'ok'});
+                            $scope.yes = function () {
+                                $modalInstance.close({result: 'yes'});
                             };
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss({result: 'cancel'});
+                            $scope.no = function () {
+                                $modalInstance.close({result: 'no'});
                             };
-                            $scope.question = options.question;
+                            $scope.message = options.message;
+                            $scope.title = options.title || 'Підтвердження';
+                            $scope.yesButtonLabel = options.yesButtonLabel || 'Так';
+                            $scope.noButtonLabel = options.noButtonLabel || 'Ні';
                         }
                     });
                 },
@@ -37,13 +42,19 @@ angular.module('mean.system')
                         backdrop: 'static',
                         controller: function ($scope, $modalInstance) {
                             $scope.ok = function () {
-                                $modalInstance.close({result: 'ok', reason: $scope.reason});
+                                $modalInstance.close({result: 'ok', input: $scope.data.inputText});
                             };
                             $scope.cancel = function () {
                                 $modalInstance.dismiss({result: 'cancel'});
                             };
-                            $scope.question = options.question;
-                            $scope.reason = '';
+                            $scope.message = options.message || '';
+                            $scope.title = options.title || 'Запит';
+                            $scope.inputTextPlaceholder = options.inputTextPlaceholder || 'Вкажіть причину';
+                            $scope.okButtonLabel = options.okButtonLabel || 'Так';
+                            $scope.cancelButtonLabel = options.cancelButtonLabel || 'Відмінити';
+                            $scope.data = {};
+                            $scope.data.inputText = '';
+
                         }
                     });
                 },
@@ -52,14 +63,19 @@ angular.module('mean.system')
                         templateUrl: 'public/system/views/modal/login.html',
                         backdrop: 'static',
                         controller: function ($scope, $modalInstance) {
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss({result: 'cancel'});
-                            };
                             $rootScope.$on('loggedin', function () {
                                 $modalInstance.close({result: 'loggedin'});
                             });
+                            $scope.cancel = function () {
+                                $modalInstance.dismiss({result: 'cancel'});
+                            };
+                            $scope.title = options.title || 'Вхід';
+                            $scope.cancelButtonLabel = options.cancelButtonLabel || 'Відмінити';
                         }
                     });
+                },
+                custom: function (options) {
+                    return $modal.open(options);
                 }
             };
         }

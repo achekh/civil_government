@@ -1,17 +1,17 @@
 <div>
     <div class="modal-header">
-        <h3 class="modal-title">Запит</h3>
+        <h3 class="modal-title">{{title}}</h3>
     </div>
     <div class="modal-body">
-        <div class="modal-body-question">
-            <p>{{question}}</p>
+        <div class="modal-body-text">
+            <p>{{message}}</p>
         </div>
-        <div class="modal-body-reason">
-            <input type="text" class="form-control" data-ng-model="reason" placeholder="Вкажіть причину">
+        <div class="modal-body-input-text">
+            <input type="text" class="form-control" data-ng-model="data.inputText" placeholder="{{inputTextPlaceholder}}">
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" data-ng-click="ok()">Так</button>
-        <button class="btn btn-default" data-ng-click="cancel()">Ні</button>
+        <button class="btn btn-primary" data-ng-click="ok()">{{okButtonLabel}}</button>
+        <button class="btn btn-default" data-ng-click="cancel()">{{cancelButtonLabel}}</button>
     </div>
 </div>
