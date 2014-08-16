@@ -285,7 +285,7 @@ module.exports = function (done) {
         });
     }
 
-    var config = require(process.cwd() + '/server/config/config');
+    var config = require(process.cwd() + '/server/config/config')();
     var db = mongoose.connect(config.db);
 
     console.log('Connect db');

@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
     LinkedinStrategy = require('passport-linkedin').Strategy,
     VKontakteStrategy = require('passport-vkontakte').Strategy,
     User = mongoose.model('User'),
-    config = require('./config');
+    config = require('./config')();
 
 module.exports = function(passport) {
 

@@ -100,7 +100,7 @@ module.exports = function(grunt) {
                     nodeArgs: ['--debug'],
                     delayTime: 1,
                     env: {
-                        PORT: require('./server/config/config').port
+                        PORT: require('./server/config/config')().port
                     },
                     cwd: __dirname
                 }
@@ -115,7 +115,12 @@ module.exports = function(grunt) {
         mochaTest: {
             options: {
                 reporter: 'spec',
-                require: 'server.js'
+                require: [
+                    function () {
+                        process.env.NODE_ENV = 'test';
+                        require('./server.js');
+                    }
+                ]
             },
             src: ['test/mocha/**/*.js', 'packages/**/test/mocha/**/*.js']
         },
@@ -144,6 +149,10 @@ module.exports = function(grunt) {
     //Db seed
     grunt.registerTask('db.seed', 'Seed database with sample data', function () {
         require(process.cwd() + '/server/config/seed')(this.async());
+    });
+
+    grunt.registerTask('dummy', 'Dummy', function () {
+        console.log(this);
     });
 
     //Test task.
