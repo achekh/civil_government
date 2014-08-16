@@ -184,7 +184,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         }
 
         $scope.approveEvent = function () {
-            Modal.confirm({question: 'Затвердити подію?'}).result.then(
+            Modal.confirm({message: 'Затвердити подію?'}).result.then(
                 function (obj) {
                     if (obj.result === 'yes') {
                         $scope.eventActions.approve().then(eventActionSuccess);
@@ -194,7 +194,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.cancelEvent = function () {
-            Modal.confirm({question: 'Відмінити подію?'}).result.then(
+            Modal.confirm({message: 'Відмінити подію?'}).result.then(
                 function (obj) {
                     if (obj.result === 'yes') {
                         $scope.eventActions.cancel().then(eventActionSuccess);
@@ -204,7 +204,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.startEvent = function () {
-            Modal.confirm({question: 'Розпочати подію?'}).result.then(
+            Modal.confirm({message: 'Розпочати подію?'}).result.then(
                 function (obj) {
                     if (obj.result === 'yes') {
                         $scope.eventActions.start().then(eventActionSuccess);
