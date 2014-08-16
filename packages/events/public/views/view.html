@@ -42,6 +42,18 @@
                 <h4 data-ng-if="actor.isParticipant">
                     <a class="btn btn-default" data-ng-click="leave()"><span class="glyphicon glyphicon-minus"> Відмова</span></a>
                 </h4>
+                <h4 data-ng-if="actor.isHead && eventActions.canBeApproved">
+                    <a class="btn btn-default" data-ng-click="approveEvent()"><span class="glyphicon glyphicon-ok"> Затвердити</span></a>
+                </h4>
+                <h4 data-ng-if="(actor.isHead || actor.isCoordinator) && eventActions.canBeCanceled">
+                    <a class="btn btn-default" data-ng-click="cancelEvent()"><span class="glyphicon glyphicon-remove"> Скасувати</span></a>
+                </h4>
+                <h4 data-ng-if="actor.isCoordinator && eventActions.canBeStarted">
+                    <a class="btn btn-default" data-ng-click="startEvent()"><span class="glyphicon glyphicon-play"> Почати</span></a>
+                </h4>
+                <h4 data-ng-if="actor.isCoordinator && eventActions.canBeFinished">
+                    <a class="btn btn-default" data-ng-click="finishEvent()"><span class="glyphicon glyphicon-stop"> Завершити</span></a>
+                </h4>
             </div>
             <div class="row bg-info" ng-repeat="error in errors">
                 <span class="label label-info"><span class="glyphicon glyphicon-info-sign"></span> {{error.message}}</span>

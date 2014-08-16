@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', '$http', 'Events', 'EventStatuses', 'Members', 'Actor',
-    function ($scope, $stateParams, $location, $state, $http, Events, EventStatuses, Members, Actor) {
+angular.module('mean.events').controller('EventsController', ['$scope', '$stateParams', '$location', '$state', '$http', 'Events', 'EventStatuses', 'EventActions', 'Members', 'Actor', 'Modal',
+    function ($scope, $stateParams, $location, $state, $http, Events, EventStatuses, EventActions, Members, Actor, Modal) {
 
         (function initRegions(){
             $scope.regions = [
@@ -65,6 +65,8 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
         };
 
         $scope.findOne = function () {
+            $scope.event = null;
+            $scope.isParticipant = false;
             return Events.get({
                 eventId: $stateParams.eventId
             }, function (event) {
@@ -116,8 +118,7 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 if (response.errors) {
                     $scope.errors = response.errors;
                 } else {
-                    $state.go('events-view', {eventId: response._id});
-//                    $state.goBack();
+                    $state.goBack();
                 }
 
             });
@@ -137,17 +138,12 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
             event.gps = this.gps;
             event.region = this.region ? this.region._id : undefined;
             event.google_maps_api_address = this.google_maps_api_address;
-//            if (!event.updated) {
-//                event.updated = [];
-//            }
-//            event.updated.push(new Date().getTime());
             return event.$update(function(response) {
                 if (response.errors) {
                     $scope.errors = response.errors;
                 } else {
                     $state.goBack();
                 }
-//                $state.go('events-view', {eventId: event._id});
             });
         };
 
@@ -166,6 +162,59 @@ angular.module('mean.events').controller('EventsController', ['$scope', '$stateP
                 });
             }
         };
+
+
+        // event actions
+        function getEventActions () {
+            $scope.eventActions = null;
+            EventActions.getActions().then(function (actions) {
+                $scope.eventActions = actions;
+            });
+        }
+
+        getEventActions();
+
+        function eventActionSuccess () {
+            if ($state.is('events-view')) {
+                $scope.findOne();
+            } else {
+                $scope.find();
+            }
+            getEventActions();
+        }
+
+        $scope.approveEvent = function () {
+            Modal.confirm({question: 'Затвердити подію?'}).result.then(
+                function () {
+                    $scope.eventActions.approve().then(eventActionSuccess);
+                }
+            );
+        };
+
+        $scope.cancelEvent = function () {
+            Modal.confirm({question: 'Відмінити подію?'}).result.then(
+                function () {
+                    $scope.eventActions.cancel().then(eventActionSuccess);
+                }
+            );
+        };
+
+        $scope.startEvent = function () {
+            Modal.confirm({question: 'Розпочати подію?'}).result.then(
+                function () {
+                    $scope.eventActions.start().then(eventActionSuccess);
+                }
+            );
+        };
+
+        $scope.finishEvent = function () {
+            Modal.confirm({question: 'Завершити подію?'}).result.then(
+                function () {
+                    $scope.eventActions.finish().then(eventActionSuccess);
+                }
+            );
+        };
+
 
         (function loadGoogleMapsApiScript() {
             window.initializeGoogleMapsApi = function () {

@@ -12,13 +12,11 @@ var should = require('should'),
     Organization = mongoose.model('Organization'),
     Video = mongoose.model('Video');
 
-// Globals
-var user, userEvent, organization, video;
-
-// The tests
 describe('<Unit Test>', function() {
 
     describe('Model Video:', function () {
+
+        var user, userEvent, organization, video;
 
         before(function (done) {
 
@@ -56,27 +54,40 @@ describe('<Unit Test>', function() {
         describe('Method Save', function() {
 
             it('should begin without the test video', function(done) {
-                Video.find({ userId: 'userId1' }, function(err, videos) {
+                Video.find({_id: video._id}, function(err, videos) {
                     videos.should.have.length(0);
                     done();
                 });
             });
 
             it('should be able to save video without problems', function(done) {
-                video.save(done);
-            });
-
-            it('should show an error when try to save video without url', function(done) {
-                video.url = '';
-                return video.save(function(err) {
-                    should.exist(err);
+                video.save(function (err) {
+                    should.not.exist(err);
                     done();
                 });
             });
 
+            it('should show an error when try to save video without url', function(done) {
+                Video.find({_id: video._id}, function(err, videos) {
+                    videos.should.have.length(1);
+                    videos[0].url = '';
+                    videos[0].save(function (err) {
+                        should.exist(err);
+                        err.name.should.be.equal('ValidationError');
+                        done();
+                    });
+                });
+            });
+
             it('should be able to save updated video without problems', function(done) {
-                video.url = 'http://somewhere2.com';
-                video.save(done);
+                Video.find({_id: video._id}, function(err, videos) {
+                    videos.should.have.length(1);
+                    videos[0].url = 'http://somewhere2.com';
+                    videos[0].save(function (err) {
+                        should.not.exist(err);
+                        done();
+                    });
+                });
             });
 
         });

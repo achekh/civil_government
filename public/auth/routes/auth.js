@@ -32,6 +32,13 @@ angular.module('mean.auth').config(['$stateProvider',
                     loggedin: checkLoggedOut
                 }
             })
+            .state('auth-login-modal', {
+                url: '/login-modal',
+                templateUrl: 'public/auth/views/login-modal.html',
+                resolve: {
+                    loggedin: checkLoggedOut
+                }
+            })
             .state('auth.register', {
                 url: '/register',
                 templateUrl: 'public/auth/views/register.html',

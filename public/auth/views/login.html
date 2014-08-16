@@ -1,7 +1,7 @@
 <div data-ng-controller="LoginCtrl">
     <div class="alert alert-danger animated fadeIn" data-ng-show="loginerror">{{loginerror}}</div>
     <h1>Вхід</h1>
-    <form  data-ng-submit="login()" class="signin form-horizontal">
+    <form  data-ng-submit="doLogin()" class="signin form-horizontal">
         <div class="form-group">
             <label for="email" class="col-md-4 control-label">Email</label>
             <div class="col-md-8">
@@ -17,7 +17,7 @@
         <div class="form-group">
             <div class="col-md-offset-4 col-md-8">
                 <button type="submit" class="btn btn-primary">Увійти</button>&nbsp;
-                або&nbsp;<a data-ui-sref='auth.register' class="show-signup">Зареєструватися</a>
+                або&nbsp;<a class="show-signup" data-ng-click="goRegister()">Зареєструватися</a>
             </div>
         </div>
     </form>

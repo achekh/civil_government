@@ -55,19 +55,18 @@
                 $httpBackend.when('POST','/login').respond(200, {user: 'Fred'});
                 $httpBackend.when('GET','activists/views/view.html').respond(200, '');
 
-                scope.login();
+                scope.doLogin();
                 $httpBackend.flush();
 
                 // test scope value
                 expect($rootScope.user).toEqual('Fred');
                 expect($rootScope.$emit).toHaveBeenCalledWith('loggedin');
-                expect($location.url()).toEqual('/activists/view');
 
             });
 
             it('should fail to log in ', function() {
                 $httpBackend.expectPOST('/login').respond(400, 'Authentication failed');
-                scope.login();
+                scope.doLogin();
                 $httpBackend.flush();
                 // test scope value
                 expect(scope.loginerror).toNotEqual(undefined);

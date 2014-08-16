@@ -1,6 +1,5 @@
 'use strict';
 
-require(process.cwd() + '/packages/events/server/models/event');
 require(process.cwd() + '/packages/activists/server/models/activist');
 require(process.cwd() + '/packages/organizations/server/models/organization');
 require(process.cwd() + '/packages/events/server/models/event');
@@ -16,13 +15,11 @@ var should = require('should'),
     Event = mongoose.model('Event'),
     Participant = mongoose.model('Participant');
 
-// Globals
-var user, activist, organization, userEvent, participant, participantDuplicate;
-
-// The tests
 describe('<Unit Test>', function() {
 
     describe('Model Participant:', function () {
+
+        var user, activist, organization, userEvent, participant, participantDuplicate;
 
         before(function (done) {
 
@@ -69,8 +66,8 @@ describe('<Unit Test>', function() {
 
             async.series([
                 user.save.bind(user),
-                activist.save.bind(user),
-                organization.save.bind(user),
+                activist.save.bind(activist),
+                organization.save.bind(organization),
                 userEvent.save.bind(userEvent)
             ], done);
 

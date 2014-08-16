@@ -119,7 +119,7 @@
             });
 
             it('should get activist by global user id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: user};
                 Actor.getActivist().then(function (result) {
                     resultResolved = result;
@@ -129,7 +129,7 @@
             });
 
             it('should get event by state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $stateParams.eventId = event._id;
                 Actor.getEvent().then(function (result) {
                     resultResolved = result;
@@ -139,7 +139,7 @@
             });
 
             it('should get participant by global user id and state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: user};
                 $stateParams.eventId = event._id;
                 Actor.getParticipant().then(function (result) {
@@ -150,7 +150,7 @@
             });
 
             it('should get organization by state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $stateParams.eventId = event._id;
                 Actor.getOrganization().then(function (result) {
                     resultResolved = result;
@@ -160,7 +160,7 @@
             });
 
             it('should get member by global user id and state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: user};
                 $stateParams.eventId = event._id;
                 Actor.getMember().then(function (result) {
@@ -171,7 +171,7 @@
             });
 
             it('should get actor by global user id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: user};
                 Actor.getActor().then(function (result) {
                     resultResolved = result;
@@ -185,7 +185,7 @@
             });
 
             it('should get actor by global user id and state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: user};
                 $stateParams.eventId = event._id;
                 Actor.getActor().then(function (result) {
@@ -200,7 +200,7 @@
             });
 
             it('should get organization head actor by global user id and state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: headUser};
                 $stateParams.eventId = headEvent._id;
                 Actor.getActor().then(function (result) {
@@ -219,7 +219,7 @@
             });
 
             it('should get organization member actor by global user id and state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: memberUser};
                 $stateParams.eventId = headEvent._id;
                 Actor.getActor().then(function (result) {
@@ -238,7 +238,7 @@
             });
 
             it('should get non organization member actor by global user id and state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: user};
                 $stateParams.eventId = headEvent._id;
                 Actor.getActor().then(function (result) {
@@ -257,7 +257,7 @@
             });
 
             it('should get organization event participant actor by global user id and state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: participantUser};
                 $stateParams.eventId = headEvent._id;
                 Actor.getActor().then(function (result) {
@@ -276,7 +276,7 @@
             });
 
             it('should get organization event participant coordinator actor by global user id and state event id', function () {
-                var resultResolved;
+                var resultResolved = null;
                 $rootScope.global = {user: coordinatorUser};
                 $stateParams.eventId = headEvent._id;
                 Actor.getActor().then(function (result) {
