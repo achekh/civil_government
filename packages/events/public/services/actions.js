@@ -107,7 +107,7 @@ angular.module('mean.events')
                 check().then(function (can) {
                     if (can) {
                         getEvent().then(function (event) {
-                            ('status' in properties) ? event.status = properties.status : undefined;
+                            if('status' in properties) { event.status = properties.status; }
 //                            ('result' in properties) ? event.result = properties.result : undefined;
                             event.$update(function (response) {
                                 deferred.resolve(response);
